@@ -39,9 +39,34 @@ frontend/src/projects/
 
 Projects are **auto-discovered** — create a new folder and it appears in the gallery.
 
-## Creating a New Prototype
+## Starting a New Feature or Project
 
-Ask Claude Code something like:
+The agent acts as your ideation partner. You bring the problem — the agent helps explore solutions.
+
+**The process has 3 phases:**
+
+1. **Understand** — describe the user problem. The agent asks questions to deeply understand it, then plays it back to you.
+2. **Explore** — the agent proposes 2-3 solution approaches with tradeoffs. You discuss and pick a direction.
+3. **Define & Build** — the agent asks detail questions (screens, layout, interactions), writes a PRD, then builds the prototype.
+
+**To get started**, just describe your user problem to the agent:
+
+> "HelloFresh users find recipes on social media but lose track of them. They need a way to save and organize recipes inside the app."
+
+The agent knows the process automatically (via a Cursor rule) and will guide you through it.
+
+**Optional:** Use the kickoff template at `docs/prd-template.md` to pre-organize your thinking before starting the conversation. See `docs/prds/hellofresh-cookbook/v1-intent.md` for an example of what a completed PRD looks like.
+
+### PRD Versioning
+
+PRDs are saved in `docs/prds/{project-name}/`:
+
+- `v1-intent.md` — what we planned to build (saved before building)
+- `v-final.md` — what was actually built, if it diverged (original is preserved)
+
+### Quick Prototype (Skip the Process)
+
+If you already know exactly what you want, you can skip straight to building:
 
 > "Create a new prototype for an onboarding flow for a fitness app.
 > It should have 4 screens: welcome, goal selection, plan preview, and confirmation."
@@ -74,19 +99,25 @@ The screen name in `goTo()` matches the filename without `.tsx`.
 
 ```
 prototypes/
+├── .cursor/rules/
+│   └── prd-creation.mdc     # Agent instructions for ideation process
 ├── docs/
-│   └── prd.md              # Product requirements
+│   ├── prd.md               # Workspace product requirements
+│   ├── prd-template.md      # PM kickoff template
+│   └── prds/                # Saved PRDs per project
+│       └── hellofresh-cookbook/
+│           └── v1-intent.md  # Example completed PRD
 ├── frontend/
 │   ├── src/
-│   │   ├── components/      # Shared UI (MobileFrame, Gallery, etc.)
-│   │   ├── hooks/           # usePrototype navigation hook
-│   │   ├── projects/        # ← Your prototypes go here
-│   │   ├── registry.ts      # Auto-discovers projects
-│   │   └── App.tsx          # Routing
+│   │   ├── components/       # Shared UI (MobileFrame, Gallery, etc.)
+│   │   ├── hooks/            # usePrototype navigation hook
+│   │   ├── projects/         # ← Your prototypes go here
+│   │   ├── registry.ts       # Auto-discovers projects
+│   │   └── App.tsx           # Routing
 │   ├── package.json
 │   └── vite.config.ts
-├── TASKS.md                 # What's built, what's planned
-└── README.md                # You are here
+├── TASKS.md                  # What's built, what's planned
+└── README.md                 # You are here
 ```
 
 ## Tips

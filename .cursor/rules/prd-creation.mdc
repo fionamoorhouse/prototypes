@@ -1,0 +1,118 @@
+---
+description: Guides the agent through a 3-phase ideation-to-build process when a product person describes a user problem or feature idea. Covers problem understanding, solution exploration, PRD creation, and build handoff.
+alwaysApply: true
+---
+
+# Product Ideation & PRD Process
+
+When a product person describes a user problem, feature idea, or product area they want to explore, follow this 3-phase process. Do NOT jump to UI or screens until Phase 3.
+
+## Detect the Starting Point
+
+- **Problem or vague idea** → Start at Phase 1
+- **Defined solution with screens/flows described** → Start at Phase 3
+- **Somewhere in between** → Start at Phase 2
+
+---
+
+## Phase 1: Understand the Problem
+
+Your goal is to deeply understand the *user problem*. Do not discuss UI, screens, or implementation.
+
+Ask about:
+- **Who** is the user? What's their context and mindset?
+- **What** is the pain point or unmet need?
+- **When/where** does the problem surface? What triggers it?
+- **Current behavior** — how do users cope today? What's frustrating?
+- **Success vision** — if solved perfectly, what can the user do that they couldn't before?
+- **Business context** — why does solving this matter to the product/company?
+
+After gathering answers, **reframe the problem back** in a clear 2-3 sentence statement and ask the PM to confirm or adjust. Example:
+
+> "So the core problem is: HelloFresh users discover recipes outside the app but have no way to save and organize them for later cooking. They want a personal cookbook that feels like their own curated collection. Is that right?"
+
+Do NOT move to Phase 2 until the PM confirms the problem framing.
+
+---
+
+## Phase 2: Explore Solutions
+
+Propose **2-3 conceptual approaches** — strategies, not screens. For each approach:
+
+1. **The idea** — 1-2 sentence description
+2. **How it works** — user flow in plain language (no UI specifics)
+3. **Tradeoffs** — what's strong, what's risky, what's complex
+4. **Precedent** — reference to apps/patterns the PM would recognize
+
+Have a point of view. Say *"I'd recommend Approach B because..."* rather than presenting options neutrally. The PM wants a thinking partner, not a menu.
+
+Ask: *"Which of these resonates? Or is there a mix you'd like to explore?"*
+
+The PM may pick one, combine elements, or suggest a different direction. Iterate until there's alignment. Only then move to Phase 3.
+
+---
+
+## Phase 3: Define & Build
+
+Now shift into detailed definition. Ask about:
+
+- **Screens** — what screens are needed? How does the user move between them?
+- **Layout per screen** — zones, sections, sticky elements, scroll behavior
+- **Interactive components** — sheets, modals, carousels, drawers, and their triggers
+- **Visual direction** — brand colors, typography, reference apps or screenshots
+- **Content & data** — what appears, approximate quantities, placeholder needs
+- **Edge cases** — empty states, loading states, error states
+- **Non-goals** — what should NOT be built this iteration
+
+### Write the PRD
+
+Before building, write a structured PRD and save it to `docs/prds/{project-name}/v1-intent.md`.
+
+PRD structure:
+```
+# {Feature Name}
+
+## Problem Statement
+(2-3 sentences from Phase 1)
+
+## Chosen Approach
+(Which approach was selected and why)
+
+## User Context
+(Who the user is, what app/brand this is for)
+
+## Screens
+(One section per screen: name, purpose, layout, content, interactions)
+
+## Navigation Map
+(How screens connect, entry points, back behavior)
+
+## Visual Direction
+(Brand colors, typography, reference apps)
+
+## Edge Cases & States
+(Empty, loading, error states)
+
+## Non-goals
+(Explicitly out of scope)
+
+## Open Questions
+(Anything unresolved)
+```
+
+Confirm the PRD with the PM before building. Save it, then start building the prototype.
+
+### After Building
+
+If the prototype diverged from the PRD during implementation, save a final version to `docs/prds/{project-name}/v-final.md`. Include a **"Changes from Intent"** section at the top explaining what changed and why. Keep the original `v1-intent.md` intact.
+
+---
+
+## Workspace Reference
+
+- Prototypes live in `frontend/src/projects/{project-name}/`
+- Each project needs `meta.ts` and `screens/*.tsx`
+- Screens use `usePrototype()` hook for navigation: `goTo('ScreenName')`
+- PRDs are saved in `docs/prds/{project-name}/`
+- See `docs/prd-template.md` for the PM kickoff template
+- See `docs/prds/hellofresh-cookbook/v1-intent.md` for a completed example

@@ -52,9 +52,11 @@ If picking up from another agent session, start here.
 - [ ] Gallery shows variant counts
 
 ### PRD & Guidance
-- [ ] Create PRD template for product managers
-- [ ] Write guide: "How to describe a prototype to Claude"
-- [ ] Add sample PRDs for common patterns
+- [x] Create ideation-to-build process (3 phases: understand, explore, define & build)
+- [x] Create Cursor rule for agent behavior (`.cursor/rules/prd-creation.mdc`)
+- [x] Create PM kickoff template (`docs/prd-template.md`)
+- [x] Create example PRD from HelloFresh Cookbook (`docs/prds/hellofresh-cookbook/v1-intent.md`)
+- [ ] Add sample PRDs for additional patterns
 
 ### Polish
 - [ ] Screen transition animations
