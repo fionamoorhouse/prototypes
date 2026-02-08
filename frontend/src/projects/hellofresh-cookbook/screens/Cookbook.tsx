@@ -13,6 +13,7 @@ import {
   X,
   Check,
   ChevronLeft,
+  ChevronRight,
   MoreHorizontal,
 } from 'lucide-react'
 
@@ -71,14 +72,25 @@ const sheetFolders = [
 ]
 
 /* ------------------------------------------------------------------ */
+/*  Sheet modes                                                        */
+/* ------------------------------------------------------------------ */
+
+type SheetMode = 'closed' | 'addToCollection' | 'newCollection' | 'nameFromAdd'
+
+/* ------------------------------------------------------------------ */
 /*  Main component                                                     */
 /* ------------------------------------------------------------------ */
 
 export default function Cookbook() {
   const { goTo } = usePrototype()
-  const [sheetOpen, setSheetOpen] = useState(false)
+
+  // Sheet state
+  const [sheetMode, setSheetMode] = useState<SheetMode>('closed')
   const [checkedFolders, setCheckedFolders] = useState<Set<number>>(new Set([1]))
   const [sheetSearch, setSheetSearch] = useState('')
+  const [newCollName, setNewCollName] = useState('')
+
+  const sheetOpen = sheetMode !== 'closed'
 
   const toggleFolder = (id: number) => {
     setCheckedFolders((prev) => {
@@ -93,10 +105,37 @@ export default function Cookbook() {
     f.name.toLowerCase().includes(sheetSearch.toLowerCase()),
   )
 
-  const openSheet = () => setSheetOpen(true)
   const closeSheet = () => {
-    setSheetOpen(false)
+    setSheetMode('closed')
     setSheetSearch('')
+    setNewCollName('')
+  }
+
+  // Entry point A: "+ New" button on home → simple name-only sheet
+  const openNewCollectionSheet = () => {
+    setNewCollName('')
+    setSheetMode('newCollection')
+  }
+
+  // Entry point B: bookmark icon on recipe → add-to-collection sheet
+  const openAddToCollectionSheet = () => {
+    setSheetSearch('')
+    setSheetMode('addToCollection')
+  }
+
+  // Within add-to-collection sheet: "Create New Collection" → name input
+  const startNameFromAdd = () => {
+    setNewCollName('')
+    setSheetMode('nameFromAdd')
+  }
+
+  // Confirm creating collection from within the add sheet
+  const confirmNameFromAdd = () => {
+    if (newCollName.trim()) {
+      // In a real app this would persist — for the prototype we just go back to the add sheet
+      setSheetMode('addToCollection')
+      setNewCollName('')
+    }
   }
 
   return (
@@ -203,20 +242,14 @@ export default function Cookbook() {
                   border: '1px solid #f0f0f0',
                 }}
               >
-                {/* Card image */}
                 <div style={{ position: 'relative' }}>
                   <img
                     src={recipe.image}
                     alt={recipe.title}
-                    style={{
-                      width: '100%',
-                      height: 112,
-                      objectFit: 'cover',
-                      display: 'block',
-                    }}
+                    style={{ width: '100%', height: 112, objectFit: 'cover', display: 'block' }}
                   />
                   <button
-                    onClick={openSheet}
+                    onClick={openAddToCollectionSheet}
                     style={{
                       position: 'absolute',
                       top: 8,
@@ -237,18 +270,8 @@ export default function Cookbook() {
                     <BookmarkPlus size={14} color="#242424" />
                   </button>
                 </div>
-
-                {/* Card info */}
                 <div style={{ padding: '10px 12px 12px' }}>
-                  <p
-                    style={{
-                      fontSize: 13,
-                      fontWeight: 600,
-                      color: '#242424',
-                      lineHeight: 1.3,
-                      margin: 0,
-                    }}
-                  >
+                  <p style={{ fontSize: 13, fontWeight: 600, color: '#242424', lineHeight: 1.3, margin: 0 }}>
                     {recipe.title}
                   </p>
                   <div style={{ marginTop: 6 }}>
@@ -260,8 +283,33 @@ export default function Cookbook() {
           </div>
         </div>
 
+        {/* --- See All Saved Recipes button --- */}
+        <div style={{ padding: '8px 20px 4px' }}>
+          <button
+            onClick={() => goTo('AllRecipes')}
+            style={{
+              width: '100%',
+              height: 48,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              borderRadius: 24,
+              border: '1.5px solid #ddd',
+              background: '#fff',
+              fontSize: 15,
+              fontWeight: 600,
+              color: '#242424',
+              cursor: 'pointer',
+            }}
+          >
+            See all saved recipes
+            <ChevronRight size={16} color="#999" />
+          </button>
+        </div>
+
         {/* --- Your Collections --- */}
-        <div style={{ padding: '8px 20px 20px' }}>
+        <div style={{ padding: '16px 20px 20px' }}>
           <div
             style={{
               display: 'flex',
@@ -282,7 +330,7 @@ export default function Cookbook() {
               Your Collections
             </h2>
             <button
-              onClick={openSheet}
+              onClick={openNewCollectionSheet}
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -311,54 +359,31 @@ export default function Cookbook() {
             {collections.map((col) => (
               <div
                 key={col.id}
+                onClick={() => goTo('CollectionDetail', { id: String(col.id) })}
                 style={{
                   borderRadius: 16,
                   overflow: 'hidden',
                   background: '#fff',
                   boxShadow: '0 1px 8px rgba(0,0,0,0.06)',
                   border: '1px solid #f0f0f0',
+                  cursor: 'pointer',
                 }}
               >
-                {/* 2×2 collage */}
-                <div
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: 2,
-                  }}
-                >
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
                   {col.images.map((id, i) => (
                     <img
                       key={i}
                       src={thumb(id)}
                       alt=""
-                      style={{
-                        width: '100%',
-                        aspectRatio: '1',
-                        objectFit: 'cover',
-                        display: 'block',
-                      }}
+                      style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block' }}
                     />
                   ))}
                 </div>
                 <div style={{ padding: '10px 12px 12px' }}>
-                  <p
-                    style={{
-                      fontSize: 14,
-                      fontWeight: 600,
-                      color: '#242424',
-                      margin: 0,
-                    }}
-                  >
+                  <p style={{ fontSize: 14, fontWeight: 600, color: '#242424', margin: 0 }}>
                     {col.name}
                   </p>
-                  <p
-                    style={{
-                      fontSize: 12,
-                      color: '#888',
-                      margin: '2px 0 0',
-                    }}
-                  >
+                  <p style={{ fontSize: 12, color: '#888', margin: '2px 0 0' }}>
                     {col.count} Recipes
                   </p>
                 </div>
@@ -366,7 +391,6 @@ export default function Cookbook() {
             ))}
           </div>
 
-          {/* Demo link */}
           <button
             onClick={() => goTo('CookbookEmpty')}
             style={{
@@ -386,48 +410,14 @@ export default function Cookbook() {
       </div>
 
       {/* ===== Tab bar ===== */}
-      <div
-        style={{
-          flexShrink: 0,
-          height: 52,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-around',
-          borderTop: '1px solid #f0f0f0',
-          background: '#fff',
-        }}
-      >
-        {[
-          { Icon: Home, label: 'Home', active: false },
-          { Icon: CalendarDays, label: 'Menu', active: false },
-          { Icon: Search, label: 'Search', active: false },
-          { Icon: BookOpen, label: 'Cookbook', active: true },
-          { Icon: User, label: 'Profile', active: false },
-        ].map((tab) => (
-          <button
-            key={tab.label}
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              gap: 2,
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: tab.active ? '#067A46' : '#aaa',
-              padding: '4px 12px',
-            }}
-          >
-            <tab.Icon size={20} />
-            <span style={{ fontSize: 10, fontWeight: 500 }}>{tab.label}</span>
-          </button>
-        ))}
-      </div>
+      <TabBar />
 
       {/* ===== Home indicator safe area ===== */}
       <div style={{ height: 34, flexShrink: 0, background: '#fff' }} />
 
-      {/* ===== Bottom sheet overlay ===== */}
+      {/* ================================================================ */}
+      {/*  Bottom sheet overlay                                            */}
+      {/* ================================================================ */}
       <div
         style={{
           position: 'absolute',
@@ -454,7 +444,7 @@ export default function Cookbook() {
           }}
         />
 
-        {/* Sheet */}
+        {/* Sheet panel */}
         <div
           style={{
             position: 'absolute',
@@ -472,209 +462,254 @@ export default function Cookbook() {
           }}
         >
           {/* Handle */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              padding: '12px 0 8px',
-              flexShrink: 0,
-            }}
-          >
-            <div
-              style={{
-                width: 36,
-                height: 4,
-                borderRadius: 2,
-                background: '#ddd',
-              }}
-            />
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '12px 0 8px', flexShrink: 0 }}>
+            <div style={{ width: 36, height: 4, borderRadius: 2, background: '#ddd' }} />
           </div>
 
-          {/* Sheet header */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              padding: '0 20px 16px',
-              flexShrink: 0,
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: 'Georgia, "Times New Roman", serif',
-                fontSize: 18,
-                fontWeight: 700,
-                color: '#242424',
-                margin: 0,
-              }}
-            >
-              Save to Collection
-            </h3>
-            <button
-              onClick={closeSheet}
-              style={{
-                width: 32,
-                height: 32,
-                borderRadius: 16,
-                background: '#f3f3f3',
-                border: 'none',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              <X size={16} color="#666" />
-            </button>
-          </div>
+          {/* ---- MODE: New Collection (simple name input) ---- */}
+          {sheetMode === 'newCollection' && (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px 20px', flexShrink: 0 }}>
+                <h3 style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 18, fontWeight: 700, color: '#242424', margin: 0 }}>
+                  Create Collection
+                </h3>
+                <button onClick={closeSheet} style={{ width: 32, height: 32, borderRadius: 16, background: '#f3f3f3', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                  <X size={16} color="#666" />
+                </button>
+              </div>
 
-          {/* Create new */}
-          <div style={{ padding: '0 20px 12px', flexShrink: 0 }}>
-            <button
-              style={{
-                width: '100%',
-                display: 'flex',
-                alignItems: 'center',
-                gap: 8,
-                color: '#067A46',
-                fontWeight: 600,
-                fontSize: 14,
-                padding: '12px 14px',
-                borderRadius: 14,
-                border: '2px dashed rgba(6,122,70,0.25)',
-                background: 'rgba(6,122,70,0.03)',
-                cursor: 'pointer',
-              }}
-            >
-              <Plus size={16} />
-              Create New Collection
-            </button>
-          </div>
+              <div style={{ padding: '0 20px', flexShrink: 0 }}>
+                <label style={{ fontSize: 14, fontWeight: 600, color: '#242424', marginBottom: 8, display: 'block' }}>
+                  Collection name
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Quick Dinners"
+                  value={newCollName}
+                  onChange={(e) => setNewCollName(e.target.value)}
+                  autoFocus
+                  style={{
+                    width: '100%',
+                    height: 44,
+                    padding: '0 14px',
+                    borderRadius: 12,
+                    border: '1.5px solid #ddd',
+                    background: '#fafafa',
+                    fontSize: 16,
+                    color: '#242424',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
 
-          {/* Search */}
-          <div style={{ padding: '0 20px 12px', flexShrink: 0 }}>
-            <div style={{ position: 'relative' }}>
-              <Search
-                size={16}
-                color="#aaa"
-                style={{
-                  position: 'absolute',
-                  left: 12,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                }}
-              />
-              <input
-                type="text"
-                placeholder="Search collections…"
-                value={sheetSearch}
-                onChange={(e) => setSheetSearch(e.target.value)}
-                style={{
-                  width: '100%',
-                  height: 40,
-                  paddingLeft: 36,
-                  paddingRight: 12,
-                  borderRadius: 12,
-                  border: '1px solid #e8e8e8',
-                  background: '#fafafa',
-                  fontSize: 14,
-                  outline: 'none',
-                  boxSizing: 'border-box',
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Folder list */}
-          <div
-            style={{
-              flex: 1,
-              overflowY: 'auto',
-              padding: '0 12px',
-              minHeight: 0,
-            }}
-          >
-            {filteredFolders.map((folder) => {
-              const checked = checkedFolders.has(folder.id)
-              return (
+              <div style={{ padding: '20px 20px 24px', flexShrink: 0 }}>
                 <button
-                  key={folder.id}
-                  onClick={() => toggleFolder(folder.id)}
+                  onClick={closeSheet}
+                  style={{
+                    width: '100%',
+                    height: 48,
+                    borderRadius: 14,
+                    background: newCollName.trim() ? '#067A46' : '#ccc',
+                    color: '#fff',
+                    fontSize: 16,
+                    fontWeight: 600,
+                    border: 'none',
+                    cursor: newCollName.trim() ? 'pointer' : 'default',
+                    transition: 'background 0.15s ease',
+                  }}
+                >
+                  Create
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* ---- MODE: Add to Collection (folder list) ---- */}
+          {sheetMode === 'addToCollection' && (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px 16px', flexShrink: 0 }}>
+                <h3 style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 18, fontWeight: 700, color: '#242424', margin: 0 }}>
+                  Save to Collection
+                </h3>
+                <button onClick={closeSheet} style={{ width: 32, height: 32, borderRadius: 16, background: '#f3f3f3', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                  <X size={16} color="#666" />
+                </button>
+              </div>
+
+              {/* Create new (opens inline name input) */}
+              <div style={{ padding: '0 20px 12px', flexShrink: 0 }}>
+                <button
+                  onClick={startNameFromAdd}
                   style={{
                     width: '100%',
                     display: 'flex',
                     alignItems: 'center',
-                    gap: 14,
-                    padding: '12px 8px',
-                    borderRadius: 12,
-                    border: 'none',
-                    background: 'transparent',
+                    gap: 8,
+                    color: '#067A46',
+                    fontWeight: 600,
+                    fontSize: 14,
+                    padding: '12px 14px',
+                    borderRadius: 14,
+                    border: '2px dashed rgba(6,122,70,0.25)',
+                    background: 'rgba(6,122,70,0.03)',
                     cursor: 'pointer',
-                    textAlign: 'left',
                   }}
                 >
-                  <div
-                    style={{
-                      width: 22,
-                      height: 22,
-                      borderRadius: 6,
-                      border: checked ? 'none' : '2px solid #ccc',
-                      background: checked ? '#067A46' : 'transparent',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexShrink: 0,
-                      transition: 'all 0.15s ease',
-                    }}
-                  >
-                    {checked && <Check size={14} color="#fff" strokeWidth={3} />}
-                  </div>
-                  <div>
-                    <p
-                      style={{
-                        fontSize: 15,
-                        fontWeight: 500,
-                        color: '#242424',
-                        margin: 0,
-                      }}
-                    >
-                      {folder.name}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: 12,
-                        color: '#999',
-                        margin: '1px 0 0',
-                      }}
-                    >
-                      {folder.count} recipes
-                    </p>
-                  </div>
+                  <Plus size={16} />
+                  Create New Collection
                 </button>
-              )
-            })}
-          </div>
+              </div>
 
-          {/* Done button */}
-          <div style={{ padding: '12px 20px 20px', flexShrink: 0 }}>
-            <button
-              onClick={closeSheet}
-              style={{
-                width: '100%',
-                height: 48,
-                borderRadius: 14,
-                background: '#067A46',
-                color: '#fff',
-                fontSize: 16,
-                fontWeight: 600,
-                border: 'none',
-                cursor: 'pointer',
-              }}
-            >
-              Done
-            </button>
-          </div>
+              {/* Search */}
+              <div style={{ padding: '0 20px 12px', flexShrink: 0 }}>
+                <div style={{ position: 'relative' }}>
+                  <Search size={16} color="#aaa" style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)' }} />
+                  <input
+                    type="text"
+                    placeholder="Search collections…"
+                    value={sheetSearch}
+                    onChange={(e) => setSheetSearch(e.target.value)}
+                    style={{
+                      width: '100%',
+                      height: 40,
+                      paddingLeft: 36,
+                      paddingRight: 12,
+                      borderRadius: 12,
+                      border: '1px solid #e8e8e8',
+                      background: '#fafafa',
+                      fontSize: 14,
+                      outline: 'none',
+                      boxSizing: 'border-box',
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Folder list */}
+              <div style={{ flex: 1, overflowY: 'auto', padding: '0 12px', minHeight: 0 }}>
+                {filteredFolders.map((folder) => {
+                  const checked = checkedFolders.has(folder.id)
+                  return (
+                    <button
+                      key={folder.id}
+                      onClick={() => toggleFolder(folder.id)}
+                      style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 14,
+                        padding: '12px 8px',
+                        borderRadius: 12,
+                        border: 'none',
+                        background: 'transparent',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                      }}
+                    >
+                      <div
+                        style={{
+                          width: 22,
+                          height: 22,
+                          borderRadius: 6,
+                          border: checked ? 'none' : '2px solid #ccc',
+                          background: checked ? '#067A46' : 'transparent',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0,
+                          transition: 'all 0.15s ease',
+                        }}
+                      >
+                        {checked && <Check size={14} color="#fff" strokeWidth={3} />}
+                      </div>
+                      <div>
+                        <p style={{ fontSize: 15, fontWeight: 500, color: '#242424', margin: 0 }}>{folder.name}</p>
+                        <p style={{ fontSize: 12, color: '#999', margin: '1px 0 0' }}>{folder.count} recipes</p>
+                      </div>
+                    </button>
+                  )
+                })}
+              </div>
+
+              {/* Done */}
+              <div style={{ padding: '12px 20px 20px', flexShrink: 0 }}>
+                <button
+                  onClick={closeSheet}
+                  style={{ width: '100%', height: 48, borderRadius: 14, background: '#067A46', color: '#fff', fontSize: 16, fontWeight: 600, border: 'none', cursor: 'pointer' }}
+                >
+                  Done
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* ---- MODE: Name from within Add sheet ---- */}
+          {sheetMode === 'nameFromAdd' && (
+            <>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 20px 20px', flexShrink: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                  <button
+                    onClick={() => setSheetMode('addToCollection')}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, display: 'flex' }}
+                  >
+                    <ChevronLeft size={20} color="#242424" />
+                  </button>
+                  <h3 style={{ fontFamily: 'Georgia, "Times New Roman", serif', fontSize: 18, fontWeight: 700, color: '#242424', margin: 0 }}>
+                    New Collection
+                  </h3>
+                </div>
+                <button onClick={closeSheet} style={{ width: 32, height: 32, borderRadius: 16, background: '#f3f3f3', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                  <X size={16} color="#666" />
+                </button>
+              </div>
+
+              <div style={{ padding: '0 20px', flexShrink: 0 }}>
+                <p style={{ fontSize: 14, color: '#888', margin: '0 0 12px' }}>
+                  Name your collection. The recipe will be added automatically.
+                </p>
+                <input
+                  type="text"
+                  placeholder="e.g. Quick Dinners"
+                  value={newCollName}
+                  onChange={(e) => setNewCollName(e.target.value)}
+                  autoFocus
+                  style={{
+                    width: '100%',
+                    height: 44,
+                    padding: '0 14px',
+                    borderRadius: 12,
+                    border: '1.5px solid #ddd',
+                    background: '#fafafa',
+                    fontSize: 16,
+                    color: '#242424',
+                    outline: 'none',
+                    boxSizing: 'border-box',
+                  }}
+                />
+              </div>
+
+              <div style={{ padding: '20px 20px 24px', flexShrink: 0 }}>
+                <button
+                  onClick={confirmNameFromAdd}
+                  style={{
+                    width: '100%',
+                    height: 48,
+                    borderRadius: 14,
+                    background: newCollName.trim() ? '#067A46' : '#ccc',
+                    color: '#fff',
+                    fontSize: 16,
+                    fontWeight: 600,
+                    border: 'none',
+                    cursor: newCollName.trim() ? 'pointer' : 'default',
+                    transition: 'background 0.15s ease',
+                  }}
+                >
+                  Create & Add Recipe
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
     </div>
@@ -688,22 +723,52 @@ export default function Cookbook() {
 function SourceBadge({ source }: { source: 'instagram' | 'tiktok' }) {
   const Icon = source === 'instagram' ? Instagram : Music
   const label = source === 'instagram' ? 'Instagram' : 'TikTok'
-
   return (
-    <span
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 4,
-        fontSize: 11,
-        color: '#666',
-        background: '#f5f5f5',
-        borderRadius: 99,
-        padding: '3px 8px',
-      }}
-    >
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#666', background: '#f5f5f5', borderRadius: 99, padding: '3px 8px' }}>
       <Icon size={12} />
       {label}
     </span>
+  )
+}
+
+function TabBar() {
+  return (
+    <div
+      style={{
+        flexShrink: 0,
+        height: 52,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        borderTop: '1px solid #f0f0f0',
+        background: '#fff',
+      }}
+    >
+      {[
+        { Icon: Home, label: 'Home', active: false },
+        { Icon: CalendarDays, label: 'Menu', active: false },
+        { Icon: Search, label: 'Search', active: false },
+        { Icon: BookOpen, label: 'Cookbook', active: true },
+        { Icon: User, label: 'Profile', active: false },
+      ].map((tab) => (
+        <button
+          key={tab.label}
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: 2,
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            color: tab.active ? '#067A46' : '#aaa',
+            padding: '4px 12px',
+          }}
+        >
+          <tab.Icon size={20} />
+          <span style={{ fontSize: 10, fontWeight: 500 }}>{tab.label}</span>
+        </button>
+      ))}
+    </div>
   )
 }

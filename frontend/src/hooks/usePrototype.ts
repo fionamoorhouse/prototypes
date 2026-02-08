@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { useCallback } from 'react'
 
 export function usePrototype() {
@@ -7,10 +7,14 @@ export function usePrototype() {
     projectId: string
     screenId: string
   }>()
+  const [searchParams] = useSearchParams()
 
   const goTo = useCallback(
-    (screen: string) => {
-      navigate(`/project/${projectId}/${screen}`)
+    (screen: string, params?: Record<string, string>) => {
+      const search = params
+        ? '?' + new URLSearchParams(params).toString()
+        : ''
+      navigate(`/project/${projectId}/${screen}${search}`)
     },
     [navigate, projectId],
   )
@@ -19,5 +23,5 @@ export function usePrototype() {
     navigate('/')
   }, [navigate])
 
-  return { goTo, goHome, projectId, screenId }
+  return { goTo, goHome, projectId, screenId, searchParams }
 }
