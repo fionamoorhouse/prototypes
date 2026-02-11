@@ -89,7 +89,10 @@ const CREATORS: Record<string, CreatorData> = {
     specialties: ['Locally Sourced', 'Comfort Food with a Twist'],
     followerCount: '3.2k',
     recipeCount: 42,
-    collections: [],
+    collections: [
+      { id: 'comfort-classics', name: 'Comfort Classics', recipeCount: 32, subscribers: '4.8k', images: [FOOD.pasta, FOOD.chicken, FOOD.steak, FOOD.bowl] },
+      { id: 'quick-healthy', name: 'Quick & Healthy', recipeCount: 18, subscribers: '2.1k', images: [FOOD.salmon, FOOD.salad, FOOD.veggies, FOOD.avocado] },
+    ],
     recipes: [
       { id: 1, title: 'Crispy Salmon Rice Bowls', image: img(FOOD.salmon), time: '35 min', difficulty: 'Hard', rating: 4.5 },
       { id: 2, title: 'Chicken Bacon Ranch Loaded Potatoes', image: img(FOOD.chicken), time: '40 min', difficulty: 'Medium', rating: 4.8 },
@@ -442,8 +445,8 @@ export default function CreatorProfile() {
         {/* Divider */}
         <div style={{ height: 8, background: '#f5f5f5' }} />
 
-        {/* Tabs (for influencer with both collections and recipes) */}
-        {creator.type === 'influencer' && hasCollections && hasRecipes ? (
+        {/* Tabs (for creators with both collections and recipes) */}
+        {(creator.type === 'influencer' || creator.type === 'hellofresh-chef') && hasCollections && hasRecipes ? (
           <>
             <div style={{ display: 'flex', borderBottom: '1px solid #f0f0f0' }}>
               <button

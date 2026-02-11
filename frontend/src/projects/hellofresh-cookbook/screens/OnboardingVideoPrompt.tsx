@@ -52,7 +52,19 @@ export default function OnboardingVideoPrompt() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <ChevronLeft size={22} color="#fff" />
+          <button
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 4,
+              margin: -4,
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <ChevronLeft size={22} color="#fff" />
+          </button>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span
               style={{
@@ -80,7 +92,19 @@ export default function OnboardingVideoPrompt() {
             </span>
           </div>
         </div>
-        <MoreHorizontal size={22} color="#fff" />
+        <button
+          style={{
+            background: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            padding: 4,
+            margin: -4,
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <MoreHorizontal size={22} color="#fff" />
+        </button>
       </div>
 
       {/* ===== Green header background extension ===== */}

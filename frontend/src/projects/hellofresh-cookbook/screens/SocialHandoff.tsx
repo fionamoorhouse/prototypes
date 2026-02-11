@@ -41,15 +41,19 @@ export default function SocialHandoff() {
 
   // Auto-advance from interstitial after 1.5s
   useEffect(() => {
+    let innerTimer: ReturnType<typeof setTimeout>
     const timer = setTimeout(() => {
       setPhase('social')
       // Show PIP after a brief delay
-      setTimeout(() => {
+      innerTimer = setTimeout(() => {
         setPipVisible(true)
         setPipPlaying(true)
       }, 600)
     }, 1500)
-    return () => clearTimeout(timer)
+    return () => {
+      clearTimeout(timer)
+      clearTimeout(innerTimer)
+    }
   }, [])
 
   const appName = source === 'instagram' ? 'Instagram' : 'TikTok'

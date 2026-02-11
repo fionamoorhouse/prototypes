@@ -63,8 +63,8 @@ const FOOD = {
 }
 
 const recentRecipes = [
-  { id: 1, title: 'Yuzu Kosho Chicken', source: 'instagram' as const, image: img(FOOD.chicken), creatorName: 'Michelle Doll Olson', creatorAvatar: AVATARS.michelle, creatorId: 'michelle', creatorType: 'hellofresh-chef' as const },
-  { id: 2, title: 'Miso Glazed Salmon', source: 'instagram' as const, image: img(FOOD.salmon), creatorName: 'Sarah Williams', creatorAvatar: AVATARS.sarah, creatorId: 'sarah', creatorType: 'hellofresh-chef' as const },
+  { id: 1, title: 'Yuzu Kosho Chicken', source: 'hellofresh' as const, image: img(FOOD.chicken), creatorName: 'Michelle Doll Olson', creatorAvatar: AVATARS.michelle, creatorId: 'michelle', creatorType: 'hellofresh-chef' as const },
+  { id: 2, title: 'Miso Glazed Salmon', source: 'hellofresh' as const, image: img(FOOD.salmon), creatorName: 'Sarah Williams', creatorAvatar: AVATARS.sarah, creatorId: 'sarah', creatorType: 'hellofresh-chef' as const },
   { id: 3, title: 'Crispy Air Fryer Tofu', source: 'tiktok' as const, image: img(FOOD.veggies), creatorName: '@EasyMealsByMia', creatorAvatar: AVATARS.mia, creatorId: 'mia', creatorType: 'influencer' as const },
   { id: 4, title: 'One-Pan Lemon Pasta', source: 'instagram' as const, image: img(FOOD.pasta), creatorName: '@JamesCooks', creatorAvatar: AVATARS.james, creatorId: 'james', creatorType: 'influencer' as const },
   { id: 5, title: 'Thai Basil Stir Fry', source: 'tiktok' as const, image: img(FOOD.stirfry), creatorName: '@EasyMealsByMia', creatorAvatar: AVATARS.mia, creatorId: 'mia', creatorType: 'influencer' as const },
@@ -1156,7 +1156,15 @@ export default function Cookbook() {
 /*  Sub-components                                                     */
 /* ------------------------------------------------------------------ */
 
-function SourceBadge({ source }: { source: 'instagram' | 'tiktok' }) {
+function SourceBadge({ source }: { source: 'instagram' | 'tiktok' | 'hellofresh' }) {
+  if (source === 'hellofresh') {
+    return (
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, color: '#067A46', background: '#E8F5E0', borderRadius: 99, padding: '3px 8px', fontWeight: 600 }}>
+        <BookOpen size={11} />
+        HelloFresh
+      </span>
+    )
+  }
   const Icon = source === 'instagram' ? Instagram : Music
   const label = source === 'instagram' ? 'Instagram' : 'TikTok'
   return (
