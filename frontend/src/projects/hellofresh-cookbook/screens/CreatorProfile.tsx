@@ -27,6 +27,13 @@ const thumb = (id: string) =>
 const avatarImg = (id: string, size = 200) =>
   `https://images.unsplash.com/photo-${id}?w=${size}&h=${size}&fit=crop&crop=face&auto=format&q=80`
 
+const MICHELLE_PHOTO = '/michelle-doll-olson.png'
+
+const resolveAvatar = (unsplashId: string, size = 40) =>
+  unsplashId === '1438761681033-6461ffad8d80'
+    ? MICHELLE_PHOTO
+    : avatarImg(unsplashId, size)
+
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
 /* ------------------------------------------------------------------ */
@@ -260,7 +267,7 @@ export default function CreatorProfile() {
             {/* Profile info */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '8px 20px 20px', textAlign: 'center' }}>
               <img
-                src={avatarImg(creator.avatar, 200)}
+                src={resolveAvatar(creator.avatar, 200)}
                 alt={creator.name}
                 style={{ width: 80, height: 80, borderRadius: 40, objectFit: 'cover', marginBottom: 12 }}
               />
@@ -304,7 +311,7 @@ export default function CreatorProfile() {
             <div style={{ position: 'relative', height: 280 }}>
               <img
                 src={creator.type === 'influencer'
-                  ? avatarImg(creator.avatar, 800)
+                  ? resolveAvatar(creator.avatar, 800)
                   : img(creator.coverPhoto, 800, 600)}
                 alt={creator.name}
                 style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}

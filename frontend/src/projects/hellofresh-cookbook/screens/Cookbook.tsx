@@ -18,6 +18,7 @@ import {
   Sparkles,
   Lightbulb,
   Users,
+  Pencil,
 } from 'lucide-react'
 
 /* ------------------------------------------------------------------ */
@@ -32,6 +33,13 @@ const thumb = (id: string) =>
 
 const avatarImg = (id: string, size = 200) =>
   `https://images.unsplash.com/photo-${id}?w=${size}&h=${size}&fit=crop&crop=face&auto=format&q=80`
+
+const MICHELLE_PHOTO = '/michelle-doll-olson.png'
+
+const resolveAvatar = (unsplashId: string, size = 40) =>
+  unsplashId === AVATARS.michelle
+    ? MICHELLE_PHOTO
+    : avatarImg(unsplashId, size)
 
 const AVATARS = {
   michelle: '1438761681033-6461ffad8d80',
@@ -123,6 +131,9 @@ export default function Cookbook() {
 
   // Check if we should show celebration drawer on mount
   const showCelebration = searchParams.get('celebration') === 'true'
+  const showAttribution = searchParams.get('attribution') === 'true'
+  const attributionCreator = searchParams.get('creator') || 'Unknown creator'
+  const attributionRecipe = searchParams.get('recipe') || 'Saved recipe'
 
   // Sheet state
   const [sheetMode, setSheetMode] = useState<SheetMode>(showCelebration ? 'celebration' : 'closed')
@@ -132,6 +143,11 @@ export default function Cookbook() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [confettiVisible, setConfettiVisible] = useState(showCelebration)
 
+  // Attribution toast state
+  const [toastVisible, setToastVisible] = useState(showAttribution)
+  const [toastEditing, setToastEditing] = useState(false)
+  const [toastCreatorName, setToastCreatorName] = useState(attributionCreator)
+
   // Auto-dismiss confetti
   useEffect(() => {
     if (confettiVisible) {
@@ -139,6 +155,14 @@ export default function Cookbook() {
       return () => clearTimeout(timer)
     }
   }, [confettiVisible])
+
+  // Auto-dismiss attribution toast after 5 seconds (unless editing)
+  useEffect(() => {
+    if (toastVisible && !toastEditing) {
+      const timer = setTimeout(() => setToastVisible(false), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [toastVisible, toastEditing])
 
   const sheetOpen = sheetMode !== 'closed'
 
@@ -434,7 +458,7 @@ export default function Cookbook() {
                     }}
                   >
                     <img
-                      src={avatarImg(recipe.creatorAvatar, 40)}
+                      src={resolveAvatar(recipe.creatorAvatar, 40)}
                       alt=""
                       style={{ width: 16, height: 16, borderRadius: 8, objectFit: 'cover' }}
                     />
@@ -555,7 +579,7 @@ export default function Cookbook() {
                   </div>
                   {'ownerAvatar' in col && col.ownerAvatar && (
                     <img
-                      src={avatarImg(col.ownerAvatar as string, 60)}
+                      src={resolveAvatar(col.ownerAvatar as string, 60)}
                       alt=""
                       style={{
                         position: 'absolute',
@@ -649,6 +673,9 @@ export default function Cookbook() {
             </button>
             <button onClick={() => goTo('CreatorProfile', { id: 'alex' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0, textAlign: 'left' }}>
               User Curator: Alex T. →
+            </button>
+            <button onClick={() => goTo('Cookbook', { attribution: 'true', creator: '@ChefMaria', recipe: 'Spicy Thai Green Curry' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0, textAlign: 'left' }}>
+              Scenario D: Save &amp; Attribute from Social →
             </button>
           </div>
         </div>
@@ -1144,6 +1171,150 @@ export default function Cookbook() {
             @keyframes confetti-fall {
               0% { transform: translateY(0) rotate(0deg); opacity: 1; }
               100% { transform: translateY(900px) rotate(720deg); opacity: 0; }
+            }
+          `}</style>
+        </div>
+      )}
+
+      {/* ================================================================ */}
+      {/*  Attribution toast (Scenario D)                                   */}
+      {/* ================================================================ */}
+      {toastVisible && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 54 + 10,
+            left: 16,
+            right: 16,
+            zIndex: 70,
+            animation: 'toast-slide-down 0.35s ease-out forwards',
+          }}
+        >
+          <div
+            style={{
+              background: '#fff',
+              borderRadius: 16,
+              boxShadow: '0 8px 32px rgba(0,0,0,0.14)',
+              borderLeft: '4px solid #067A46',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: 12,
+              padding: toastEditing ? '14px 14px 10px' : 14,
+              position: 'relative',
+            }}
+          >
+            {/* Recipe thumbnail */}
+            <img
+              src={img(FOOD.stirfry)}
+              alt=""
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 10,
+                objectFit: 'cover',
+                flexShrink: 0,
+              }}
+            />
+
+            {/* Content */}
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ fontSize: 14, fontWeight: 700, color: '#242424', margin: '0 0 2px' }}>
+                Saved to Cookbook
+              </p>
+              {!toastEditing ? (
+                <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 2 }}>
+                  <img
+                    src={avatarImg('1544005313-94ddf0286df2', 40)}
+                    alt=""
+                    style={{ width: 18, height: 18, borderRadius: 9, objectFit: 'cover' }}
+                  />
+                  <span style={{ fontSize: 13, color: '#555' }}>
+                    Recipe by <strong style={{ color: '#242424' }}>{toastCreatorName}</strong>
+                  </span>
+                </div>
+              ) : (
+                <div style={{ marginTop: 6 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <input
+                      autoFocus
+                      value={toastCreatorName}
+                      onChange={(e) => setToastCreatorName(e.target.value)}
+                      style={{
+                        flex: 1,
+                        height: 32,
+                        borderRadius: 8,
+                        border: '1.5px solid #067A46',
+                        padding: '0 10px',
+                        fontSize: 13,
+                        outline: 'none',
+                        color: '#242424',
+                      }}
+                    />
+                    <button
+                      onClick={() => setToastEditing(false)}
+                      style={{
+                        height: 32,
+                        padding: '0 14px',
+                        borderRadius: 8,
+                        background: '#067A46',
+                        color: '#fff',
+                        fontSize: 13,
+                        fontWeight: 600,
+                        border: 'none',
+                        cursor: 'pointer',
+                        flexShrink: 0,
+                      }}
+                    >
+                      Done
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Edit / Close buttons */}
+            {!toastEditing && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexShrink: 0, marginTop: 2 }}>
+                <button
+                  onClick={() => setToastEditing(true)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 3,
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: '2px 4px',
+                    color: '#067A46',
+                    fontSize: 12,
+                    fontWeight: 600,
+                  }}
+                >
+                  <Pencil size={12} />
+                  Edit
+                </button>
+                <button
+                  onClick={() => setToastVisible(false)}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    padding: 2,
+                    color: '#aaa',
+                    display: 'flex',
+                    alignItems: 'center',
+                  }}
+                >
+                  <X size={16} />
+                </button>
+              </div>
+            )}
+          </div>
+
+          <style>{`
+            @keyframes toast-slide-down {
+              0% { transform: translateY(-20px); opacity: 0; }
+              100% { transform: translateY(0); opacity: 1; }
             }
           `}</style>
         </div>

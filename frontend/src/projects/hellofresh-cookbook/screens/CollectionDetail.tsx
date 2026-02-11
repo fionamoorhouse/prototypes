@@ -25,6 +25,13 @@ const img = (id: string, w = 600, h = 400) =>
 const avatarImg = (id: string, size = 200) =>
   `https://images.unsplash.com/photo-${id}?w=${size}&h=${size}&fit=crop&crop=face&auto=format&q=80`
 
+const MICHELLE_PHOTO = '/michelle-doll-olson.png'
+
+const resolveAvatar = (unsplashId: string, size = 40) =>
+  unsplashId === '1438761681033-6461ffad8d80'
+    ? MICHELLE_PHOTO
+    : avatarImg(unsplashId, size)
+
 const AVATARS = {
   michelle: '1438761681033-6461ffad8d80',
   mia: '1494790108377-be9c29b29330',
@@ -178,6 +185,17 @@ const PUBLIC_COLLECTIONS: Record<string, { name: string; recipes: Recipe[] }> = 
       { id: 4, title: 'Thai Basil Stir Fry', author: '@EasyMealsByMia', rating: 4.6, reviews: '934', time: '18 min', image: img(FOOD.stirfry) },
       { id: 5, title: 'Creamy Tuscan Salmon', author: '@EasyMealsByMia', rating: 4.9, reviews: '1.5k', time: '22 min', image: img(FOOD.salmon) },
       { id: 6, title: 'Spicy Korean Rice Bowl', author: '@EasyMealsByMia', rating: 4.5, reviews: '867', time: '25 min', image: img(FOOD.veggies) },
+    ],
+  },
+  'comfort-classics': {
+    name: 'Comfort Classics',
+    recipes: [
+      { id: 1, title: 'Chicken Bacon Ranch Loaded Potatoes', author: 'Michelle Doll Olson', rating: 4.8, reviews: '2.4k', time: '40 min', image: img(FOOD.chicken) },
+      { id: 2, title: 'Creamy Lemon-Garlic Shrimp Linguine', author: 'Michelle Doll Olson', rating: 4.7, reviews: '1.9k', time: '30 min', image: img(FOOD.pasta) },
+      { id: 3, title: 'Smoky Mustard Pecan-Crusted Salmon', author: 'Michelle Doll Olson', rating: 4.9, reviews: '1.5k', time: '40 min', image: img(FOOD.salmon) },
+      { id: 4, title: 'Butter Chicken & Garlic Naan', author: 'Michelle Doll Olson', rating: 4.8, reviews: '3.1k', time: '45 min', image: img(FOOD.stirfry) },
+      { id: 5, title: 'One-Pan Mushroom Risotto', author: 'Michelle Doll Olson', rating: 4.6, reviews: '1.2k', time: '35 min', image: img(FOOD.bowl) },
+      { id: 6, title: 'Crispy Pork Schnitzel', author: 'Michelle Doll Olson', rating: 4.7, reviews: '987', time: '35 min', image: img(FOOD.steak) },
     ],
   },
   'high-protein-prep': {
@@ -359,7 +377,7 @@ export default function CollectionDetail() {
               }}
             >
               <img
-                src={avatarImg(owner.avatar, 80)}
+                src={resolveAvatar(owner.avatar, 80)}
                 alt=""
                 style={{ width: 32, height: 32, borderRadius: 16, objectFit: 'cover' }}
               />
@@ -645,7 +663,7 @@ function RecipeCard({ recipe, goTo }: { recipe: Recipe; goTo: (screen: string, p
         >
           {creator && (
             <img
-              src={avatarImg(creator.avatar, 40)}
+              src={resolveAvatar(creator.avatar, 40)}
               alt=""
               style={{ width: 16, height: 16, borderRadius: 8, objectFit: 'cover' }}
             />

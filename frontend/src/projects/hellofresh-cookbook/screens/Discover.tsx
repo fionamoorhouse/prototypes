@@ -25,6 +25,13 @@ const thumb = (id: string) =>
 const avatarImg = (id: string, size = 200) =>
   `https://images.unsplash.com/photo-${id}?w=${size}&h=${size}&fit=crop&crop=face&auto=format&q=80`
 
+const MICHELLE_PHOTO = '/michelle-doll-olson.png'
+
+const resolveAvatar = (unsplashId: string, size = 40) =>
+  unsplashId === '1438761681033-6461ffad8d80'
+    ? MICHELLE_PHOTO
+    : avatarImg(unsplashId, size)
+
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
 /* ------------------------------------------------------------------ */
@@ -60,8 +67,8 @@ const AVATARS = {
 }
 
 const savedByYou = [
-  { id: 1, title: 'Yuzu Kosho Chicken', source: 'instagram' as const, image: img(FOOD.chicken), creator: 'Michelle Doll Olson', creatorAvatar: AVATARS.michelle, creatorType: 'hellofresh-chef' as const, creatorId: 'michelle' },
-  { id: 2, title: 'Miso Glazed Salmon', source: 'instagram' as const, image: img(FOOD.salmon), creator: 'Sarah Williams', creatorAvatar: AVATARS.sarah, creatorType: 'hellofresh-chef' as const, creatorId: 'sarah' },
+  { id: 1, title: 'Yuzu Kosho Chicken', source: 'hellofresh' as const, image: img(FOOD.chicken), creator: 'Michelle Doll Olson', creatorAvatar: AVATARS.michelle, creatorType: 'hellofresh-chef' as const, creatorId: 'michelle' },
+  { id: 2, title: 'Miso Glazed Salmon', source: 'hellofresh' as const, image: img(FOOD.salmon), creator: 'Sarah Williams', creatorAvatar: AVATARS.sarah, creatorType: 'hellofresh-chef' as const, creatorId: 'sarah' },
   { id: 3, title: 'Crispy Air Fryer Tofu', source: 'tiktok' as const, image: img(FOOD.veggies), creator: '@EasyMealsByMia', creatorAvatar: AVATARS.mia, creatorType: 'influencer' as const, creatorId: 'mia' },
 ]
 
@@ -82,8 +89,8 @@ const featuredCollections = [
     id: 'comfort-classics',
     name: 'Comfort Classics',
     description: 'Warm, hearty dishes the whole family loves',
-    ownerName: 'HelloFresh',
-    ownerId: 'hellofresh',
+    ownerName: 'Michelle Doll Olson',
+    ownerId: 'michelle',
     ownerType: 'hellofresh-chef' as const,
     ownerAvatar: AVATARS.michelle,
     recipeCount: 32,
@@ -313,7 +320,7 @@ export default function Discover() {
                     }}
                   >
                     <img
-                      src={avatarImg(recipe.creatorAvatar, 40)}
+                      src={resolveAvatar(recipe.creatorAvatar, 40)}
                       alt=""
                       style={{ width: 16, height: 16, borderRadius: 8, objectFit: 'cover' }}
                     />
@@ -386,7 +393,7 @@ export default function Discover() {
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                     <img
-                      src={avatarImg(col.ownerAvatar, 40)}
+                      src={resolveAvatar(col.ownerAvatar, 40)}
                       alt=""
                       style={{ width: 20, height: 20, borderRadius: 10, objectFit: 'cover', border: '1px solid rgba(255,255,255,0.4)' }}
                     />
@@ -441,7 +448,7 @@ export default function Discover() {
               >
                 <div style={{ position: 'relative' }}>
                   <img
-                    src={avatarImg(creator.avatar, 150)}
+                    src={resolveAvatar(creator.avatar, 150)}
                     alt={creator.name}
                     style={{
                       width: 64,
@@ -552,7 +559,7 @@ export default function Discover() {
                     }}
                   >
                     <img
-                      src={avatarImg(recipe.creatorAvatar, 40)}
+                      src={resolveAvatar(recipe.creatorAvatar, 40)}
                       alt=""
                       style={{ width: 16, height: 16, borderRadius: 8, objectFit: 'cover' }}
                     />
@@ -619,7 +626,7 @@ export default function Discover() {
                   </p>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
                     <img
-                      src={avatarImg(col.ownerAvatar, 40)}
+                      src={resolveAvatar(col.ownerAvatar, 40)}
                       alt=""
                       style={{ width: 16, height: 16, borderRadius: 8, objectFit: 'cover' }}
                     />
@@ -650,6 +657,9 @@ export default function Discover() {
           <button onClick={() => goTo('CreatorProfile', { id: 'alex' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0, textAlign: 'left' }}>
             User Profile: Alex T. →
           </button>
+          <button onClick={() => goTo('Cookbook', { attribution: 'true', creator: '@ChefMaria', recipe: 'Spicy Thai Green Curry' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0, textAlign: 'left' }}>
+            Scenario D: Save &amp; Attribute from Social →
+          </button>
         </div>
       </div>
 
@@ -666,7 +676,15 @@ export default function Discover() {
 /*  Sub-components                                                     */
 /* ------------------------------------------------------------------ */
 
-function SourceBadge({ source }: { source: 'instagram' | 'tiktok' }) {
+function SourceBadge({ source }: { source: 'instagram' | 'tiktok' | 'hellofresh' }) {
+  if (source === 'hellofresh') {
+    return (
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 10, color: '#067A46', background: '#E8F5E0', borderRadius: 99, padding: '2px 7px', fontWeight: 600 }}>
+        <BookOpen size={10} />
+        HelloFresh
+      </span>
+    )
+  }
   const Icon = source === 'instagram' ? Instagram : Music
   const label = source === 'instagram' ? 'Instagram' : 'TikTok'
   return (
