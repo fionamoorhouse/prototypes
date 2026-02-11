@@ -6,7 +6,7 @@ import {
   BookmarkPlus,
   Instagram,
   Music,
-  Home,
+  Compass,
   CalendarDays,
   BookOpen,
   User,
@@ -17,6 +17,7 @@ import {
   MoreHorizontal,
   Sparkles,
   Lightbulb,
+  Users,
 } from 'lucide-react'
 
 /* ------------------------------------------------------------------ */
@@ -28,6 +29,17 @@ const img = (id: string, w = 600, h = 400) =>
 
 const thumb = (id: string) =>
   `https://images.unsplash.com/photo-${id}?w=200&h=200&fit=crop&auto=format&q=80`
+
+const avatarImg = (id: string, size = 200) =>
+  `https://images.unsplash.com/photo-${id}?w=${size}&h=${size}&fit=crop&crop=face&auto=format&q=80`
+
+const AVATARS = {
+  michelle: '1438761681033-6461ffad8d80',
+  mia: '1494790108377-be9c29b29330',
+  alex: '1507003211169-0a1dd7228f2d',
+  sarah: '1580489944761-15a19d654956',
+  james: '1472099645785-5658abf4ff4e',
+}
 
 /* ------------------------------------------------------------------ */
 /*  Data                                                               */
@@ -51,19 +63,26 @@ const FOOD = {
 }
 
 const recentRecipes = [
-  { id: 1, title: 'Yuzu Kosho Chicken', source: 'instagram' as const, image: img(FOOD.chicken) },
-  { id: 2, title: 'Miso Glazed Salmon', source: 'instagram' as const, image: img(FOOD.salmon) },
-  { id: 3, title: 'Crispy Air Fryer Tofu', source: 'tiktok' as const, image: img(FOOD.veggies) },
-  { id: 4, title: 'One-Pan Lemon Pasta', source: 'instagram' as const, image: img(FOOD.pasta) },
-  { id: 5, title: 'Thai Basil Stir Fry', source: 'tiktok' as const, image: img(FOOD.stirfry) },
+  { id: 1, title: 'Yuzu Kosho Chicken', source: 'instagram' as const, image: img(FOOD.chicken), creatorName: 'Michelle Doll Olson', creatorAvatar: AVATARS.michelle, creatorId: 'michelle', creatorType: 'hellofresh-chef' as const },
+  { id: 2, title: 'Miso Glazed Salmon', source: 'instagram' as const, image: img(FOOD.salmon), creatorName: 'Sarah Williams', creatorAvatar: AVATARS.sarah, creatorId: 'sarah', creatorType: 'hellofresh-chef' as const },
+  { id: 3, title: 'Crispy Air Fryer Tofu', source: 'tiktok' as const, image: img(FOOD.veggies), creatorName: '@EasyMealsByMia', creatorAvatar: AVATARS.mia, creatorId: 'mia', creatorType: 'influencer' as const },
+  { id: 4, title: 'One-Pan Lemon Pasta', source: 'instagram' as const, image: img(FOOD.pasta), creatorName: '@JamesCooks', creatorAvatar: AVATARS.james, creatorId: 'james', creatorType: 'influencer' as const },
+  { id: 5, title: 'Thai Basil Stir Fry', source: 'tiktok' as const, image: img(FOOD.stirfry), creatorName: '@EasyMealsByMia', creatorAvatar: AVATARS.mia, creatorId: 'mia', creatorType: 'influencer' as const },
 ]
 
-const collections = [
-  { id: 1, name: 'Air Fryer Gems', count: 8, images: [FOOD.veggies, FOOD.chicken, FOOD.salmon, FOOD.pizza] },
-  { id: 2, name: 'Quick Weeknight', count: 12, images: [FOOD.pasta, FOOD.stirfry, FOOD.steak, FOOD.sandwich] },
-  { id: 3, name: 'Date Night', count: 5, images: [FOOD.steak, FOOD.salmon, FOOD.pizza, FOOD.pancakes] },
-  { id: 4, name: 'Meal Prep', count: 15, images: [FOOD.salad, FOOD.bowl, FOOD.avocado, FOOD.grilled] },
+const myCollections = [
+  { id: 1, name: 'Air Fryer Gems', count: 8, images: [FOOD.veggies, FOOD.chicken, FOOD.salmon, FOOD.pizza], subscribed: false },
+  { id: 2, name: 'Quick Weeknight', count: 12, images: [FOOD.pasta, FOOD.stirfry, FOOD.steak, FOOD.sandwich], subscribed: false },
+  { id: 3, name: 'Date Night', count: 5, images: [FOOD.steak, FOOD.salmon, FOOD.pizza, FOOD.pancakes], subscribed: false },
+  { id: 4, name: 'Meal Prep', count: 15, images: [FOOD.salad, FOOD.bowl, FOOD.avocado, FOOD.grilled], subscribed: false },
 ]
+
+const subscribedCollections = [
+  { id: 'weeknight-winners', name: 'Weeknight Winners', count: 24, images: [FOOD.stirfry, FOOD.chicken, FOOD.pasta, FOOD.salmon], subscribed: true, ownerName: '@EasyMealsByMia', ownerId: 'mia', ownerType: 'influencer' as const, ownerAvatar: AVATARS.mia, subscribers: '1.2k' },
+  { id: 'date-night-in', name: 'Date Night In', count: 15, images: [FOOD.steak, FOOD.salmon, FOOD.pasta, FOOD.pancakes], subscribed: true, ownerName: '@JamesCooks', ownerId: 'james', ownerType: 'influencer' as const, ownerAvatar: AVATARS.james, subscribers: '2.1k' },
+]
+
+const collections = [...myCollections, ...subscribedCollections]
 
 const sheetFolders = [
   { id: 1, name: 'Air Fryer Gems', count: 8 },
@@ -401,7 +420,27 @@ export default function Cookbook() {
                   <p style={{ fontSize: 13, fontWeight: 600, color: '#242424', lineHeight: 1.3, margin: 0 }}>
                     {recipe.title}
                   </p>
-                  <div style={{ marginTop: 6 }}>
+                  <button
+                    onClick={(e) => { e.stopPropagation(); goTo('CreatorProfile', { id: recipe.creatorId }) }}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 5,
+                      marginTop: 5,
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: 0,
+                    }}
+                  >
+                    <img
+                      src={avatarImg(recipe.creatorAvatar, 40)}
+                      alt=""
+                      style={{ width: 16, height: 16, borderRadius: 8, objectFit: 'cover' }}
+                    />
+                    <span style={{ fontSize: 11, color: '#666' }}>{recipe.creatorName}</span>
+                  </button>
+                  <div style={{ marginTop: 4 }}>
                     <SourceBadge source={recipe.source} />
                   </div>
                 </div>
@@ -454,7 +493,7 @@ export default function Cookbook() {
                 margin: 0,
               }}
             >
-              Your Collections
+              Collections
             </h2>
             <button
               onClick={openNewCollectionSheet}
@@ -486,7 +525,14 @@ export default function Cookbook() {
             {collections.map((col) => (
               <div
                 key={col.id}
-                onClick={() => goTo('CollectionDetail', { id: String(col.id) })}
+                onClick={() => {
+                  const params: Record<string, string> = { id: String(col.id) }
+                  if ('ownerId' in col && col.ownerId) {
+                    params.owner = col.ownerId as string
+                    params.ownerType = col.ownerType as string
+                  }
+                  goTo('CollectionDetail', params)
+                }}
                 style={{
                   borderRadius: 16,
                   overflow: 'hidden',
@@ -496,48 +542,120 @@ export default function Cookbook() {
                   cursor: 'pointer',
                 }}
               >
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
-                  {col.images.map((id, i) => (
+                <div style={{ position: 'relative' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2 }}>
+                    {col.images.map((id, i) => (
+                      <img
+                        key={i}
+                        src={thumb(id)}
+                        alt=""
+                        style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block' }}
+                      />
+                    ))}
+                  </div>
+                  {'ownerAvatar' in col && col.ownerAvatar && (
                     <img
-                      key={i}
-                      src={thumb(id)}
+                      src={avatarImg(col.ownerAvatar as string, 60)}
                       alt=""
-                      style={{ width: '100%', aspectRatio: '1', objectFit: 'cover', display: 'block' }}
+                      style={{
+                        position: 'absolute',
+                        bottom: 6,
+                        right: 6,
+                        width: 24,
+                        height: 24,
+                        borderRadius: 12,
+                        objectFit: 'cover',
+                        border: '2px solid #fff',
+                        boxShadow: '0 1px 4px rgba(0,0,0,0.15)',
+                      }}
                     />
-                  ))}
+                  )}
                 </div>
                 <div style={{ padding: '10px 12px 12px' }}>
                   <p style={{ fontSize: 14, fontWeight: 600, color: '#242424', margin: 0 }}>
                     {col.name}
                   </p>
-                  <p style={{ fontSize: 12, color: '#888', margin: '2px 0 0' }}>
-                    {col.count} Recipes
-                  </p>
+                  {col.subscribed ? (
+                    <>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
+                        <span style={{ fontSize: 11, color: '#666' }}>{'ownerName' in col ? (col as any).ownerName : ''}</span>
+                      </div>
+                      <span
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: 3,
+                          marginTop: 3,
+                          fontSize: 10,
+                          fontWeight: 600,
+                          color: '#067A46',
+                          background: 'rgba(6,122,70,0.08)',
+                          borderRadius: 99,
+                          padding: '2px 8px',
+                        }}
+                      >
+                        <Users size={9} />
+                        Subscribed
+                      </span>
+                    </>
+                  ) : (
+                    <p style={{ fontSize: 12, color: '#888', margin: '2px 0 0' }}>
+                      {col.count} Recipes
+                    </p>
+                  )}
                 </div>
               </div>
             ))}
           </div>
 
+          {/* Discover more link */}
           <button
-            onClick={() => goTo('OnboardingVideoPrompt')}
+            onClick={() => goTo('Discover')}
             style={{
-              marginTop: 20,
-              fontSize: 12,
-              color: '#bbb',
-              background: 'none',
-              border: 'none',
+              width: '100%',
+              marginTop: 16,
+              height: 44,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 6,
+              borderRadius: 22,
+              border: '1.5px solid #067A46',
+              background: '#fff',
+              fontSize: 14,
+              fontWeight: 600,
+              color: '#067A46',
               cursor: 'pointer',
-              textDecoration: 'underline',
-              padding: 0,
             }}
           >
-            View onboarding flow →
+            Discover more collections
+            <ChevronRight size={16} color="#067A46" />
           </button>
+
+          {/* Demo nav links */}
+          <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <span style={{ fontSize: 10, color: '#ccc', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginBottom: 2 }}>Demo Links</span>
+            <button onClick={() => goTo('OnboardingVideoPrompt')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0, textAlign: 'left' }}>
+              View onboarding flow →
+            </button>
+            <button onClick={() => goTo('Discover')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0, textAlign: 'left' }}>
+              Discover screen →
+            </button>
+            <button onClick={() => goTo('CreatorProfile', { id: 'michelle' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0, textAlign: 'left' }}>
+              Chef Profile: Michelle Doll Olson →
+            </button>
+            <button onClick={() => goTo('CreatorProfile', { id: 'mia' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0, textAlign: 'left' }}>
+              Influencer: @EasyMealsByMia →
+            </button>
+            <button onClick={() => goTo('CreatorProfile', { id: 'alex' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0, textAlign: 'left' }}>
+              User Curator: Alex T. →
+            </button>
+          </div>
         </div>
       </div>
 
       {/* ===== Tab bar ===== */}
-      <TabBar />
+      <TabBar goTo={goTo} />
 
       {/* ===== Home indicator safe area ===== */}
       <div style={{ height: 34, flexShrink: 0, background: '#fff' }} />
@@ -1049,7 +1167,7 @@ function SourceBadge({ source }: { source: 'instagram' | 'tiktok' }) {
   )
 }
 
-function TabBar() {
+function TabBar({ goTo }: { goTo: (screen: string, params?: Record<string, string>) => void }) {
   return (
     <div
       style={{
@@ -1063,14 +1181,15 @@ function TabBar() {
       }}
     >
       {[
-        { Icon: Home, label: 'Home', active: false },
-        { Icon: CalendarDays, label: 'Menu', active: false },
-        { Icon: Search, label: 'Search', active: false },
-        { Icon: BookOpen, label: 'Cookbook', active: true },
-        { Icon: User, label: 'Profile', active: false },
+        { Icon: Compass, label: 'Discover', screen: 'Discover', active: false },
+        { Icon: CalendarDays, label: 'Menu', screen: '', active: false },
+        { Icon: Search, label: 'Search', screen: '', active: false },
+        { Icon: BookOpen, label: 'Cookbook', screen: 'Cookbook', active: true },
+        { Icon: User, label: 'Profile', screen: '', active: false },
       ].map((tab) => (
         <button
           key={tab.label}
+          onClick={() => tab.screen && goTo(tab.screen)}
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -1078,7 +1197,7 @@ function TabBar() {
             gap: 2,
             background: 'none',
             border: 'none',
-            cursor: 'pointer',
+            cursor: tab.screen ? 'pointer' : 'default',
             color: tab.active ? '#067A46' : '#aaa',
             padding: '4px 12px',
           }}
