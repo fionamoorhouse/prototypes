@@ -57,12 +57,13 @@ The agent knows the process automatically (via a Cursor rule) and will guide you
 
 **Optional:** Use the kickoff template at `docs/prd-template.md` to pre-organize your thinking before starting the conversation. See `docs/prds/hellofresh-cookbook/v1-intent.md` for an example of what a completed PRD looks like.
 
-### PRD Versioning
+### PRD Organization
 
 PRDs are saved in `docs/prds/{project-name}/`:
 
-- `v1-intent.md` — what we planned to build (saved before building)
-- `v-final.md` — what was actually built, if it diverged (original is preserved)
+- `v1-intent.md` — foundation PRD for the project (saved before initial build)
+- `{feature-name}.md` — feature briefs for additions to an existing project
+- `*-final.md` — as-built version if implementation diverged (original is preserved)
 
 ### Quick Prototype (Skip the Process)
 
@@ -106,7 +107,8 @@ prototypes/
 │   ├── prd-template.md      # PM kickoff template
 │   └── prds/                # Saved PRDs per project
 │       └── hellofresh-cookbook/
-│           └── v1-intent.md  # Example completed PRD
+│           ├── v1-intent.md  # Foundation PRD
+│           └── *.md          # Feature briefs as project evolves
 ├── frontend/
 │   ├── src/
 │   │   ├── components/       # Shared UI (MobileFrame, Gallery, etc.)

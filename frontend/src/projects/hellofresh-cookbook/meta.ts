@@ -4,7 +4,7 @@ const meta: ProjectMeta = {
   title: 'HelloFresh Cookbook',
   description:
     'Recipe saving and collections feature — Instagram/TikTok recipe imports with folder organization.',
-  startScreen: 'Cookbook',
+  startScreen: 'OnboardingVideoPrompt',
 }
 
 export default meta

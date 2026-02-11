@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { usePrototype } from '@/hooks/usePrototype'
 import {
   Search,
@@ -15,6 +15,8 @@ import {
   ChevronLeft,
   ChevronRight,
   MoreHorizontal,
+  Sparkles,
+  Lightbulb,
 } from 'lucide-react'
 
 /* ------------------------------------------------------------------ */
@@ -75,20 +77,49 @@ const sheetFolders = [
 /*  Sheet modes                                                        */
 /* ------------------------------------------------------------------ */
 
-type SheetMode = 'closed' | 'addToCollection' | 'newCollection' | 'nameFromAdd'
+type SheetMode = 'closed' | 'addToCollection' | 'newCollection' | 'nameFromAdd' | 'celebration'
+
+/* ------------------------------------------------------------------ */
+/*  Confetti data                                                      */
+/* ------------------------------------------------------------------ */
+
+const CONFETTI_COLORS = ['#067A46', '#0aa05e', '#E8F5E0', '#f5a623', '#E74C3C', '#3897f0', '#833AB4', '#FD1D1D']
+
+const CONFETTI_PIECES = Array.from({ length: 40 }, (_, i) => ({
+  id: i,
+  x: Math.random() * 100,
+  size: 6 + Math.random() * 6,
+  color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+  duration: 2 + Math.random() * 2,
+  delay: Math.random() * 1.5,
+  isRect: Math.random() > 0.5,
+}))
 
 /* ------------------------------------------------------------------ */
 /*  Main component                                                     */
 /* ------------------------------------------------------------------ */
 
 export default function Cookbook() {
-  const { goTo } = usePrototype()
+  const { goTo, searchParams } = usePrototype()
+
+  // Check if we should show celebration drawer on mount
+  const showCelebration = searchParams.get('celebration') === 'true'
 
   // Sheet state
-  const [sheetMode, setSheetMode] = useState<SheetMode>('closed')
+  const [sheetMode, setSheetMode] = useState<SheetMode>(showCelebration ? 'celebration' : 'closed')
   const [checkedFolders, setCheckedFolders] = useState<Set<number>>(new Set([1]))
   const [sheetSearch, setSheetSearch] = useState('')
   const [newCollName, setNewCollName] = useState('')
+  const [menuOpen, setMenuOpen] = useState(false)
+  const [confettiVisible, setConfettiVisible] = useState(showCelebration)
+
+  // Auto-dismiss confetti
+  useEffect(() => {
+    if (confettiVisible) {
+      const timer = setTimeout(() => setConfettiVisible(false), 3000)
+      return () => clearTimeout(timer)
+    }
+  }, [confettiVisible])
 
   const sheetOpen = sheetMode !== 'closed'
 
@@ -195,7 +226,103 @@ export default function Cookbook() {
             </span>
           </div>
         </div>
-        <MoreHorizontal size={22} color="#242424" />
+        <div style={{ position: 'relative' }}>
+          <button
+            onClick={() => setMenuOpen((prev) => !prev)}
+            style={{
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+              padding: 4,
+              margin: -4,
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
+            <MoreHorizontal size={22} color="#242424" />
+          </button>
+
+          {/* Dropdown menu */}
+          {menuOpen && (
+            <>
+              {/* Invisible backdrop to close menu */}
+              <div
+                onClick={() => setMenuOpen(false)}
+                style={{
+                  position: 'fixed',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 40,
+                }}
+              />
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  right: 0,
+                  marginTop: 8,
+                  width: 220,
+                  background: '#fff',
+                  borderRadius: 14,
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.12)',
+                  border: '1px solid #eee',
+                  zIndex: 41,
+                  overflow: 'hidden',
+                }}
+              >
+                <button
+                  onClick={() => {
+                    setMenuOpen(false)
+                    goTo('RecipeSuggestions')
+                  }}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    padding: '14px 16px',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: '#242424',
+                    textAlign: 'left',
+                  }}
+                >
+                  <Lightbulb size={18} color="#067A46" />
+                  Get recipe suggestions
+                </button>
+                <div style={{ height: 1, background: '#f0f0f0' }} />
+                <button
+                  onClick={() => {
+                    setMenuOpen(false)
+                    goTo('OnboardingVideoPrompt')
+                  }}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 10,
+                    padding: '14px 16px',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    fontSize: 14,
+                    fontWeight: 500,
+                    color: '#242424',
+                    textAlign: 'left',
+                  }}
+                >
+                  <Sparkles size={18} color="#067A46" />
+                  Replay onboarding
+                </button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       {/* ===== Divider ===== */}
@@ -392,7 +519,7 @@ export default function Cookbook() {
           </div>
 
           <button
-            onClick={() => goTo('CookbookEmpty')}
+            onClick={() => goTo('OnboardingVideoPrompt')}
             style={{
               marginTop: 20,
               fontSize: 12,
@@ -404,7 +531,7 @@ export default function Cookbook() {
               padding: 0,
             }}
           >
-            View empty state →
+            View onboarding flow →
           </button>
         </div>
       </div>
@@ -710,8 +837,199 @@ export default function Cookbook() {
               </div>
             </>
           )}
+
+          {/* ---- MODE: Celebration (first save) ---- */}
+          {sheetMode === 'celebration' && (
+            <>
+              <div style={{ display: 'flex', justifyContent: 'center', padding: '0 20px 8px', flexShrink: 0 }}>
+                <button onClick={closeSheet} style={{ width: 32, height: 32, borderRadius: 16, background: '#f3f3f3', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', position: 'absolute', top: 16, right: 20 }}>
+                  <X size={16} color="#666" />
+                </button>
+              </div>
+
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  textAlign: 'center',
+                  padding: '8px 24px 0',
+                }}
+              >
+                {/* Celebration icon */}
+                <div
+                  style={{
+                    width: 64,
+                    height: 64,
+                    borderRadius: 32,
+                    background: '#E8F5E0',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: 16,
+                    animation: 'bounce-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards',
+                  }}
+                >
+                  <Sparkles size={28} color="#067A46" />
+                </div>
+
+                <style>{`
+                  @keyframes bounce-in {
+                    0% { transform: scale(0); opacity: 0; }
+                    60% { transform: scale(1.15); opacity: 1; }
+                    100% { transform: scale(1); opacity: 1; }
+                  }
+                `}</style>
+
+                {/* Heading */}
+                <h3
+                  style={{
+                    fontFamily: 'Georgia, "Times New Roman", serif',
+                    fontSize: 22,
+                    fontWeight: 700,
+                    color: '#242424',
+                    margin: '0 0 6px',
+                    lineHeight: 1.2,
+                  }}
+                >
+                  Your cookbook has started!
+                </h3>
+
+                <p
+                  style={{
+                    fontSize: 15,
+                    color: '#666',
+                    margin: '0 0 20px',
+                    lineHeight: 1.4,
+                  }}
+                >
+                  Your first recipe is saved. Keep collecting!
+                </p>
+
+                {/* Saved recipe card */}
+                <div
+                  style={{
+                    width: '100%',
+                    borderRadius: 16,
+                    overflow: 'hidden',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
+                    border: '1px solid #f0f0f0',
+                    marginBottom: 20,
+                    textAlign: 'left',
+                  }}
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=600&h=240&fit=crop&auto=format&q=80"
+                    alt="Saved recipe"
+                    style={{
+                      width: '100%',
+                      height: 120,
+                      objectFit: 'cover',
+                      display: 'block',
+                    }}
+                  />
+                  <div style={{ padding: '12px 14px' }}>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: '#242424', margin: '0 0 4px' }}>
+                      Crispy Chicken Shawarma Bowl
+                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                      <Instagram size={12} color="#888" />
+                      <span style={{ fontSize: 12, color: '#888' }}>From @halfbakedharvest</span>
+                    </div>
+                  </div>
+                  <div style={{ height: 3, background: 'linear-gradient(90deg, #067A46, #0aa05e)' }} />
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div style={{ padding: '0 24px 24px', flexShrink: 0 }}>
+                <button
+                  onClick={closeSheet}
+                  style={{
+                    width: '100%',
+                    height: 48,
+                    borderRadius: 14,
+                    background: '#067A46',
+                    color: '#fff',
+                    fontSize: 16,
+                    fontWeight: 600,
+                    border: 'none',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: 6,
+                    marginBottom: 10,
+                  }}
+                >
+                  Explore my cookbook
+                  <ChevronRight size={18} />
+                </button>
+                <button
+                  onClick={() => {
+                    closeSheet()
+                    goTo('RecipeSuggestions')
+                  }}
+                  style={{
+                    width: '100%',
+                    background: 'none',
+                    border: 'none',
+                    cursor: 'pointer',
+                    color: '#067A46',
+                    fontSize: 15,
+                    fontWeight: 600,
+                    padding: '8px 0',
+                    textAlign: 'center',
+                  }}
+                >
+                  Save another recipe
+                </button>
+              </div>
+            </>
+          )}
         </div>
       </div>
+
+      {/* ================================================================ */}
+      {/*  Confetti overlay (celebration mode)                              */}
+      {/* ================================================================ */}
+      {confettiVisible && (
+        <div
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 60,
+            pointerEvents: 'none',
+            overflow: 'hidden',
+          }}
+        >
+          {CONFETTI_PIECES.map((piece) => (
+            <div
+              key={piece.id}
+              style={{
+                position: 'absolute',
+                left: `${piece.x}%`,
+                top: -20,
+                width: piece.size,
+                height: piece.size * (piece.isRect ? 2.5 : 1),
+                borderRadius: piece.isRect ? 2 : piece.size / 2,
+                background: piece.color,
+                animation: `confetti-fall ${piece.duration}s ease-in ${piece.delay}s forwards`,
+                opacity: 0,
+              }}
+            />
+          ))}
+          <style>{`
+            @keyframes confetti-fall {
+              0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+              100% { transform: translateY(900px) rotate(720deg); opacity: 0; }
+            }
+          `}</style>
+        </div>
+      )}
     </div>
   )
 }
