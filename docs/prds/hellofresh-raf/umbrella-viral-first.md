@@ -22,46 +22,50 @@ HelloFresh's current Refer-a-Friend (RAF) program is the company's only virality
 
 ## The Vision
 
-Build a social ecosystem centered on two reinforcing loops:
+Build a social ecosystem centered on two complementary pillars:
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                   USER JOURNEY                       │
-│                                                      │
-│   Cook a meal → Share the moment (Social Hub)        │
-│       ↓                                              │
-│   Build identity → Earn badges, streaks, stats       │
-│       ↓                                              │
-│   Feel generous → Gift a box (Gifting Engine)        │
-│       ↓                                              │
-│   Friend joins → Cooks their first meal              │
-│       ↓                                              │
-│   Friend shares → Loop continues                     │
-│                                                      │
-└─────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────┐
+│                      USER JOURNEY                             │
+│                                                               │
+│   Cook a meal → Share the moment → Get feedback & likes       │
+│       ↓                                                       │
+│   Build identity → Earn badges, streaks, stats                │
+│       ↓                                                       │
+│   Feel connected → Join communities, participate in challenges│
+│       ↓                                                       │
+│   Cook more → Deeper engagement → More sharing                │
+│                                                               │
+│   ── At natural moments of generosity ──                      │
+│   Gift a box to a friend → Friend joins → Friend cooks        │
+│       → Friend shares → Community grows                       │
+│                                                               │
+└──────────────────────────────────────────────────────────────┘
 ```
 
-**Loop 1 — Transactional Virality (Gifting Engine):** A reimagined RAF where sharing is personal, gifting is altruistic, and redemption is frictionless. Extended with Meal Train for group gifting during life moments.
+**The Social Hub (primary value driver):** A social layer where cooking generates shareable content — scorecards, badges, prompted photos, community feeds — that drives engagement, retention, and organic impressions. This is the beating heart of the ecosystem. When people feel part of a cooking community, they cook more, engage more, and naturally talk about HelloFresh to the people around them. The community and social features are the major benefit — they make HelloFresh sticky and personally meaningful, not just a delivery service.
 
-**Loop 2 — Engagement Virality (Social Hub):** A social layer where cooking generates shareable content — scorecards, badges, BeReal-style photos, community feeds — that drives organic impressions on social media and within the HelloFresh community.
+**The Gifting Engine (acquisition driver):** A reimagined RAF where sharing is personal, gifting is altruistic, and redemption is frictionless. Extended with Meal Train for group gifting during life moments. Gifting is an important part of the product, but it's not the centerpiece — it's a natural extension of the social ecosystem. When users are deeply engaged, some of that goodwill naturally converts into referrals.
 
-The two loops reinforce each other: the Social Hub creates "happy moments" that trigger gifting; gifting brings new users who join the Social Hub and create more happy moments.
+The two pillars are complementary: the Social Hub builds the engagement and emotional connection that makes users *want* to share HelloFresh with friends. The Gifting Engine makes it easy to act on that impulse when it naturally arises. But the Social Hub succeeds on its own terms — driving retention, cooking frequency, and brand affinity — regardless of whether it leads to referrals.
 
 ## Design Principles
 
 These principles govern every feature across both teams:
 
-1. **Lead with the gift, not the reward.** Never lead with "Get $35." Always lead with "Give a Box." Frame every sharing action around the benefit to the recipient or the community, not the referrer's incentive.
+1. **Community first.** The social features — feed, communities, badges, scorecards — are the primary value. They make HelloFresh personally meaningful and sticky. Referrals are a natural byproduct of engagement, not the goal of every interaction.
 
-2. **Remove the "I'm a subscriber" barrier.** Every recipient-facing experience must feel like receiving a gift, not entering a sales funnel. No credit card upfront, no auto-renewal, no subscription pressure.
+2. **Lead with the gift, not the reward.** When gifting does happen, never lead with "Get $35." Always lead with "Give a Box." Frame sharing around the benefit to the recipient, not the referrer's incentive.
 
-3. **Contextual nudges at happy moments.** Trigger sharing prompts after moments of genuine satisfaction (5-star rating, cooking streak milestone, nutrition achievement) — not at checkout, not on every app open, not via weekly spam.
+3. **Remove the "I'm a subscriber" barrier.** Every recipient-facing experience must feel like receiving a gift, not entering a sales funnel. No credit card upfront, no auto-renewal, no subscription pressure.
 
-4. **The message comes from the person, not the company.** Whether it's a referral, a meal photo, or a scorecard share — the content arrives in the recipient's world as something from a real person they know.
+4. **Contextual nudges at happy moments.** Trigger sharing prompts after moments of genuine satisfaction (a 4 or 5-star recipe rating, a cooking streak milestone, a nutrition achievement) — not at checkout, not on every app open, not via weekly spam.
 
-5. **Identity fuels sharing.** People share things that say something about who they are. Badges, personas, and stats give users a cooking identity worth expressing.
+5. **The message comes from the person, not the company.** Whether it's a referral, a meal photo, or a scorecard share — the content arrives in the recipient's world as something from a real person they know.
 
-6. **Belonging over broadcasting.** The social features prioritize intimate groups (Teams, friends feed) over public broadcasting. Users share more when they feel safe.
+6. **Identity fuels sharing.** People share things that say something about who they are. Badges, personas, and stats give users a cooking identity worth expressing.
+
+7. **Share anywhere, from intimate to public.** Users choose their audience: a private friends group, a community team, or the global feed. The social features support both intimate sharing and public broadcasting — the choice is the user's, and the default adapts to their comfort level.
 
 ---
 
@@ -75,7 +79,7 @@ These principles govern every feature across both teams:
 
 | Feature | Status | Description |
 |---------|--------|-------------|
-| **Personalized RAF** | Specced → [v1-intent.md](./v1-intent.md) | Gift-first sharing with personal message composer, AI assist, contextual nudges at happy moments, and a permanent Share Hub |
+| **Personalized RAF** | Specced → [v1-intent.md](./v1-intent.md) | Gift-first sharing with personal message composer, AI assist, and contextual nudges at happy moments. Gifting surfaces live within the existing app experience (Profile, contextual nudges) — not in a dedicated tab. |
 | **Frictionless Redemption** | Specced → [v1-intent.md](./v1-intent.md) | Friend claims a free box with no credit card, no subscription — just pick meals, enter address, confirm |
 | **QR Code Sharing** | New (this doc) | In-person sharing via scannable QR code for offline happy moments |
 | **Meal Train** | New (this doc) | Group gifting for life moments — multiple people contribute meals to someone in need |
@@ -89,10 +93,10 @@ These principles govern every feature across both teams:
 
 | Feature | Status | Description |
 |---------|--------|-------------|
-| **Community Feed** | New (this doc) | Friends activity feed with group-based sharing of meals, tips, photos, and achievements |
-| **Scorecards** | New (this doc) | Visual, shareable personal cooking stats and nutrition insights |
+| **Community Feed** | New (this doc) | Activity feed with friends, communities, and global timeline for sharing meals, tips, photos, and achievements |
+| **Scorecards** | New (this doc) | Visual, directly shareable personal cooking stats and nutrition insights |
 | **Identity Badges** | New (this doc) | Persona-based badges earned through cooking behavior (e.g., "Garlic Lover," "Fiber Champion") |
-| **BeReal Moments** | New (this doc) | Prompted, unpolished meal photos shared to the community feed and externally |
+| **Cooking Moments** | New (this doc) | Prompted photos and commentary at natural cooking moments, shared to the feed, social media, or saved privately |
 | **Teams** | New (this doc) | Peloton-style community groups with challenges, shared goals, and mutual encouragement |
 
 ---
@@ -120,7 +124,7 @@ The existing HelloFresh profile is extended with social and identity fields:
   // New — Social
   friends: UserId[]                // reciprocal connections
   teams: TeamId[]                  // community group memberships
-  feedVisibility: 'friends' | 'team' | 'public'  // default sharing scope
+  feedVisibility: 'friends' | 'community' | 'public'  // default sharing scope (user's last-used audience)
   
   // New — Gifting
   invitationsRemaining: number     // available referral credits
@@ -135,7 +139,7 @@ A shared event system that both teams consume. When a trigger fires, the orchest
 
 | Trigger | Source | Team A Response | Team B Response |
 |---------|--------|----------------|----------------|
-| 5-star recipe rating | Post-cook | "Share the love — gift a box" nudge | "Snap a photo of what you made" prompt |
+| 4 or 5-star recipe rating | Post-cook | "Share the love — gift a box" nudge (low frequency) | "Snap a photo of what you made" prompt |
 | Cooking streak milestone (7, 30, 100 days) | Daily check | — | Streak badge + scorecard share prompt |
 | First cook after signup | Post-delivery | Post-cook nudge (gift a friend) | — |
 | Nutrition milestone ("100g protein today") | Meal log | — | Scorecard unlock + share prompt |
@@ -144,7 +148,7 @@ A shared event system that both teams consume. When a trigger fires, the orchest
 | Meal Train contribution received | Gifting | Thank-you notification | "Your friends came through" feed post |
 | Friend joined via your referral | Redemption | Reward granted notification | "[Friend] just joined!" feed story |
 
-**Priority rules:** Only one nudge per session. Team A gifting nudges and Team B social nudges alternate. The user's recent engagement history determines which has higher priority (if they've been socially active recently → gift nudge; if they haven't shared in a while → social nudge).
+**Priority rules:** Only one nudge per session. Social Hub prompts take priority — community engagement is the primary goal. Gifting nudges are shown sparingly and only when the moment is clearly right (e.g., post-first-cook, not every time someone rates a meal). The user should never feel like the social features are a funnel to get them to refer.
 
 ### Sharing Infrastructure
 
@@ -153,9 +157,9 @@ Both teams use a shared sharing pipeline:
 1. **Content assembly** — The feature creates a shareable payload (message text, image, link, metadata)
 2. **Channel selection** — User picks: in-app feed, WhatsApp, iMessage, Instagram Stories, or copy link
 3. **Personalization** — The payload is adapted per channel (rich link for messaging, story-formatted for Instagram, card for in-app feed)
-4. **Attribution** — Every shared link carries referral attribution so the Gifting Engine can credit conversions even when sharing originates from the Social Hub
+4. **Subtle attribution** — Shared content includes a lightweight, non-intrusive link back to HelloFresh (e.g., a small "hellofresh.com/[username]" watermark on scorecard images, or a clean domain link at the bottom of a shared card). This is *not* a "Try HelloFresh FREE!" banner — it's quiet branding that lets curious viewers find their way in without making the sharer feel like they're running an ad for the company.
 
-This means a scorecard shared to Instagram Stories carries a referral link. A BeReal photo sent to a friend via WhatsApp includes a "Try HelloFresh" link. The Social Hub generates organic content; the Gifting Engine captures the conversion.
+The Social Hub generates organic content; the Gifting Engine benefits when some of that content naturally drives awareness. But the social sharing experience must feel authentic — the moment it feels like a referral scheme wrapped in social features, users will stop sharing.
 
 ---
 
@@ -164,7 +168,6 @@ This means a scorecard shared to Instagram Stories carries a referral link. A Be
 ### A1. Personalized RAF (Already Specced)
 
 See [v1-intent.md](./v1-intent.md) for the full specification covering:
-- Share Hub (permanent, emotional home for gifting)
 - Message Composer (personal message with AI assist, photo selection, preview)
 - Post-Signup Nudge and Post-Cook Nudge (contextual prompts at happy moments)
 - Rewards Hub (unified loyalty + referral + discounts view)
@@ -172,18 +175,18 @@ See [v1-intent.md](./v1-intent.md) for the full specification covering:
 
 **Changes from v1-intent to align with this umbrella:**
 
-- The Share Hub gains a "Meal Train" entry point (see A3 below)
-- The tab bar evolves: the "Share" tab becomes the entry point for all gifting (RAF + Meal Train + QR)
-- Happy moment triggers expand to include Social Hub events (badge earned, streak milestone) as potential gifting nudge moments
-- Referral attribution links are embedded in all Social Hub shares (see Shared Primitives)
+- **No standalone Share Hub or Share tab.** The v1-intent specced a permanent "Share Hub" as a tab in the bottom navigation. Under the umbrella vision, gifting surfaces are contextual — they live within Profile (gifting section, QR code, Meal Train), within the Rewards Hub, and within contextual nudges at happy moments. There is no dedicated gifting tab. This prevents the product from feeling referral-centric and keeps the social features front and center.
+- Gifting entry points are: Profile → "Gift a box" / "Start a Meal Train" section, Rewards Hub → referral card, contextual nudges (post-signup, post-cook), and the QR code (accessible from Profile)
+- Happy moment triggers expand to include Social Hub events (badge earned, streak milestone) as *occasional* gifting nudge moments — but social prompts take priority
+- Shared content from the Social Hub includes subtle HelloFresh branding (see Sharing Infrastructure) but does not include explicit referral CTAs
 
 ### A2. QR Code Sharing
 
 **Problem:** Many sharing opportunities happen offline — dinner parties, office lunches, gym conversations — where texting a link feels awkward. Users need a way to share instantly in person.
 
-**Solution:** A personal QR code accessible from the Share Hub that encodes the user's referral link. Scanning it takes the friend directly to the Claim Landing Page.
+**Solution:** A personal QR code accessible from the user's Profile that encodes their referral link. Scanning it takes the friend directly to the Claim Landing Page.
 
-**Location:** Inside the Share Hub, below the "Text" and "Share" buttons, as a third sharing method.
+**Location:** Inside Profile → "Gift a box" section, as a sharing method alongside text and link options.
 
 **Layout:**
 - **Section header:** "Share in person" with a small QR icon
@@ -205,8 +208,8 @@ See [v1-intent.md](./v1-intent.md) for the full specification covering:
 **Solution:** A "Meal Train" feature where a user can initiate a group gift of HelloFresh boxes for someone going through a life moment. Multiple people contribute, the recipient receives curated boxes over a set period, and it can include a limited-time subscription that automatically ends.
 
 **Entry points:**
-- Share Hub → "Start a Meal Train" card (below the standard RAF section)
-- Profile → "Gift a Meal Train" option
+- Profile → "Start a Meal Train" card (within the gifting section)
+- Rewards Hub → "Gift a Meal Train" option
 - Deep link shared by the organizer to invite contributors
 
 #### Screen: Meal Train — Create
@@ -303,27 +306,27 @@ See [v1-intent.md](./v1-intent.md) for the full specification covering:
 
 **Problem:** HelloFresh customers cook frequently but have no channel to share what they're making, celebrate wins, or connect with other home cooks. Social sharing of HelloFresh content currently requires leaving the app and manually creating posts — high friction, low volume.
 
-**Solution:** An in-app activity feed where users share cooking moments, tips, meal photos, and achievements with their chosen audience (friends, teams, or public). The feed is group-scoped — users share `<content>` with their `<group>`.
+**Solution:** An in-app activity feed where users share cooking moments, tips, meal photos, and achievements with their chosen audience (friends, communities, or the world). The feed supports both group-scoped sharing — users share `<content>` with their `<group>` — and a global timeline for broader discovery.
 
-**Entry point:** "Community" tab in bottom navigation.
+**Entry point:** "Discover" tab in bottom navigation. The Discover tab is the home for all social and community features — the feed, communities, and trending content all live here.
 
 #### Feed Architecture
 
-The feed is organized around **groups**, not a global timeline:
+The feed has multiple views, toggled via tabs at the top:
 
-| Group type | Description | Default visibility |
-|------------|-------------|-------------------|
-| **Friends** | Reciprocal connections (mutual follow) | Friends only |
-| **Team** | Joined community group (see B5) | Team members |
-| **Public** | Open to all HelloFresh users | Anyone |
+| Feed view | What it shows | Content source |
+|-----------|--------------|----------------|
+| **For You** (default) | Global timeline of public posts from across HelloFresh, weighted toward recency | All public posts from any user |
+| **Friends** | Posts from reciprocal connections (mutual follow) | Friends only |
+| **My Communities** | Aggregated feed from all communities/teams the user belongs to | Team/community members |
 
-When posting, the user selects their audience. The default is their last-used group. The feed view has tabs or a filter to switch between "Friends," "My Teams," and "Discover" (public).
+When posting, the user selects their audience: Friends, a specific community, or Public. The default is their last-used audience. Posts shared to Public appear in the global "For You" timeline. Posts shared to Friends or a community appear only in those scoped feeds.
 
 #### Post Types
 
 | Type | Content | Trigger | Shareable externally? |
 |------|---------|---------|----------------------|
-| **Meal photo** | Photo + caption + recipe tag | Manual or BeReal prompt | Yes (Instagram Stories, WhatsApp, etc.) |
+| **Meal photo** | Photo + caption + recipe tag | Manual or Cooking Moment prompt | Yes (Instagram Stories, WhatsApp, etc.) |
 | **Recipe tip** | Text + optional photo, tagged to a specific recipe | Manual (from recipe page or feed) | Yes |
 | **Recipe rating** | Star rating + optional comment, auto-generated card | After rating a recipe | Yes (as a visual card) |
 | **Achievement** | Badge earned, streak milestone, scorecard unlock | Automatic (with user opt-in to post) | Yes (as a visual card) |
@@ -356,7 +359,7 @@ Each feed item follows a consistent card structure:
 
 **Problem:** Users accumulate meaningful cooking data over time (meals cooked, nutrients consumed, environmental impact, variety of cuisines tried) but have no way to see or celebrate it. These stats could drive organic sharing — people love personalized data summaries (Spotify Wrapped, Apple Health rings, Strava year-in-review).
 
-**Solution:** Visual, shareable stat cards that surface personal cooking insights. Designed to be beautiful enough to screenshot and share on social media.
+**Solution:** Visual, shareable stat cards that surface personal cooking insights. Each scorecard has built-in direct sharing — users tap "Share" and choose their destination (Instagram Stories, WhatsApp, feed post, etc.) without needing to screenshot.
 
 #### Scorecard Types
 
@@ -373,11 +376,11 @@ Each feed item follows a consistent card structure:
 
 #### Scorecard Visual Design
 
-- **Card format:** Portrait-oriented (optimized for Instagram Stories and phone screenshots), 9:16 aspect ratio option and square option
+- **Card format:** Portrait-oriented (optimized for Instagram Stories), 9:16 aspect ratio option and square option
 - **Background:** Gradient or themed to the stat type (green for nutrition, orange for streaks, blue for sustainability)
 - **Data visualization:** Large, bold number as the hero element. Supporting context in smaller text below. Minimal chart or icon where relevant.
-- **Branding:** Small HelloFresh logo in corner. User's display name and avatar at the bottom. "hellofresh.com/[username]" as a subtle referral link.
-- **Shareability:** "Share" button on each scorecard opens the sharing pipeline. Options: Instagram Stories (pre-formatted), feed post, WhatsApp, copy image, save to photos.
+- **Branding:** Small HelloFresh logo in corner. User's display name and avatar at the bottom. Subtle "hellofresh.com/[username]" watermark.
+- **Direct sharing:** "Share" button on each scorecard opens the sharing pipeline directly — no screenshotting needed. Options: Instagram Stories (pre-formatted as a story-ready image), feed post, WhatsApp (as a rich card), save to photos. The sharing flow handles format conversion per channel automatically.
 
 #### Scorecard Triggers
 
@@ -424,32 +427,51 @@ Scorecards are unlocked at milestones and surfaced proactively:
 - **Badge announcement:** When a new badge is earned, a celebratory card appears (similar to achievement unlocks in games). User is prompted to share to the feed.
 - **Shareability:** Each badge has a designed share card (visual, branded) that can be posted to the feed or shared externally.
 
-### B4. BeReal Moments
+### B4. Cooking Moments
 
-**Problem:** Food content on social media is heavily curated — perfect plating, ideal lighting, professional-looking photos. This creates an intimidation barrier for normal home cooks who want to share but feel their food "doesn't look good enough." Meanwhile, the authenticity trend (led by BeReal) shows that people crave unpolished, real-life content.
+**Problem:** Food content on social media is heavily curated — perfect plating, ideal lighting, professional-looking photos. This creates an intimidation barrier for normal home cooks who want to share but feel their food "doesn't look good enough." Meanwhile, the trend toward authenticity shows that people crave unpolished, real-life content. HelloFresh has a unique advantage: we know when users are likely cooking, and with Sous Chef we know when they've just finished — making us able to prompt at exactly the right moment.
 
-**Solution:** A prompted, time-boxed photo feature that encourages users to snap unpolished photos of their cooking moments — mid-cook chaos, imperfect plating, the real kitchen — and share them with their community.
+**Solution:** Contextual photo and commentary prompts that catch users at natural cooking moments — when they've just finished a recipe, when it's dinnertime, when they've hit a milestone. Prompts vary to keep the experience fresh and drive different types of content. Photos and tips can be shared to the community feed, posted to social media, or simply saved to the user's private cookbook as a personal record.
 
 #### How It Works
 
-1. **The prompt:** At a random time during typical dinner-cooking hours (5–8pm, adjusted to user's time zone and cooking history), the user receives a notification: "🍳 BeReal Moment — show us what you're cooking!"
-2. **The capture:** User opens the notification → camera launches in-app. They take a photo (rear camera for the food, option to flip for a selfie reaction — dual-photo like BeReal). 2-minute window to capture.
-3. **The post:** Photo is automatically posted to the community feed with a "BeReal" badge. Minimal editing — no filters, no crop, no retouching. A caption and recipe tag are optional.
-4. **The viewing:** BeReal posts in the feed have a distinct visual treatment (Polaroid-style border, timestamp, "BeReal" badge). Users who posted their own BeReal can see others'; users who didn't get a gentle prompt: "Share yours to see what others are cooking."
+1. **The prompt:** At a natural cooking moment, the user receives a notification with a specific, varied prompt (see Prompt Types below).
+2. **The capture:** User opens the notification → camera or text input launches in-app. No time pressure — the user captures whenever they're ready. Option for rear camera (the food) and/or front camera (selfie reaction).
+3. **The choice:** After capturing, the user chooses what to do with it:
+   - **Share to feed** — post to Friends, a community, or Public with an optional caption and recipe tag
+   - **Share externally** — post directly to Instagram Stories, TikTok, WhatsApp, or iMessage
+   - **Save privately** — save to their cookbook as a personal cooking photo (no public posting). This is a first-class option, not a hidden escape hatch.
+4. **The viewing:** Cooking Moment posts in the feed have a distinct visual treatment (Polaroid-style border, timestamp, prompt text shown). When saved privately, photos appear in the user's cookbook under the tagged recipe.
 
-#### BeReal Prompt Timing
+#### Prompt Types
 
-- **Frequency:** Max 1 prompt per day, only on days when the user has a HelloFresh delivery scheduled or recently delivered (within 3 days)
-- **Time window:** Between 5pm and 8pm local time (adjustable in settings)
-- **Smart timing:** If the user typically opens the app at 6:30pm, the prompt fires around then (±30 min)
-- **Skip:** Users can dismiss the prompt. No penalty, no FOMO mechanics. It comes back another day.
+Prompts rotate to keep the experience fresh and drive variety in content:
 
-#### BeReal Sharing
+| Prompt | When triggered | Content type |
+|--------|---------------|-------------|
+| "Snap a pic of your first cook!" | After completing first-ever HelloFresh recipe (detected via Sous Chef) | Photo |
+| "Show us what's on the plate" | ~7pm local time on delivery days, or when Sous Chef session ends | Photo |
+| "Show us your table setting" | Weekend evenings (Fri–Sun) | Photo |
+| "How did it turn out?" | After a Sous Chef session completes | Photo + optional rating |
+| "Any tips for next time?" | After rating a recipe 4–5 stars | Text (tip/comment) |
+| "What's your secret ingredient?" | After cooking 5+ recipes in a cuisine | Text |
+| "Cooking for someone special?" | Weekend evenings, when box has 4-person meals | Photo + caption |
+| "Show us the chaos" | Mid-cook (timed to ~halfway through Sous Chef estimated duration) | Photo |
 
-- **In-app:** Posted to the community feed (audience: Friends by default, changeable to Team or Public)
-- **Recipe page:** If tagged to a recipe, the BeReal photo appears in a community photo gallery on that recipe's page ("See what others made")
-- **Cookbook:** BeReal photos of recipes in the user's cookbook appear as "My cooking photos" on the recipe card
-- **External:** "Share to Stories" (Instagram/TikTok), "Send to a friend" (WhatsApp/iMessage), "Save to photos"
+#### Prompt Triggers
+
+- **Time-based:** Default prompt fires around 7pm local time on days when the user has a HelloFresh delivery recently delivered (within 3 days). Time is adjustable in settings.
+- **Sous Chef–based:** When the user completes a Sous Chef cooking session, a prompt fires immediately — this is the highest-signal moment because we *know* they just finished cooking.
+- **Milestone-based:** First cook, 10th cook, first time trying a new cuisine, etc. — these get special prompts (see table above).
+- **Frequency:** Max 1 prompt per day. Skip gracefully — no penalty, no FOMO mechanics. A skipped prompt comes back with a different variation another day.
+- **Smart deduplication:** If the user already posted a cooking photo today (manually or via prompt), no prompt fires.
+
+#### Cooking Moments Destinations
+
+- **Feed:** Posted to the community feed (audience: user's choice — Friends, a specific community, or Public)
+- **Recipe page:** If tagged to a recipe, the photo appears in a community photo gallery on that recipe's page ("See what others made")
+- **Cookbook (private):** Photos saved privately appear as "My cooking photos" on the recipe card in the user's cookbook. Over time, this builds a personal visual record of meals cooked — the foundation for future "Memories" features (e.g., "A year ago you cooked this for the first time").
+- **External:** Direct share to Instagram Stories, TikTok, WhatsApp, iMessage, or save to the phone's photo library
 
 ### B5. Teams
 
@@ -504,104 +526,108 @@ This is the unified journey showing how a user moves through both hubs:
 ```
 Friend receives gift message (Team A)
 → Claims free box (Team A — Frictionless Redemption)
-→ Cooks first meal
-→ Rates recipe 5 stars → Happy Moment trigger
-    → "Snap a BeReal!" prompt (Team B)
-    → Takes photo, posts to feed
-    → Sees friend's activity, joins their Team
+→ Cooks first meal using Sous Chef
+→ Sous Chef session ends → Cooking Moment prompt: "Snap a pic of your first cook!"
+    → Takes photo → chooses to post to Friends feed
+    → Sees friend's activity, joins their community
 → Earns "First Meal" badge (Team B)
-    → Share prompt → posts to Instagram Stories (with referral link embedded)
+    → Shares badge to Instagram Stories
 → Week 2: Cooking streak begins
     → Weekly Wrap scorecard unlocks (Team B)
-→ Week 3: Gets comfortable
-    → "Know someone who'd love this?" nudge (Team A)
-    → Gifts a box to another friend → Loop continues
+    → Browses the For You feed on Discover → discovers communities and trending content
+→ Week 4: Gets comfortable, feels part of the community
+    → After a great cook, a gentle nudge: "Know someone who'd love this?"
+    → Gifts a box to another friend → Community grows
 ```
 
-### Journey: Established User (Re-engaged via Social Hub)
+### Journey: Established User (Deepened by Social Hub)
 
 ```
-Notification: "🍳 BeReal Moment!"
-→ Opens app, snaps a meal photo
-→ Posts to Friends feed → receives likes and comments
+7pm notification: "🍳 How did tonight's meal turn out?"
+→ Opens app, snaps a photo of their plate
+→ Posts to their "Weeknight Warriors" community → receives likes and comments
 → Checks profile → sees "Fiber Champion" badge unlocked
-    → Shares scorecard to Instagram Stories
-→ Friend sees the scorecard → taps referral link
-    → Claims free box (Team A)
-→ User gets notification: "[Friend] just joined!"
-→ Invites friend to their Team
-→ Team starts a "Try 5 new cuisines" challenge
-→ Both users cook more → more BeReal moments → more organic sharing
+    → Taps "Share" → directly shares scorecard to Instagram Stories
+→ A non-HelloFresh friend sees the scorecard → curious, visits hellofresh.com
+→ User browses the For You feed → discovers a "High Protein January" challenge
+→ Joins the challenge → cooks more adventurously → earns new badges
+→ After weeks of engagement, sees a contextual nudge to gift a friend a box
 ```
 
 ### Journey: Altruistic Gifter (Meal Train)
 
 ```
 Friend just had a baby
-→ Opens Share Hub → "Start a Meal Train"
+→ Opens Profile → "Start a Meal Train"
 → Creates 4-week Meal Train → invites 6 friends to contribute
 → Contributors chip in and add personal notes
 → Recipient claims → receives weekly boxes with messages
-→ Meal Train updates appear in contributor's team/friends feeds (Team B)
-→ Recipient posts a thank-you BeReal of the first meal
-→ Emotional moment → contributors feel great → more likely to share HelloFresh organically
+→ Meal Train updates appear in contributor's community/friends feeds (Team B)
+→ Recipient posts a thank-you Cooking Moment of the first meal
+→ Emotional moment → contributors feel great → deeper engagement with the community
 ```
 
 ---
 
 ## Tab Bar Evolution
 
-The bottom navigation evolves to accommodate both hubs:
+The bottom navigation evolves to accommodate the social ecosystem without adding clutter:
 
 **Current:** Home | My Menu | Search | Cookbook | Profile
-
-**With Gifting Engine (Team A, Phase 1):**
-Home | My Menu | **Share** | Cookbook | Profile
-
-**With Social Hub (Team B, Phase 2):**
-**Community** | My Menu | **Share** | Cookbook | Profile
 
 **Full ecosystem:**
 | Tab | Purpose | Badge/indicator |
 |-----|---------|-----------------|
-| **Community** | Social Hub — feed, teams, discover | Red dot for new activity |
+| **Discover** | Social Hub home — community feed (For You / Friends / My Communities), trending content, team browsing, challenges | Red dot for new activity |
 | **My Menu** | Existing menu/ordering flow | — |
-| **Share** | Gifting Engine — RAF, Meal Train, QR | Gift count remaining |
-| **Cookbook** | Recipe collection (existing) | — |
-| **Profile** | Identity, badges, stats, scorecards, settings | New badge notification |
+| **Search** | Existing search | — |
+| **Cookbook** | Recipe collection (existing), includes privately saved Cooking Moment photos | — |
+| **Profile** | Identity, badges, stats, scorecards, gifting section (RAF, Meal Train, QR code), settings | New badge notification |
+
+**Key decisions:**
+- **No dedicated Share/Gifting tab.** Gifting surfaces live within Profile and contextual nudges. This keeps the product from feeling referral-centric.
+- **Discover replaces Home** as the primary landing tab once the social ecosystem is live. The "Home" content (upcoming deliveries, order status) moves into My Menu.
+- **Community is inside Discover**, not a separate tab. The Discover tab serves as the unified entry point for all social features — the feed, communities, trending content, and creator discovery.
 
 ---
 
 ## Phasing
 
-### Phase 1: Gifting Engine Foundation
-**Team A focus. Ship first.**
+### Phase 1: Social Identity + Gifting Foundation
+**Both teams start in parallel.**
 
-- Personalized RAF (Share Hub, Message Composer, Nudges) — *already specced*
+**Team A:**
+- Personalized RAF (Message Composer, Contextual Nudges, gifting section in Profile) — *already specced, adapted from v1-intent*
 - Frictionless Redemption (Friend Claim Flow) — *already specced*
 - QR Code Sharing — *new, small scope*
 - Rewards Hub integration — *already specced*
 
-**Why first:** Directly impacts acquisition metrics. Lower complexity. Doesn't require a social graph to exist yet.
-
-### Phase 2: Social Identity
-**Team B foundation. Builds the social graph.**
-
+**Team B:**
 - Identity Badges — unlocking and display on profile
-- Scorecards — generation, viewing, and external sharing
+- Scorecards — generation, viewing, and direct external sharing
 - Basic profile extension (display name, bio, persona)
-- Sharing pipeline (external sharing of badges/scorecards)
+- Sharing pipeline (direct sharing of badges/scorecards to social platforms)
 
-**Why second:** Gives users a reason to engage socially before the feed exists. Scorecards and badges are shareable on existing social platforms, generating organic impressions immediately.
+**Why together:** The Gifting Engine is lower complexity and directly impacts acquisition. Social Identity gives users something worth sharing immediately — scorecards and badges are shareable on existing social platforms before the in-app feed even exists. Running both in parallel maximizes time-to-value.
 
-### Phase 3: Community Layer
-**Team B expansion. Requires social graph from Phase 2.**
+### Phase 2: Community Layer
+**Team B focus. The heart of the ecosystem.**
 
-- Community Feed (friends, teams, public)
-- BeReal Moments (prompted photos)
-- Teams (creation, joining, team feed)
+- Community Feed (For You global timeline, Friends feed, community-scoped feeds)
+- Cooking Moments (prompted photos with Sous Chef integration)
+- Teams / Communities (creation, joining, community feed)
+- Discover tab (replacing Home — unified entry point for all social features)
 
-**Why third:** A feed is only valuable when there's content to fill it. Phase 2 ensures users have badges, scorecards, and a nascent social identity before the feed launches.
+**Why second:** A feed is only valuable when there's content to fill it. Phase 1 ensures users have badges, scorecards, and a nascent social identity before the feed launches. Cooking Moments drives photo content into the feed from day one.
+
+### Phase 3: Challenges & Gamification
+**Team B expansion. Deepens engagement.**
+
+- Team challenges (templates, custom creation, leaderboards)
+- Challenge badges and rewards
+- Cross-team challenges (HelloFresh community events)
+
+**Why third:** Challenges require active communities (Phase 2) and are an engagement deepening tool. Ship after the core community is established and generating organic activity.
 
 ### Phase 4: Group Gifting
 **Team A expansion. Benefits from the social graph.**
@@ -610,16 +636,17 @@ Home | My Menu | **Share** | Cookbook | Profile
 - Meal Train ↔ Feed integration (updates posted to contributor feeds)
 - Gift subscription as a standalone (Meal Train for one contributor)
 
-**Why fourth:** Meal Train is higher complexity (group coordination, payments, multi-week fulfillment). It also works better when contributors are already socially connected within the app (Phase 3).
+**Why fourth:** Meal Train is higher complexity (group coordination, payments, multi-week fulfillment). It also works better when contributors are already socially connected within the app (Phase 2–3).
 
-### Phase 5: Challenges & Gamification
-**Team B expansion. Deepens engagement.**
+### Phase 5: Memories & Advanced Social
+**Team B expansion. Long-term engagement plays.**
 
-- Team challenges (templates, custom creation, leaderboards)
-- Challenge badges and rewards
-- Cross-team challenges (HelloFresh community events)
+- Cooking Memories ("A year ago you cooked this for the first time") — built on privately saved Cooking Moment photos
+- Cooking Moments prompt expansion (seasonal, event-based prompts)
+- Advanced scorecard types (year-in-review, comparison with friends)
+- Enhanced community features (community events, guest chef AMAs)
 
-**Why fifth:** Challenges require active teams (Phase 3) and are an engagement deepening tool, not a growth driver. Ship after the core social and gifting loops are established.
+**Why fifth:** These features build on a mature base of user-generated content and social engagement from earlier phases. They deepen the emotional connection and make HelloFresh feel like a personal cooking journal, not just a delivery service.
 
 ---
 
@@ -643,20 +670,23 @@ Home | My Menu | **Share** | Cookbook | Profile
 |--------|-----------|--------|
 | **Feed DAU** | % of active users who view the community feed daily | >30% within 6mo |
 | **Post rate** | Posts per active user per week | >1 |
-| **BeReal response rate** | % of BeReal prompts that result in a posted photo | >25% |
-| **Scorecard share rate** | % of unlocked scorecards shared externally | >15% |
-| **External impressions** | Social media impressions from shared scorecards/badges/BeReals | New metric |
-| **Team join rate** | % of eligible users who join ≥1 team | >40% within 6mo |
-| **Challenge participation** | % of team members who participate in active challenges | >50% |
-| **Organic referral attribution** | New signups attributed to Social Hub shared content (via embedded referral links) | New metric |
+| **Cooking Moment response rate** | % of Cooking Moment prompts that result in a captured photo (posted or saved privately) | >25% |
+| **Cooking Moment share rate** | % of captured Cooking Moments shared to feed or externally (vs. saved privately) | >40% |
+| **Scorecard share rate** | % of unlocked scorecards shared (to feed or externally) | >15% |
+| **External impressions** | Social media impressions from shared scorecards/badges/Cooking Moments | New metric |
+| **Community join rate** | % of eligible users who join ≥1 community or team | >40% within 6mo |
+| **Challenge participation** | % of community members who participate in active challenges | >50% |
+| **Private photo saves** | Cooking Moment photos saved privately to cookbook (leading indicator for Memories feature) | New metric |
+| **Organic referral attribution** | New signups attributed to Social Hub shared content (via subtle branding links) | New metric |
 
 ### Cross-Hub
 
 | Metric | Definition | Target |
 |--------|-----------|--------|
-| **Happy moment → share conversion** | % of happy moment triggers that result in any share action (gift or social) | >10% |
-| **Social → gifting pipeline** | % of Social Hub sharers who also send a referral within 30 days | >5% |
+| **Happy moment → engagement** | % of happy moment triggers that result in any action (photo, share, badge view, feed post) | >15% |
 | **Retention lift** | 12-week retention of users engaged with Social Hub vs. control | +15% |
+| **Cooking frequency lift** | Average meals cooked per week for Social Hub engaged users vs. control | +10% |
+| **Organic referral rate** | % of Social Hub engaged users who send ≥1 referral within 90 days (natural, not prompted) | New metric |
 
 ---
 
@@ -676,12 +706,14 @@ Home | My Menu | **Share** | Cookbook | Profile
 ## Open Questions
 
 1. **Social graph bootstrapping** — How do we seed the friends graph? Import from phone contacts? Suggest HelloFresh users who share a delivery address? This affects how quickly the Community Feed becomes valuable.
-2. **BeReal notification cadence** — Daily is aggressive. Every-other-day? Only on delivery days? Need to balance engagement with annoyance.
-3. **Scorecard data accuracy** — Nutritional calculations depend on users actually cooking the ordered meals (vs. skipping or substituting). How much do we trust order history as a proxy for meals cooked?
-4. **Meal Train payment processing** — Who is the merchant of record? How are refunds handled if the Meal Train is cancelled? Does HelloFresh hold funds in escrow until the recipient claims?
-5. **Badge gaming** — Can users manipulate their order patterns to earn specific badges? Is this a problem or a feature (it drives orders)?
-6. **Team moderation** — Who moderates user-created teams? What content policies apply to team feeds?
-7. **Feed content quality** — Without an algorithm, how do we prevent the feed from being dominated by low-quality posts in large public/community groups?
-8. **Cross-hub attribution** — When someone clicks a referral link embedded in a shared scorecard, does the Social Hub user get RAF credit? How does this interact with invitation limits?
-9. **Privacy** — What cooking data is visible to friends vs. team members vs. public? Users need granular control over what's shared about their cooking habits and nutrition data.
+2. **Cooking Moment prompt cadence** — Daily prompts on delivery days may be too aggressive for some users. Should we start with delivery-day-only and expand? What's the opt-out/snooze mechanism?
+3. **Sous Chef integration depth** — How tightly do Cooking Moment prompts integrate with Sous Chef session data? Do we need explicit user consent to use Sous Chef timing for prompts?
+4. **Scorecard data accuracy** — Nutritional calculations depend on users actually cooking the ordered meals (vs. skipping or substituting). How much do we trust order history as a proxy for meals cooked?
+5. **Meal Train payment processing** — Who is the merchant of record? How are refunds handled if the Meal Train is cancelled? Does HelloFresh hold funds in escrow until the recipient claims?
+6. **Badge gaming** — Can users manipulate their order patterns to earn specific badges? Is this a problem or a feature (it drives orders)?
+7. **Community moderation** — Who moderates user-created communities? What content policies apply to community feeds and the global For You timeline?
+8. **For You feed curation** — The global timeline uses reverse-chronological ordering. At scale, will we need lightweight curation (trending, staff picks) to keep content quality high without a full algorithm?
+9. **Privacy** — What cooking data is visible to friends vs. community members vs. public? Users need granular control over what's shared about their cooking habits and nutrition data.
 10. **Integration timeline** — External integrations (Apple Health, fitness trackers) dramatically increase scorecard value but add complexity. When do we invest?
+11. **Subtle branding calibration** — How prominent should the HelloFresh watermark be on externally shared content? Too subtle and it provides no value; too prominent and users feel like ad vehicles. Need user testing.
+12. **Memories feature roadmap** — Privately saved Cooking Moment photos are the foundation for a "Memories" feature. What's the minimum photo volume per user needed before Memories becomes valuable? How does this inform prompt frequency strategy?
