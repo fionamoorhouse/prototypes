@@ -70,6 +70,9 @@ export default function MealTrainInvite() {
         <button onClick={() => goTo('MealTrainClaim')} style={{ marginTop: 12, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: '#999', textDecoration: 'underline' }}>
           Preview recipient view →
         </button>
+        <div style={{ marginTop: 20 }}>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
+        </div>
       </div>
     )
   }
@@ -205,6 +208,10 @@ export default function MealTrainInvite() {
               {copied ? <><Check size={14} /> Copied!</> : <><Copy size={14} /> Copy</>}
             </button>
           </div>
+        </div>
+
+        <div style={{ padding: '20px 20px 16px', display: 'flex', justifyContent: 'center' }}>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
 
         <div style={{ height: 100 }} />

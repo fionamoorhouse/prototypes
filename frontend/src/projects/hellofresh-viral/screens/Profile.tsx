@@ -11,10 +11,11 @@ import {
   Trophy,
   Star,
   Compass,
-  UtensilsCrossed,
-  Search,
   BookOpen,
   User,
+  UtensilsCrossed,
+  ShoppingBag,
+  Sparkles,
   Leaf,
   Dumbbell,
   Flame,
@@ -319,6 +320,11 @@ export default function Profile() {
               {/* Nested: share channels (visible when expanded) */}
               {giftExpanded && (
                 <div style={{ padding: '0 16px 12px 72px' }}>
+                  <button onClick={() => goTo('ShareHub')} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', background: 'none', border: 'none', borderBottom: '1px solid #f5f5f5', cursor: 'pointer' }}>
+                    <Gift size={16} color="#067A46" />
+                    <span style={{ fontSize: 13, color: '#242424' }}>Share Hub</span>
+                    <ChevronRight size={14} color="#ddd" style={{ marginLeft: 'auto' }} />
+                  </button>
                   <button onClick={() => goTo('GiftComposer')} style={{ width: '100%', display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', background: 'none', border: 'none', borderBottom: '1px solid #f5f5f5', cursor: 'pointer' }}>
                     <MessageCircle size={16} color="#067A46" />
                     <span style={{ fontSize: 13, color: '#242424' }}>Send via message</span>
@@ -368,33 +374,9 @@ export default function Profile() {
 
         </div>
 
-        {/* Demo links */}
+        {/* Demo launcher link */}
         <div style={{ padding: '20px 20px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#ccc', fontWeight: 600, letterSpacing: 0.5 }}>DEMO SCREENS</span>
-          <button onClick={() => goTo('Discover')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Discover Feed</button>
-          <button onClick={() => goTo('ScorecardDetail')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Scorecard Detail</button>
-          <button onClick={() => goTo('CookingMoment')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cooking Moment Prompt</button>
-          <span style={{ fontSize: 10, color: '#ddd', fontWeight: 600, marginTop: 6 }}>SLICE 2: GIFTING</span>
-          <button onClick={() => goTo('PostCookNudge')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Post-Cook Nudge</button>
-          <button onClick={() => goTo('GiftComposer')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Gift Composer</button>
-          <button onClick={() => goTo('QRCodeShare')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>QR Code Share</button>
-          <button onClick={() => goTo('MealTrainCreate')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Create)</button>
-          <button onClick={() => goTo('MealTrainInvite')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Invite)</button>
-          <button onClick={() => goTo('MealTrainClaim')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Recipient)</button>
-          <span style={{ fontSize: 10, color: '#ddd', fontWeight: 600, marginTop: 6 }}>SLICE 3: CHALLENGES</span>
-          <button onClick={() => goTo('TeamHome')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Team Home</button>
-          <button onClick={() => goTo('ChallengeDetail', { id: 'cuisine-explorer' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Challenge Detail</button>
-          <button onClick={() => goTo('ChallengeCreate')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Create Challenge</button>
-          <button onClick={() => goTo('ChallengeBadge')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Challenge Badge</button>
-          <span style={{ fontSize: 10, color: '#ddd', fontWeight: 600, marginTop: 6 }}>SLICE 4: MEAL TRAIN ↔ FEED</span>
-          <button onClick={() => goTo('Discover')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Discover (Meal Train feed posts)</button>
-          <button onClick={() => goTo('MealTrainContribute')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Contribute)</button>
-          <span style={{ fontSize: 10, color: '#ddd', fontWeight: 600, marginTop: 6 }}>SLICE 5: MEMORIES & ADVANCED SOCIAL</span>
-          <button onClick={() => goTo('CookingMemories')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cooking Memories</button>
-          <button onClick={() => goTo('ScorecardDetail', { type: 'year-review' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Year in Review</button>
-          <button onClick={() => goTo('ScorecardDetail', { type: 'friends' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Friend Comparison</button>
-          <button onClick={() => goTo('CommunityEvent', { id: 'chef-ama' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Guest Chef AMA</button>
-          <button onClick={() => goTo('CommunityEvent', { id: 'cook-along' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Community Cook-Along</button>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
         <div style={{ height: 20 }} />
       </div>
@@ -403,8 +385,8 @@ export default function Profile() {
       <div style={{ flexShrink: 0, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-around', borderTop: '1px solid #f0f0f0', background: '#fff' }}>
         {[
           { Icon: Compass, label: 'Discover', screen: 'Discover' },
-          { Icon: UtensilsCrossed, label: 'My Menu', screen: '' },
-          { Icon: Search, label: 'Search', screen: '' },
+          { Icon: ShoppingBag, label: 'Store', screen: '' },
+          { Icon: Sparkles, label: 'Assistant', screen: '' },
           { Icon: BookOpen, label: 'Cookbook', screen: '' },
           { Icon: User, label: 'Profile', screen: 'Profile', active: true },
         ].map((tab) => (

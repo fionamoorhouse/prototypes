@@ -211,6 +211,9 @@ export default function CookingMoment() {
           >
             Maybe later
           </button>
+          <div style={{ marginTop: 20 }}>
+            <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
+          </div>
         </div>
       </div>
     )
@@ -264,6 +267,10 @@ export default function CookingMoment() {
           <button style={{ width: 44, height: 44, borderRadius: 22, background: 'rgba(255,255,255,0.15)', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <RotateCcw size={20} color="#fff" />
           </button>
+        </div>
+
+        <div style={{ position: 'absolute', bottom: 50, left: 0, right: 0, display: 'flex', justifyContent: 'center' }}>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
       </div>
     )
@@ -410,6 +417,10 @@ export default function CookingMoment() {
             </div>
           )}
 
+          <div style={{ padding: '20px 20px 16px', display: 'flex', justifyContent: 'center' }}>
+            <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
+          </div>
+
           <div style={{ height: 100 }} />
         </div>
 
@@ -482,6 +493,9 @@ export default function CookingMoment() {
       >
         Take another photo
       </button>
+      <div style={{ marginTop: 20 }}>
+        <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
+      </div>
     </div>
   )
 }

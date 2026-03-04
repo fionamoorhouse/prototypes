@@ -29,6 +29,10 @@ export default function QRCodeShare() {
         <QRCodeSVG size={280} />
         <div style={{ marginTop: 20, fontSize: 18, fontWeight: 700, color: '#242424' }}>Sam Johnson</div>
         <div style={{ fontSize: 14, color: '#999', marginTop: 4 }}>Scan for a free HelloFresh box</div>
+
+        <div style={{ position: 'absolute', bottom: 50, left: 0, right: 0, display: 'flex', justifyContent: 'center' }}>
+          <button onClick={(e) => { e.stopPropagation(); goTo('DemoLauncher') }} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
+        </div>
       </div>
     )
   }
@@ -83,6 +87,10 @@ export default function QRCodeShare() {
               {copied ? <><Check size={14} /> Copied!</> : <><Copy size={14} /> Copy</>}
             </button>
           </div>
+        </div>
+
+        <div style={{ padding: '24px 20px', display: 'flex', justifyContent: 'center' }}>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
       </div>
     </div>

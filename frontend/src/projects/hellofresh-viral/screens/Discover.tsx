@@ -7,21 +7,28 @@ import {
   MessageCircle,
   Share2,
   Compass,
-  UtensilsCrossed,
   BookOpen,
   User,
+  UtensilsCrossed,
   Sparkles,
+  ShoppingBag,
   ChevronRight,
   Users,
   Camera,
   Flame,
-  Award,
   TrendingUp,
   Gift,
   HandHeart,
   PartyPopper,
   Truck,
+  Plus,
+  Image,
+  Lightbulb,
+  X,
 } from 'lucide-react'
+
+// Alias for tab bar to avoid conflict with Sparkles used in feed
+const Sparkles2 = Sparkles
 
 /* ── helpers ── */
 const img = (id: string, w = 600, h = 400) =>
@@ -201,6 +208,7 @@ type FeedTab = 'forYou' | 'friends' | 'communities'
 export default function Discover() {
   const { goTo } = usePrototype()
   const [activeTab, setActiveTab] = useState<FeedTab>('forYou')
+  const [showComposer, setShowComposer] = useState(false)
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', flexDirection: 'column', background: '#fff', overflow: 'hidden' }}>
@@ -256,35 +264,16 @@ export default function Discover() {
         {activeTab === 'friends' && <FriendsFeed goTo={goTo} />}
         {activeTab === 'communities' && <CommunitiesFeed goTo={goTo} />}
 
-        {/* Demo links */}
+        {/* Demo launcher link */}
         <div style={{ padding: '24px 20px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#ddd', fontWeight: 600, letterSpacing: 0.5 }}>DEMO SCREENS</span>
-          <button onClick={() => goTo('Profile')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Profile (with badges, stats, gifting)</button>
-          <button onClick={() => goTo('ScorecardDetail')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Scorecard Detail</button>
-          <button onClick={() => goTo('CookingMoment')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cooking Moment Prompt</button>
-          <span style={{ fontSize: 10, color: '#ddd', fontWeight: 600, marginTop: 6 }}>SLICE 3: CHALLENGES</span>
-          <button onClick={() => goTo('TeamHome')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Team Home (Weeknight Warriors)</button>
-          <button onClick={() => goTo('ChallengeDetail', { id: 'cuisine-explorer' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Challenge Detail</button>
-          <button onClick={() => goTo('ChallengeCreate')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Create Challenge</button>
-          <button onClick={() => goTo('ChallengeBadge')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Challenge Badge (Celebration)</button>
-          <span style={{ fontSize: 10, color: '#ddd', fontWeight: 600, marginTop: 6 }}>SLICE 4: MEAL TRAIN ↔ FEED</span>
-          <button onClick={() => goTo('MealTrainCreate')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Create)</button>
-          <button onClick={() => goTo('MealTrainClaim')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Recipient)</button>
-          <button onClick={() => goTo('MealTrainContribute')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Contribute)</button>
-          <span style={{ fontSize: 10, color: '#ddd', fontWeight: 600, marginTop: 6 }}>SLICE 5: MEMORIES & ADVANCED SOCIAL</span>
-          <button onClick={() => goTo('CookingMemories')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cooking Memories</button>
-          <button onClick={() => goTo('ScorecardDetail', { type: 'year-review' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Year in Review</button>
-          <button onClick={() => goTo('ScorecardDetail', { type: 'friends' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Friend Comparison</button>
-          <button onClick={() => goTo('CommunityEvent', { id: 'chef-ama' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Guest Chef AMA</button>
-          <button onClick={() => goTo('CommunityEvent', { id: 'cook-along' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Community Cook-Along</button>
-          <button onClick={() => goTo('CommunityEvent', { id: 'spring-kickoff' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Spring Menu Launch</button>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
         <div style={{ height: 20 }} />
       </div>
 
       {/* Floating compose button */}
       <button
-        onClick={() => goTo('CookingMoment')}
+        onClick={() => setShowComposer(true)}
         style={{
           position: 'absolute',
           bottom: 102,
@@ -302,8 +291,49 @@ export default function Discover() {
           zIndex: 10,
         }}
       >
-        <Camera size={24} color="#fff" />
+        <Plus size={24} color="#fff" />
       </button>
+
+      {/* Post composer overlay */}
+      {showComposer && (
+        <div style={{ position: 'absolute', inset: 0, zIndex: 100 }}>
+          <div onClick={() => setShowComposer(false)} style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)' }} />
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: '#fff', borderRadius: '20px 20px 0 0', padding: '8px 20px 40px' }}>
+            <div style={{ width: 36, height: 4, borderRadius: 2, background: '#ddd', margin: '0 auto 16px' }} />
+            <h3 style={{ fontFamily: 'Georgia, serif', fontSize: 18, fontWeight: 700, color: '#242424', margin: '0 0 4px' }}>Create a post</h3>
+            <p style={{ fontSize: 13, color: '#999', margin: '0 0 16px' }}>Share with your community</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <button onClick={() => { setShowComposer(false); goTo('CookingMoment') }} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderRadius: 14, background: '#f9f9f9', border: '1px solid #f0f0f0', cursor: 'pointer' }}>
+                <div style={{ width: 42, height: 42, borderRadius: 12, background: '#E8F5E0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Camera size={20} color="#067A46" />
+                </div>
+                <div style={{ flex: 1, textAlign: 'left' }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: '#242424' }}>Cooking Moment</div>
+                  <div style={{ fontSize: 12, color: '#999', marginTop: 1 }}>Snap a photo of what you made</div>
+                </div>
+              </button>
+              <button onClick={() => setShowComposer(false)} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderRadius: 14, background: '#f9f9f9', border: '1px solid #f0f0f0', cursor: 'pointer' }}>
+                <div style={{ width: 42, height: 42, borderRadius: 12, background: '#FEF3C7', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Lightbulb size={20} color="#F59E0B" />
+                </div>
+                <div style={{ flex: 1, textAlign: 'left' }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: '#242424' }}>Recipe tip</div>
+                  <div style={{ fontSize: 12, color: '#999', marginTop: 1 }}>Share a tip or trick for a recipe</div>
+                </div>
+              </button>
+              <button onClick={() => setShowComposer(false)} style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '14px 16px', borderRadius: 14, background: '#f9f9f9', border: '1px solid #f0f0f0', cursor: 'pointer' }}>
+                <div style={{ width: 42, height: 42, borderRadius: 12, background: '#DBEAFE', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Image size={20} color="#3B82F6" />
+                </div>
+                <div style={{ flex: 1, textAlign: 'left' }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: '#242424' }}>Photo post</div>
+                  <div style={{ fontSize: 12, color: '#999', marginTop: 1 }}>Share a meal photo with a caption</div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Tab bar */}
       <BottomTabBar goTo={goTo} active="Discover" />
@@ -392,15 +422,8 @@ function ForYouFeed({ goTo }: { goTo: (s: string, p?: Record<string, string>) =>
         </div>
       </div>
 
-      {/* Feed posts — interleaved with Meal Train updates */}
-      {forYouPosts.slice(0, 2).map(post => (
-        <FeedCard key={post.id} post={post} goTo={goTo} />
-      ))}
-
-      {/* Meal Train: fully funded celebration (For You) */}
-      <MealTrainFundedCard mt={mealTrainFeedItems.funded} goTo={goTo} />
-
-      {forYouPosts.slice(2).map(post => (
+      {/* Feed posts — Meal Train updates removed from public feed (private per PRD) */}
+      {forYouPosts.map(post => (
         <FeedCard key={post.id} post={post} goTo={goTo} />
       ))}
     </>
@@ -930,8 +953,8 @@ function FeedCard({ post, goTo }: { post: (typeof forYouPosts)[number]; goTo: (s
 function BottomTabBar({ goTo, active }: { goTo: (s: string, p?: Record<string, string>) => void; active: string }) {
   const tabs = [
     { Icon: Compass, label: 'Discover', screen: 'Discover' },
-    { Icon: UtensilsCrossed, label: 'My Menu', screen: '' },
-    { Icon: Search, label: 'Search', screen: '' },
+    { Icon: ShoppingBag, label: 'Store', screen: '' },
+    { Icon: Sparkles2, label: 'Assistant', screen: '' },
     { Icon: BookOpen, label: 'Cookbook', screen: '' },
     { Icon: User, label: 'Profile', screen: 'Profile' },
   ]

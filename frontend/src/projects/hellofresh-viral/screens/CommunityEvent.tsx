@@ -17,8 +17,8 @@ import {
   Camera,
   X,
   Compass,
-  UtensilsCrossed,
-  Search,
+  ShoppingBag,
+  Sparkles,
   BookOpen,
   User,
 } from 'lucide-react'
@@ -97,7 +97,7 @@ const events: Record<string, {
     duration: '60 min',
     attendees: 42,
     maxAttendees: 100,
-    image: '1569718212165-3a8922ada9e5',
+    image: '1552611052-33e04de081de',
     gradient: 'linear-gradient(135deg, #DC2626, #F97316)',
     accent: '#DC2626',
     emoji: '🍜',
@@ -249,9 +249,7 @@ export default function CommunityEvent() {
           </div>
 
           <div style={{ padding: '28px 20px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-            <span style={{ fontSize: 11, color: '#ddd', fontWeight: 600, letterSpacing: 0.5 }}>DEMO SCREENS</span>
-            <button onClick={() => goTo('Discover')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Back to Discover</button>
-            <button onClick={() => goTo('TeamHome')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Team Home</button>
+            <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
           </div>
           <div style={{ height: 20 }} />
         </div>
@@ -509,12 +507,7 @@ export default function CommunityEvent() {
 
         {/* Demo links */}
         <div style={{ padding: '28px 20px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#ddd', fontWeight: 600, letterSpacing: 0.5 }}>DEMO SCREENS</span>
-          <button onClick={() => goTo('CommunityEvent', { id: 'chef-ama' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Guest Chef AMA</button>
-          <button onClick={() => goTo('CommunityEvent', { id: 'cook-along' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Community Cook-Along</button>
-          <button onClick={() => goTo('CommunityEvent', { id: 'spring-kickoff' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Spring Menu Launch Party</button>
-          <button onClick={() => goTo('Discover')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Back to Discover</button>
-          <button onClick={() => goTo('TeamHome')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Team Home</button>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
         <div style={{ height: 20 }} />
       </div>
@@ -530,8 +523,8 @@ export default function CommunityEvent() {
 function BottomTabBar({ goTo, active }: { goTo: (s: string, p?: Record<string, string>) => void; active: string }) {
   const tabs = [
     { Icon: Compass, label: 'Discover', screen: 'Discover' },
-    { Icon: UtensilsCrossed, label: 'My Menu', screen: '' },
-    { Icon: Search, label: 'Search', screen: '' },
+    { Icon: ShoppingBag, label: 'Store', screen: '' },
+    { Icon: Sparkles, label: 'Assistant', screen: '' },
     { Icon: BookOpen, label: 'Cookbook', screen: '' },
     { Icon: User, label: 'Profile', screen: 'Profile' },
   ]

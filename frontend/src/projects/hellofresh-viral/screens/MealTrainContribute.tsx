@@ -6,8 +6,8 @@ import {
   HandHeart,
   Share2,
   Compass,
-  UtensilsCrossed,
-  Search,
+  ShoppingBag,
+  Sparkles,
   BookOpen,
   User,
   CreditCard,
@@ -140,22 +140,19 @@ export default function MealTrainContribute() {
         </button>
 
         <button
+          onClick={() => goTo('MealTrainInvite')}
           style={{
             marginTop: 14, background: 'none', border: 'none', cursor: 'pointer',
-            fontSize: 14, color: '#999', textDecoration: 'underline',
+            fontSize: 14, color: '#067A46', fontWeight: 600,
             position: 'relative', zIndex: 1,
           }}
         >
           Invite more friends to contribute
         </button>
 
-        {/* Demo links */}
+        {/* Demo launcher link */}
         <div style={{ position: 'absolute', bottom: 60, left: 0, right: 0, display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#ddd', fontWeight: 600, letterSpacing: 0.5 }}>DEMO SCREENS</span>
-          <button onClick={() => goTo('Discover')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Discover</button>
-          <button onClick={() => goTo('MealTrainCreate')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Create)</button>
-          <button onClick={() => goTo('MealTrainClaim')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Recipient)</button>
-          <button onClick={() => goTo('Profile')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Profile</button>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
       </div>
     )
@@ -406,13 +403,9 @@ export default function MealTrainContribute() {
         {/* Spacer for CTA */}
         <div style={{ height: 120 }} />
 
-        {/* ── Demo links ── */}
+        {/* Demo launcher link */}
         <div style={{ padding: '8px 20px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#ddd', fontWeight: 600, letterSpacing: 0.5 }}>DEMO SCREENS</span>
-          <button onClick={() => goTo('Discover')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Discover</button>
-          <button onClick={() => goTo('MealTrainCreate')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Create)</button>
-          <button onClick={() => goTo('MealTrainClaim')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Recipient)</button>
-          <button onClick={() => goTo('Profile')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Profile</button>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
         <div style={{ height: 20 }} />
       </div>
@@ -443,16 +436,16 @@ export default function MealTrainContribute() {
         {/* Tab bar */}
         <div style={{ flexShrink: 0, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-around', borderTop: '1px solid #f0f0f0', background: '#fff' }}>
           {[
-            { Icon: Compass, label: 'Discover', screen: 'Discover', active: true },
-            { Icon: UtensilsCrossed, label: 'My Menu', screen: '' },
-            { Icon: Search, label: 'Search', screen: '' },
+            { Icon: Compass, label: 'Discover', screen: 'Discover' },
+            { Icon: ShoppingBag, label: 'Store', screen: '' },
+            { Icon: Sparkles, label: 'Assistant', screen: '' },
             { Icon: BookOpen, label: 'Cookbook', screen: '' },
             { Icon: User, label: 'Profile', screen: 'Profile' },
           ].map((tab) => (
             <button
               key={tab.label}
               onClick={() => tab.screen && goTo(tab.screen)}
-              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, background: 'none', border: 'none', cursor: tab.screen ? 'pointer' : 'default', color: tab.active ? '#067A46' : '#aaa', padding: '4px 12px' }}
+              style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, background: 'none', border: 'none', cursor: tab.screen ? 'pointer' : 'default', color: '#aaa', padding: '4px 12px' }}
             >
               <tab.Icon size={20} />
               <span style={{ fontSize: 10, fontWeight: 500 }}>{tab.label}</span>

@@ -198,6 +198,10 @@ export default function MealTrainCreate() {
           </div>
         </div>
 
+        <div style={{ padding: '20px 20px 16px', display: 'flex', justifyContent: 'center' }}>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
+        </div>
+
         <div style={{ height: 100 }} />
       </div>
 

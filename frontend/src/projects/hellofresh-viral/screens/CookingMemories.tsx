@@ -16,8 +16,7 @@ import {
   Image,
   Sparkles,
   Compass,
-  UtensilsCrossed,
-  Search,
+  ShoppingBag,
   BookOpen,
   User,
 } from 'lucide-react'
@@ -380,11 +379,7 @@ export default function CookingMemories() {
 
         {/* Demo links */}
         <div style={{ padding: '28px 20px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#ddd', fontWeight: 600, letterSpacing: 0.5 }}>DEMO SCREENS</span>
-          <button onClick={() => goTo('Profile')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Back to Profile</button>
-          <button onClick={() => goTo('CookingMoment')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Cooking Moment</button>
-          <button onClick={() => goTo('ScorecardDetail', { type: 'year-review' })} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Year in Review</button>
-          <button onClick={() => goTo('Discover')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Back to Discover</button>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
         <div style={{ height: 20 }} />
       </div>
@@ -462,8 +457,8 @@ export default function CookingMemories() {
 function BottomTabBar({ goTo, active }: { goTo: (s: string, p?: Record<string, string>) => void; active: string }) {
   const tabs = [
     { Icon: Compass, label: 'Discover', screen: 'Discover' },
-    { Icon: UtensilsCrossed, label: 'My Menu', screen: '' },
-    { Icon: Search, label: 'Search', screen: '' },
+    { Icon: ShoppingBag, label: 'Store', screen: '' },
+    { Icon: Sparkles, label: 'Assistant', screen: '' },
     { Icon: BookOpen, label: 'Cookbook', screen: '' },
     { Icon: User, label: 'Profile', screen: 'Profile' },
   ]

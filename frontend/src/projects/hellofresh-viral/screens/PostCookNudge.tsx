@@ -6,11 +6,14 @@ import {
   ChevronRight,
   Bell,
   Gift,
+  Camera,
   Compass,
   UtensilsCrossed,
   Search,
   BookOpen,
   User,
+  Sparkles,
+  ShoppingBag,
 } from 'lucide-react'
 
 const img = (id: string, w = 600, h = 400) =>
@@ -128,16 +131,38 @@ export default function PostCookNudge() {
               You loved tonight's meal. Help a friend eat better — gift them a free HelloFresh box.
             </p>
 
-            {/* CTA buttons */}
+            {/* CTA buttons — Social prompt takes priority per umbrella PRD */}
+            <button
+              onClick={() => goTo('CookingMoment')}
+              style={{
+                width: '100%',
+                height: 48,
+                borderRadius: 24,
+                background: '#242424',
+                color: '#fff',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 15,
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 8,
+                marginBottom: 10,
+              }}
+            >
+              <Camera size={18} />
+              Share a photo
+            </button>
             <button
               onClick={() => goTo('GiftComposer')}
               style={{
                 width: '100%',
                 height: 48,
                 borderRadius: 24,
-                background: '#067A46',
-                color: '#fff',
-                border: 'none',
+                background: 'transparent',
+                color: '#067A46',
+                border: '2px solid #067A46',
                 cursor: 'pointer',
                 fontSize: 15,
                 fontWeight: 700,
@@ -208,15 +233,8 @@ export default function PostCookNudge() {
           </div>
         </div>
 
-        {/* Demo links */}
         <div style={{ padding: '24px 20px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#ddd', fontWeight: 600, letterSpacing: 0.5 }}>DEMO SCREENS</span>
-          <button onClick={() => goTo('GiftComposer')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Gift Composer</button>
-          <button onClick={() => goTo('QRCodeShare')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>QR Code Share</button>
-          <button onClick={() => goTo('MealTrainCreate')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Create)</button>
-          <button onClick={() => goTo('MealTrainClaim')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Meal Train (Recipient)</button>
-          <span style={{ fontSize: 10, color: '#ddd', fontWeight: 600, marginTop: 6 }}>SLICE 4: MEAL TRAIN ↔ FEED</span>
-          <button onClick={() => goTo('Discover')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Discover (with Meal Train feed posts)</button>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
         <div style={{ height: 20 }} />
       </div>
@@ -225,12 +243,12 @@ export default function PostCookNudge() {
       <div style={{ flexShrink: 0, height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-around', borderTop: '1px solid #f0f0f0', background: '#fff' }}>
         {[
           { Icon: Compass, label: 'Discover', screen: 'Discover' },
-          { Icon: UtensilsCrossed, label: 'My Menu', screen: 'PostCookNudge', active: true },
-          { Icon: Search, label: 'Search', screen: '' },
+          { Icon: ShoppingBag, label: 'Store', screen: '' },
+          { Icon: Sparkles, label: 'Assistant', screen: '' },
           { Icon: BookOpen, label: 'Cookbook', screen: '' },
           { Icon: User, label: 'Profile', screen: 'Profile' },
         ].map((tab) => (
-          <button key={tab.label} onClick={() => tab.screen && goTo(tab.screen)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, background: 'none', border: 'none', cursor: tab.screen ? 'pointer' : 'default', color: tab.active ? '#067A46' : '#aaa', padding: '4px 12px' }}>
+          <button key={tab.label} onClick={() => tab.screen && goTo(tab.screen)} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, background: 'none', border: 'none', cursor: tab.screen ? 'pointer' : 'default', color: '#aaa', padding: '4px 12px' }}>
             <tab.Icon size={20} />
             <span style={{ fontSize: 10, fontWeight: 500 }}>{tab.label}</span>
           </button>

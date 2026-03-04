@@ -58,9 +58,15 @@ export default function GiftComposer() {
         <button onClick={() => goTo('Discover')} style={{ width: '100%', maxWidth: 260, height: 48, borderRadius: 24, background: '#067A46', color: '#fff', border: 'none', cursor: 'pointer', fontSize: 15, fontWeight: 600 }}>
           Back to Discover
         </button>
-        <button onClick={() => goTo('Profile')} style={{ marginTop: 12, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: '#999', textDecoration: 'underline' }}>
+        <button onClick={() => goTo('FriendMessage')} style={{ marginTop: 12, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: '#067A46', fontWeight: 600 }}>
+          See what your friend receives →
+        </button>
+        <button onClick={() => goTo('Profile')} style={{ marginTop: 8, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, color: '#999', textDecoration: 'underline' }}>
           Go to Profile
         </button>
+        <div style={{ marginTop: 20 }}>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
+        </div>
       </div>
     )
   }

@@ -130,7 +130,6 @@ export default function ChallengeDetail() {
 
   const myEntry = challenge.leaderboard.find(e => e.isYou)
   const myProgress = myEntry?.progress || 0
-  const myRank = challenge.leaderboard.findIndex(e => e.isYou) + 1
 
   return (
     <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', flexDirection: 'column', background: '#fff', overflow: 'hidden' }}>
@@ -197,9 +196,6 @@ export default function ChallengeDetail() {
               <div style={{ height: 8, borderRadius: 4, background: 'rgba(255,255,255,0.25)' }}>
                 <div style={{ height: 8, borderRadius: 4, background: '#fff', width: `${(myProgress / challenge.goal) * 100}%`, transition: 'width 0.3s' }} />
               </div>
-              {myRank > 0 && (
-                <div style={{ fontSize: 12, marginTop: 6, opacity: 0.75 }}>Rank #{myRank} of {challenge.participants}</div>
-              )}
             </div>
           </div>
         </div>
@@ -263,27 +259,25 @@ export default function ChallengeDetail() {
               <div style={{ fontSize: 12, color: '#999', marginTop: 4 }}>Top 3 finishers earn a special podium variant of the badge</div>
             </div>
 
-            {/* Quick leaderboard preview */}
+            {/* Quick participants preview */}
             <div style={{ marginTop: 20 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
-                <div style={{ fontSize: 12, fontWeight: 600, color: '#999', letterSpacing: 0.3, textTransform: 'uppercase' }}>Top 3</div>
+                <div style={{ fontSize: 12, fontWeight: 600, color: '#999', letterSpacing: 0.3, textTransform: 'uppercase' }}>Participants</div>
                 <button onClick={() => setActiveTab('leaderboard')} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, color: '#067A46', fontWeight: 600 }}>See all</button>
               </div>
               {challenge.leaderboard.slice(0, 3).map((entry, i) => (
-                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '8px 0', borderBottom: i < 2 ? '1px solid #f5f5f5' : 'none' }}>
-                  <div style={{
-                    width: 26, height: 26, borderRadius: 13,
-                    background: i === 0 ? '#F59E0B' : i === 1 ? '#C0C0C0' : '#CD7F32',
-                    color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 12, fontWeight: 800,
-                  }}>
-                    {i + 1}
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 0', borderBottom: i < 2 ? '1px solid #f5f5f5' : 'none' }}>
+                  <img src={avatar(entry.avatar, 80)} alt={entry.name} style={{ width: 36, height: 36, borderRadius: 18, objectFit: 'cover', flexShrink: 0 }} />
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span style={{ fontSize: 14, fontWeight: 600, color: '#242424' }}>{entry.name}</span>
+                      {entry.isYou && <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 4, background: '#067A4615', color: '#067A46', fontWeight: 600 }}>You</span>}
+                    </div>
+                    <div style={{ height: 6, borderRadius: 3, background: '#f0f0f0', marginTop: 6 }}>
+                      <div style={{ height: 6, borderRadius: 3, background: entry.progress >= challenge.goal ? '#067A46' : '#067A4680', width: `${(entry.progress / challenge.goal) * 100}%` }} />
+                    </div>
                   </div>
-                  <img src={avatar(entry.avatar, 80)} alt={entry.name} style={{ width: 32, height: 32, borderRadius: 16, objectFit: 'cover' }} />
-                  <div style={{ flex: 1 }}>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: '#242424' }}>{entry.name}</span>
-                  </div>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: entry.progress >= challenge.goal ? '#067A46' : '#242424' }}>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: entry.progress >= challenge.goal ? '#067A46' : '#242424', flexShrink: 0 }}>
                     {entry.progress}/{challenge.goal}
                     {entry.progress >= challenge.goal && ' ✓'}
                   </span>
@@ -295,74 +289,56 @@ export default function ChallengeDetail() {
 
         {activeTab === 'leaderboard' && (
           <div style={{ padding: '16px 20px' }}>
-            {/* Podium visualization */}
-            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', gap: 8, marginBottom: 24, paddingTop: 16 }}>
-              {/* 2nd place */}
-              <div style={{ textAlign: 'center', width: 80 }}>
-                <img src={avatar(challenge.leaderboard[1].avatar, 80)} alt={challenge.leaderboard[1].name} style={{ width: 44, height: 44, borderRadius: 22, objectFit: 'cover', border: '3px solid #C0C0C0' }} />
-                <div style={{ fontSize: 11, fontWeight: 600, color: '#242424', marginTop: 4 }}>{challenge.leaderboard[1].name}</div>
-                <div style={{ fontSize: 10, color: '#999', marginTop: 1 }}>{challenge.leaderboard[1].progress}/{challenge.goal}</div>
-                <div style={{ width: '100%', height: 60, borderRadius: '8px 8px 0 0', background: '#E0E0E0', marginTop: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontSize: 18, fontWeight: 800, color: '#888' }}>2</span>
-                </div>
-              </div>
-              {/* 1st place */}
-              <div style={{ textAlign: 'center', width: 90 }}>
-                <div style={{ fontSize: 20, marginBottom: 2 }}>👑</div>
-                <img src={avatar(challenge.leaderboard[0].avatar, 80)} alt={challenge.leaderboard[0].name} style={{ width: 52, height: 52, borderRadius: 26, objectFit: 'cover', border: '3px solid #F59E0B' }} />
-                <div style={{ fontSize: 12, fontWeight: 700, color: '#242424', marginTop: 4 }}>{challenge.leaderboard[0].name}</div>
-                <div style={{ fontSize: 10, color: '#999', marginTop: 1 }}>{challenge.leaderboard[0].progress}/{challenge.goal}</div>
-                <div style={{ width: '100%', height: 80, borderRadius: '8px 8px 0 0', background: 'linear-gradient(180deg, #F59E0B, #D97706)', marginTop: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontSize: 22, fontWeight: 800, color: '#fff' }}>1</span>
-                </div>
-              </div>
-              {/* 3rd place */}
-              <div style={{ textAlign: 'center', width: 80 }}>
-                <img src={avatar(challenge.leaderboard[2].avatar, 80)} alt={challenge.leaderboard[2].name} style={{ width: 44, height: 44, borderRadius: 22, objectFit: 'cover', border: '3px solid #CD7F32' }} />
-                <div style={{ fontSize: 11, fontWeight: 600, color: '#242424', marginTop: 4 }}>{challenge.leaderboard[2].name}</div>
-                <div style={{ fontSize: 10, color: '#999', marginTop: 1 }}>{challenge.leaderboard[2].progress}/{challenge.goal}</div>
-                <div style={{ width: '100%', height: 44, borderRadius: '8px 8px 0 0', background: '#D4A574', marginTop: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontSize: 18, fontWeight: 800, color: '#fff' }}>3</span>
-                </div>
-              </div>
+            {/* Encouraging header */}
+            <div style={{ textAlign: 'center', padding: '16px 0 20px' }}>
+              <div style={{ fontSize: 15, fontWeight: 600, color: '#067A46', marginBottom: 4 }}>Everyone's making progress!</div>
+              <div style={{ fontSize: 13, color: '#999' }}>See how your fellow cooks are doing</div>
             </div>
 
-            {/* Full ranking list (4th and below) */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-              {challenge.leaderboard.slice(3).map((entry, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 10,
-                    padding: '10px 0',
-                    borderBottom: i < challenge.leaderboard.length - 4 ? '1px solid #f5f5f5' : 'none',
-                    background: entry.isYou ? '#E8F5E020' : 'transparent',
-                    borderRadius: entry.isYou ? 8 : 0,
-                    ...(entry.isYou ? { padding: '10px 8px', margin: '0 -8px' } : {}),
-                  }}
-                >
-                  <div style={{ width: 26, minWidth: 26, textAlign: 'center', fontSize: 14, fontWeight: 700, color: '#999' }}>{i + 4}</div>
-                  <img src={avatar(entry.avatar, 80)} alt={entry.name} style={{ width: 36, height: 36, borderRadius: 18, objectFit: 'cover' }} />
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <span style={{ fontSize: 14, fontWeight: 600, color: '#242424' }}>{entry.name}</span>
-                      {entry.isYou && <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 4, background: '#067A4615', color: '#067A46', fontWeight: 600 }}>You</span>}
+            {/* Participants list with progress bars (sorted by progress, no rankings) */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[...challenge.leaderboard]
+                .sort((a, b) => b.progress - a.progress)
+                .map((entry) => (
+                  <div
+                    key={entry.name}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 12,
+                      padding: '12px 14px',
+                      borderRadius: 14,
+                      background: entry.isYou ? '#E8F5E015' : '#f9f9f9',
+                      border: entry.isYou ? '1px solid #067A4620' : '1px solid transparent',
+                    }}
+                  >
+                    <img src={avatar(entry.avatar, 80)} alt={entry.name} style={{ width: 40, height: 40, borderRadius: 20, objectFit: 'cover', flexShrink: 0 }} />
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                        <span style={{ fontSize: 14, fontWeight: 600, color: '#242424' }}>{entry.name}</span>
+                        {entry.isYou && <span style={{ fontSize: 10, padding: '1px 6px', borderRadius: 4, background: '#067A4615', color: '#067A46', fontWeight: 600 }}>You</span>}
+                      </div>
+                      <div style={{ height: 8, borderRadius: 4, background: '#e8e8e8', overflow: 'hidden' }}>
+                        <div
+                          style={{
+                            height: 8,
+                            borderRadius: 4,
+                            background: entry.progress >= challenge.goal ? '#067A46' : 'linear-gradient(90deg, #067A46, #0a9e5c)',
+                            width: `${(entry.progress / challenge.goal) * 100}%`,
+                            minWidth: entry.progress > 0 ? 8 : 0,
+                            transition: 'width 0.3s',
+                          }}
+                        />
+                      </div>
                     </div>
-                    <span style={{ fontSize: 12, color: '#999' }}>{entry.badge}</span>
-                  </div>
-                  {/* Progress bar */}
-                  <div style={{ width: 60, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 3 }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: entry.progress >= challenge.goal ? '#067A46' : '#242424' }}>
-                      {entry.progress}/{challenge.goal}
-                    </span>
-                    <div style={{ width: '100%', height: 4, borderRadius: 2, background: '#f0f0f0' }}>
-                      <div style={{ height: 4, borderRadius: 2, background: entry.progress >= challenge.goal ? '#067A46' : '#F59E0B', width: `${(entry.progress / challenge.goal) * 100}%` }} />
+                    <div style={{ flexShrink: 0, textAlign: 'right' }}>
+                      <span style={{ fontSize: 14, fontWeight: 700, color: entry.progress >= challenge.goal ? '#067A46' : '#242424' }}>
+                        {entry.progress}/{challenge.goal}
+                      </span>
+                      {entry.progress >= challenge.goal && <span style={{ fontSize: 12, color: '#067A46', marginLeft: 2 }}>✓</span>}
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </div>
           </div>
         )}
@@ -383,12 +359,8 @@ export default function ChallengeDetail() {
           </div>
         )}
 
-        {/* Demo links */}
         <div style={{ padding: '24px 20px 16px', display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
-          <span style={{ fontSize: 11, color: '#ddd', fontWeight: 600, letterSpacing: 0.5 }}>DEMO SCREENS</span>
-          <button onClick={() => goTo('TeamHome')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Back to Team Home</button>
-          <button onClick={() => goTo('ChallengeCreate')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Create Challenge</button>
-          <button onClick={() => goTo('ChallengeBadge')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Challenge Badge (Celebration)</button>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
         <div style={{ height: 20 }} />
       </div>

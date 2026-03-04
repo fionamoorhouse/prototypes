@@ -68,6 +68,9 @@ export default function MealTrainClaim() {
         >
           Explore HelloFresh
         </button>
+        <div style={{ marginTop: 20, position: 'relative', zIndex: 1 }}>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
+        </div>
       </div>
     )
   }
@@ -198,6 +201,10 @@ export default function MealTrainClaim() {
         <div style={{ margin: '16px 20px 0', borderRadius: 14, background: '#E8F5E0', padding: '14px 16px', textAlign: 'center' }}>
           <div style={{ fontSize: 14, fontWeight: 700, color: '#067A46', marginBottom: 2 }}>Completely free</div>
           <div style={{ fontSize: 12, color: '#067A46' }}>No credit card · No subscription · Gift ends automatically</div>
+        </div>
+
+        <div style={{ padding: '20px 20px 16px', display: 'flex', justifyContent: 'center' }}>
+          <button onClick={() => goTo('DemoLauncher')} style={{ fontSize: 12, color: '#bbb', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>← All demo scenarios</button>
         </div>
 
         <div style={{ height: 100 }} />
