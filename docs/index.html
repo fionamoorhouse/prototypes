@@ -209,8 +209,6 @@
       </div>
     </div>
 
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Growth</div>
       <div class="nav-item" onclick="load('giftcard-purchase')" id="nav-giftcard-purchase">
         <div class="nav-dot" style="background:#E8A838;"></div>
         <div class="nav-label">Gift Card - Purchase</div>
@@ -219,7 +217,6 @@
         <div class="nav-dot" style="background:#E8A838;"></div>
         <div class="nav-label">Gift Card - Redeem</div>
       </div>
-    </div>
   </nav>
 
   <!-- Main panel -->
@@ -248,56 +245,62 @@
   <script>
     const prototypes = {
       cadency: {
-        tag: 'Cadency',
+        tag: 'Deliveries - Q3 P1',
         tagColor: '#067A46',
         tagBg: '#DEF5DB',
-        title: 'Subscription Cadence Flexibility',
-        summary: 'Active subscribers lose the ability to manage frequency on their own terms — 28% already self-manage a less-frequent pattern through manual skipping, driving "subscription anxiety" and early cancellation. This prototype explores bi-weekly and monthly delivery cadences with a clean, intentional dashboard: auto-skipped weeks, one-tap unskip, and an add-extra-box flow for monthly customers.',
+        title: 'Cadency - Subscription Cadence Flexibility',
+        summary: 'Allow customers to choose delivery frequency — bi-weekly or monthly — in their account settings. Currently only available in the cancellation funnel. 28% of customers already follow less-frequent patterns by manually pausing, and 22% of pause survey respondents explicitly say they don\'t want weekly delivery. Business case: RTE €35M, HF €26M. This prototype covers the Plan Settings entry point, frequency picker, bi-weekly and monthly order views, and the add-extra-box drawer.',
         brief: null,
         meta: [
-          { label: 'Status', value: 'Discovery' },
-          { label: 'Platform', value: 'iOS & Android' },
-          { label: 'Target', value: 'W3+ subscribers' },
+          { label: 'Priority', value: 'Q3 P1' },
+          { label: 'Domain', value: 'Subscription Settings' },
+          { label: 'KPI', value: 'Managed Order Rate' },
+          { label: 'Effort', value: 'M' },
         ],
         src: 'cadency/index.html',
       },
       address: {
-        tag: 'Flexible Address Management',
-        tagColor: '#3B4FC8',
-        tagBg: '#EEF0FF',
-        title: 'Multi-Address Book',
-        summary: 'Subscribers can\'t easily redirect a single box to a temporary location - holiday home, family, workplace. The current UX only supports subscription-level address changes, with no cut-off warnings and no order-level override, leading to delivery errors and avoidable CS contacts. This prototype introduces a Multi-Address Book with three entry points, letting customers choose between a one-off redirect or a permanent subscription change - with clear cut-off guardrails at every step.',
+        tag: 'Deliveries - Q3 P0',
+        tagColor: '#1A5276',
+        tagBg: '#D6EAF8',
+        title: 'One-off Address Change',
+        summary: 'Active subscribers cannot easily redirect a single box to a temporary location — holiday home, family, workplace. The current UX only supports subscription-level address changes, with no cut-off time warnings and no order-level override. This causes delivery errors, unnecessary pauses, and avoidable CS contacts. This prototype introduces a Multi-Address Book with three entry points, letting customers choose between a one-off redirect or a permanent subscription change — with clear cut-off guardrails at every step.',
         brief: null,
         meta: [
-          { label: 'Status', value: 'Draft' },
-          { label: 'Platform', value: 'iOS & Android' },
-          { label: 'Target', value: 'Q3 2026' },
+          { label: 'Priority', value: 'Q3 P0' },
+          { label: 'Domain', value: 'Delivery Management' },
+          { label: 'KPI', value: 'Unpause Rate' },
+          { label: 'Effort', value: 'M' },
         ],
         src: 'address-flows/index.html',
       },
       'giftcard-purchase': {
-        tag: 'Gift Cards',
+        tag: 'Orders - Not Q3',
         tagColor: '#9A6B00',
         tagBg: '#FDF3DC',
         title: 'Gift Card - Purchase (Mobile)',
-        summary: 'A mobile-first flow for purchasing a HelloFresh gift card — denomination selection, personalisation, and delivery options. Explores how gifting fits naturally within the app experience as a growth and acquisition lever.',
+        summary: 'Extract gift card purchase and generation out of the monolith. Improve the front-end experience for gift card purchasers — cleaner flow, accessible to actives and formers, actively marketable. Enables gift card sales to be grown rather than just maintained. Dependency on the Payments team B2B gift card processor project which could also serve B2C purchase.',
         brief: null,
         meta: [
-          { label: 'Status', value: 'Exploration' },
-          { label: 'Platform', value: 'iOS & Android' },
+          { label: 'Priority', value: 'Not Q3' },
+          { label: 'Domain', value: 'Gift Cards' },
+          { label: 'KPI', value: 'OTP Orders + Gift Card Redemption Rate' },
+          { label: 'Effort', value: 'M' },
         ],
         src: 'gift-card-purchase/index.html',
       },
       'giftcard-redeem': {
-        tag: 'Gift Cards',
+        tag: 'Orders - Q3 P2',
         tagColor: '#9A6B00',
         tagBg: '#FDF3DC',
-        title: 'Gift Card - Redeem',
-        summary: 'The redemption flow for a HelloFresh gift card — entering a code, applying credit, and converting a gifted recipient into an active subscriber. Designed to minimise drop-off at the key moment of first intent.',
+        title: 'Gift Card - Redeem via OTP',
+        summary: 'Shift gift card redemption out of the monolith and into the OTP checkout flow. Customers apply their gift card voucher to a one-time purchase instead of being forced into a subscription. Current redemption rate is ~60% and declining — OTP redemption should improve this significantly. Depends on "Enable OTP via Voucher" being delivered first.',
         brief: null,
         meta: [
-          { label: 'Status', value: 'Exploration' },
-          { label: 'Platform', value: 'iOS & Android' },
+          { label: 'Priority', value: 'Q3 P2' },
+          { label: 'Domain', value: 'Gift Cards' },
+          { label: 'KPI', value: 'Gift Card Redemption Rate' },
+          { label: 'Effort', value: 'M' },
         ],
         src: 'gift-card-redeem/index.html',
       },
