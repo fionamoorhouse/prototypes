@@ -7,197 +7,305 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       font-family: 'Inter', sans-serif;
       background: #F5F4F0;
-      min-height: 100vh;
-      padding: 48px 24px 80px;
+      height: 100vh;
+      display: flex;
+      overflow: hidden;
       color: #1A1A1A;
     }
-    .header {
-      max-width: 860px;
-      margin: 0 auto 48px;
+
+    /* ── Sidebar ── */
+    .sidebar {
+      width: 260px;
+      flex-shrink: 0;
+      background: #1A1A1A;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 28px 0 32px;
     }
-    .header h1 {
-      font-size: 28px;
+
+    .sidebar-header {
+      padding: 0 20px 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .sidebar-name {
+      font-size: 14px;
       font-weight: 700;
-      letter-spacing: -0.5px;
-      margin-bottom: 6px;
+      color: #fff;
+      letter-spacing: -0.2px;
     }
-    .header p {
-      font-size: 15px;
-      color: #666;
+    .sidebar-role {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      margin-top: 2px;
     }
-    .section-label {
-      max-width: 860px;
-      margin: 0 auto 16px;
-      font-size: 12px;
+
+    .sidebar-section {
+      padding: 20px 20px 6px;
+    }
+    .sidebar-section-label {
+      font-size: 10px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1.2px;
-      color: #999;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 6px;
     }
-    .section-label + .section-label { margin-top: 40px; }
-    .grid {
-      max-width: 860px;
-      margin: 0 auto 0;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 20px;
-      margin-bottom: 8px;
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-bottom: 2px;
+      transition: background 0.12s;
     }
-    .card {
+    .nav-item:hover { background: rgba(255,255,255,0.07); }
+    .nav-item.active { background: rgba(255,255,255,0.12); }
+
+    .nav-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      flex-shrink: 0;
+    }
+    .nav-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.3;
+    }
+    .nav-item.active .nav-label { color: #fff; font-weight: 600; }
+
+    /* ── Main panel ── */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      height: 100vh;
+    }
+
+    .detail-header {
+      flex-shrink: 0;
       background: #fff;
-      border-radius: 16px;
-      border: 1px solid #E5E2DB;
-      text-decoration: none;
-      color: inherit;
+      border-bottom: 1px solid #E5E2DB;
+      padding: 20px 32px;
       display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      transition: box-shadow 0.15s, transform 0.15s;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
     }
-    .card:hover {
-      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
-      transform: translateY(-2px);
-    }
-    .card-preview {
-      width: 100%;
-      height: 180px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-    .card-body {
-      padding: 20px 22px 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .card-tag {
+    .detail-header-left { flex: 1; }
+
+    .detail-tag {
       display: inline-flex;
-      align-items: center;
       font-size: 11px;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: #067A46;
-      background: #DEF5DB;
       border-radius: 6px;
       padding: 3px 8px;
-      width: fit-content;
+      margin-bottom: 8px;
     }
-    .card-title {
-      font-size: 17px;
+
+    .detail-title {
+      font-size: 20px;
       font-weight: 700;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.4px;
+      margin-bottom: 6px;
     }
-    .card-desc {
+    .detail-summary {
       font-size: 13px;
-      color: #666;
-      line-height: 1.55;
+      color: #555;
+      line-height: 1.6;
+      max-width: 620px;
     }
-    .card-arrow {
-      margin-top: 6px;
-      font-size: 13px;
+    .detail-brief-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 10px;
+      font-size: 12px;
       font-weight: 600;
       color: #067A46;
+      text-decoration: none;
     }
+    .detail-brief-link:hover { text-decoration: underline; }
+
+    .detail-meta {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+    .meta-item {
+      font-size: 11px;
+      color: #999;
+    }
+    .meta-item span {
+      font-weight: 600;
+      color: #555;
+    }
+
+    /* ── Prototype iframe ── */
+    .proto-wrap {
+      flex: 1;
+      overflow: hidden;
+      background: #2B2B2B;
+      position: relative;
+    }
+    .proto-wrap iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      color: #999;
+    }
+    .empty-state-icon { font-size: 40px; opacity: 0.3; }
+    .empty-state p { font-size: 14px; }
   </style>
 </head>
 <body>
 
-  <div class="header">
-    <h1>Prototypes</h1>
-    <p>Fiona Lucas - HelloFresh Consumer Core</p>
+  <!-- Sidebar -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-name">Fiona Lucas</div>
+      <div class="sidebar-role">Principal PM - Consumer Core</div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Deliveries</div>
+      <div class="nav-item active" onclick="load('cadency')" id="nav-cadency">
+        <div class="nav-dot" style="background:#96DC14;"></div>
+        <div class="nav-label">Cadency</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Orders</div>
+      <div class="nav-item" onclick="load('address')" id="nav-address">
+        <div class="nav-dot" style="background:#7B8CDE;"></div>
+        <div class="nav-label">Flexible Address Management</div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main panel -->
+  <div class="main" id="main">
+
+    <!-- Header - swapped by JS -->
+    <div class="detail-header" id="detail-header">
+      <div class="detail-header-left">
+        <div class="detail-tag" id="detail-tag"></div>
+        <div class="detail-title" id="detail-title"></div>
+        <div class="detail-summary" id="detail-summary"></div>
+        <a class="detail-brief-link" id="detail-brief-link" href="#" target="_blank">
+          &#8599; View brief
+        </a>
+      </div>
+      <div class="detail-meta" id="detail-meta"></div>
+    </div>
+
+    <!-- Iframe -->
+    <div class="proto-wrap">
+      <iframe id="proto-frame" src="cadency/index.html" title="Prototype"></iframe>
+    </div>
+
   </div>
 
-  <div class="section-label">Deliveries</div>
-  <div class="grid">
+  <script>
+    const prototypes = {
+      cadency: {
+        tag: 'Cadency',
+        tagColor: '#067A46',
+        tagBg: '#DEF5DB',
+        title: 'Subscription Cadence Flexibility',
+        summary: 'Active subscribers lose the ability to manage frequency on their own terms — 28% already self-manage a less-frequent pattern through manual skipping, driving "subscription anxiety" and early cancellation. This prototype explores bi-weekly and monthly delivery cadences with a clean, intentional dashboard: auto-skipped weeks, one-tap unskip, and an add-extra-box flow for monthly customers.',
+        brief: null,
+        meta: [
+          { label: 'Status', value: 'Discovery' },
+          { label: 'Platform', value: 'iOS & Android' },
+          { label: 'Target', value: 'W3+ subscribers' },
+        ],
+        src: 'cadency/index.html',
+      },
+      address: {
+        tag: 'Flexible Address Management',
+        tagColor: '#3B4FC8',
+        tagBg: '#EEF0FF',
+        title: 'Multi-Address Book',
+        summary: 'Subscribers can\'t easily redirect a single box to a temporary location - holiday home, family, workplace. The current UX only supports subscription-level address changes, with no cut-off warnings and no order-level override, leading to delivery errors and avoidable CS contacts. This prototype introduces a Multi-Address Book with three entry points, letting customers choose between a one-off redirect or a permanent subscription change - with clear cut-off guardrails at every step.',
+        brief: null,
+        meta: [
+          { label: 'Status', value: 'Draft' },
+          { label: 'Platform', value: 'iOS & Android' },
+          { label: 'Target', value: 'Q3 2026' },
+        ],
+        src: 'address-flows/index.html',
+      },
+    };
 
-    <a class="card" href="cadency/index.html">
-      <div class="card-preview" style="background: linear-gradient(135deg, #EAF6F1 0%, #C8EDD9 100%);">
-        <!-- Phone frame with cadence UI sketch -->
-        <svg width="120" height="156" viewBox="0 0 120 156" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- phone body -->
-          <rect x="8" y="2" width="104" height="152" rx="14" fill="white" stroke="#C8EDD9" stroke-width="1.5"/>
-          <!-- green header bar -->
-          <rect x="8" y="2" width="104" height="32" rx="14" fill="#067A46"/>
-          <rect x="8" y="16" width="104" height="18" fill="#067A46"/>
-          <text x="60" y="23" text-anchor="middle" fill="white" font-size="8" font-family="Inter" font-weight="600">Settings</text>
-          <!-- cadence banner -->
-          <rect x="16" y="42" width="88" height="18" rx="5" fill="#DEF5DB"/>
-          <circle cx="24" cy="51" r="3" fill="#067A46"/>
-          <text x="30" y="55" fill="#067A46" font-size="7" font-family="Inter" font-weight="700">Every 2 weeks - all set!</text>
-          <!-- delivery card -->
-          <rect x="16" y="68" width="88" height="44" rx="8" fill="#F5F4F0"/>
-          <text x="24" y="82" fill="#1A1A1A" font-size="7" font-family="Inter" font-weight="700">Wed, 25 Jun</text>
-          <rect x="24" y="86" width="32" height="8" rx="3" fill="#E5E2DB"/>
-          <rect x="60" y="86" width="32" height="8" rx="3" fill="#E5E2DB"/>
-          <rect x="16" y="118" width="88" height="14" rx="5" fill="#1A1A1A"/>
-          <text x="60" y="128" text-anchor="middle" fill="white" font-size="7" font-family="Inter" font-weight="600">Select meals</text>
-          <!-- nav bar -->
-          <rect x="8" y="136" width="104" height="18" fill="white" stroke="#E5E2DB" stroke-width="0.5"/>
-          <circle cx="30" cy="145" r="4" fill="#1A1A1A"/>
-          <circle cx="60" cy="145" r="4" fill="#E5E2DB"/>
-          <circle cx="90" cy="145" r="4" fill="#E5E2DB"/>
-        </svg>
-      </div>
-      <div class="card-body">
-        <div class="card-tag">Cadency</div>
-        <div class="card-title">Subscription Cadence Flexibility</div>
-        <div class="card-desc">Bi-weekly and monthly delivery settings - Plan Settings entry point, frequency picker, and order views with add-extra-box flow.</div>
-        <div class="card-arrow">Open prototype &rarr;</div>
-      </div>
-    </a>
+    let current = null;
 
-  </div>
+    function load(id) {
+      if (current === id) return;
+      current = id;
 
-  <div class="section-label" style="margin-top:40px;">Orders</div>
-  <div class="grid">
+      // Update nav active state
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+      document.getElementById('nav-' + id).classList.add('active');
 
-    <a class="card" href="address-flows/">
-      <div class="card-preview" style="background: linear-gradient(135deg, #EEF0FF 0%, #D5DAF5 100%);">
-        <!-- Phone frame with address UI sketch -->
-        <svg width="120" height="156" viewBox="0 0 120 156" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- phone body -->
-          <rect x="8" y="2" width="104" height="152" rx="14" fill="white" stroke="#D5DAF5" stroke-width="1.5"/>
-          <!-- header -->
-          <rect x="8" y="2" width="104" height="32" rx="14" fill="#3B4FC8"/>
-          <rect x="8" y="16" width="104" height="18" fill="#3B4FC8"/>
-          <text x="60" y="23" text-anchor="middle" fill="white" font-size="8" font-family="Inter" font-weight="600">Delivery Address</text>
-          <!-- address card 1 - active -->
-          <rect x="16" y="42" width="88" height="36" rx="8" fill="#F0F2FF" stroke="#3B4FC8" stroke-width="1.2"/>
-          <circle cx="26" cy="55" r="4" fill="#3B4FC8"/>
-          <rect x="34" y="50" width="52" height="6" rx="3" fill="#3B4FC8" opacity="0.4"/>
-          <rect x="34" y="59" width="38" height="5" rx="2.5" fill="#3B4FC8" opacity="0.2"/>
-          <text x="92" y="57" text-anchor="middle" fill="#3B4FC8" font-size="8" font-family="Inter" font-weight="700">✓</text>
-          <!-- address card 2 -->
-          <rect x="16" y="84" width="88" height="36" rx="8" fill="#F5F4F0"/>
-          <circle cx="26" cy="97" r="4" fill="#999"/>
-          <rect x="34" y="92" width="52" height="6" rx="3" fill="#ccc"/>
-          <rect x="34" y="101" width="38" height="5" rx="2.5" fill="#ddd"/>
-          <!-- add new button -->
-          <rect x="16" y="126" width="88" height="14" rx="5" fill="white" stroke="#E5E2DB" stroke-width="1"/>
-          <text x="60" y="136" text-anchor="middle" fill="#1A1A1A" font-size="7" font-family="Inter" font-weight="600">+ Add new address</text>
-          <!-- nav -->
-          <rect x="8" y="136" width="104" height="18" fill="white" stroke="#E5E2DB" stroke-width="0.5"/>
-          <circle cx="30" cy="145" r="4" fill="#E5E2DB"/>
-          <circle cx="60" cy="145" r="4" fill="#1A1A1A"/>
-          <circle cx="90" cy="145" r="4" fill="#E5E2DB"/>
-        </svg>
-      </div>
-      <div class="card-body">
-        <div class="card-tag" style="color:#3B4FC8;background:#EEF0FF;">Claude Design</div>
-        <div class="card-title">HelloFresh Address Flows</div>
-        <div class="card-desc">Add, edit, and manage delivery addresses - full address management flow within the HelloFresh app experience.</div>
-        <div class="card-arrow" style="color:#3B4FC8;">Open prototype &rarr;</div>
-      </div>
-    </a>
+      const p = prototypes[id];
 
-  </div>
+      // Update header
+      const tag = document.getElementById('detail-tag');
+      tag.textContent = p.tag;
+      tag.style.color = p.tagColor;
+      tag.style.background = p.tagBg;
+
+      document.getElementById('detail-title').textContent = p.title;
+      document.getElementById('detail-summary').textContent = p.summary;
+
+      const briefLink = document.getElementById('detail-brief-link');
+      if (p.brief) {
+        briefLink.href = p.brief;
+        briefLink.style.display = 'inline-flex';
+      } else {
+        briefLink.style.display = 'none';
+      }
+
+      const meta = document.getElementById('detail-meta');
+      meta.innerHTML = p.meta.map(m =>
+        `<div class="meta-item">${m.label}: <span>${m.value}</span></div>`
+      ).join('');
+
+      // Load prototype
+      document.getElementById('proto-frame').src = p.src;
+    }
+
+    // Load default
+    load('cadency');
+  </script>
 
 </body>
 </html>
