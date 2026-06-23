@@ -208,6 +208,18 @@
         <div class="nav-label">Flexible Address Management</div>
       </div>
     </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Growth</div>
+      <div class="nav-item" onclick="load('giftcard-purchase')" id="nav-giftcard-purchase">
+        <div class="nav-dot" style="background:#E8A838;"></div>
+        <div class="nav-label">Gift Card - Purchase</div>
+      </div>
+      <div class="nav-item" onclick="load('giftcard-redeem')" id="nav-giftcard-redeem">
+        <div class="nav-dot" style="background:#E8A838;"></div>
+        <div class="nav-label">Gift Card - Redeem</div>
+      </div>
+    </div>
   </nav>
 
   <!-- Main panel -->
@@ -262,6 +274,32 @@
           { label: 'Target', value: 'Q3 2026' },
         ],
         src: 'address-flows/index.html',
+      },
+      'giftcard-purchase': {
+        tag: 'Gift Cards',
+        tagColor: '#9A6B00',
+        tagBg: '#FDF3DC',
+        title: 'Gift Card - Purchase (Mobile)',
+        summary: 'A mobile-first flow for purchasing a HelloFresh gift card — denomination selection, personalisation, and delivery options. Explores how gifting fits naturally within the app experience as a growth and acquisition lever.',
+        brief: null,
+        meta: [
+          { label: 'Status', value: 'Exploration' },
+          { label: 'Platform', value: 'iOS & Android' },
+        ],
+        src: 'gift-card-purchase/index.html',
+      },
+      'giftcard-redeem': {
+        tag: 'Gift Cards',
+        tagColor: '#9A6B00',
+        tagBg: '#FDF3DC',
+        title: 'Gift Card - Redeem',
+        summary: 'The redemption flow for a HelloFresh gift card — entering a code, applying credit, and converting a gifted recipient into an active subscriber. Designed to minimise drop-off at the key moment of first intent.',
+        brief: null,
+        meta: [
+          { label: 'Status', value: 'Exploration' },
+          { label: 'Platform', value: 'iOS & Android' },
+        ],
+        src: 'gift-card-redeem/index.html',
       },
     };
 
