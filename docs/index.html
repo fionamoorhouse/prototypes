@@ -21,7 +21,8 @@
     .sidebar {
       width: 260px;
       flex-shrink: 0;
-      background: #1A1A1A;
+      background: #FFFFFF;
+      border-right: 1px solid #E5E2DB;
       height: 100vh;
       display: flex;
       flex-direction: column;
@@ -31,17 +32,17 @@
 
     .sidebar-header {
       padding: 0 20px 24px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      border-bottom: 1px solid #E5E2DB;
     }
     .sidebar-name {
       font-size: 14px;
       font-weight: 700;
-      color: #fff;
+      color: #1A1A1A;
       letter-spacing: -0.2px;
     }
     .sidebar-role {
       font-size: 11px;
-      color: rgba(255,255,255,0.4);
+      color: #999;
       margin-top: 2px;
     }
 
@@ -53,7 +54,7 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1.2px;
-      color: rgba(255,255,255,0.3);
+      color: #bbb;
       margin-bottom: 6px;
     }
 
@@ -67,8 +68,8 @@
       margin-bottom: 2px;
       transition: background 0.12s;
     }
-    .nav-item:hover { background: rgba(255,255,255,0.07); }
-    .nav-item.active { background: rgba(255,255,255,0.12); }
+    .nav-item:hover { background: #F5F4F0; }
+    .nav-item.active { background: #EFE9DE; }
 
     .nav-dot {
       width: 7px;
@@ -79,10 +80,10 @@
     .nav-label {
       font-size: 13px;
       font-weight: 500;
-      color: rgba(255,255,255,0.65);
+      color: #666;
       line-height: 1.3;
     }
-    .nav-item.active .nav-label { color: #fff; font-weight: 600; }
+    .nav-item.active .nav-label { color: #1A1A1A; font-weight: 600; }
 
     /* ── Main panel ── */
     .main {
@@ -190,7 +191,7 @@
   <nav class="sidebar">
     <div class="sidebar-header">
       <div class="sidebar-name">Fiona Lucas</div>
-      <div class="sidebar-role">Principal PM - Consumer Core</div>
+      <div class="sidebar-role">Principal PM, Deliveries &amp; Orders</div>
     </div>
 
     <div class="sidebar-section">
@@ -207,8 +208,6 @@
         <div class="nav-dot" style="background:#7B8CDE;"></div>
         <div class="nav-label">Flexible Address Management</div>
       </div>
-    </div>
-
       <div class="nav-item" onclick="load('giftcard-purchase')" id="nav-giftcard-purchase">
         <div class="nav-dot" style="background:#E8A838;"></div>
         <div class="nav-label">Gift Card - Purchase</div>
@@ -217,6 +216,7 @@
         <div class="nav-dot" style="background:#E8A838;"></div>
         <div class="nav-label">Gift Card - Redeem</div>
       </div>
+    </div>
   </nav>
 
   <!-- Main panel -->
