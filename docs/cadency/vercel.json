@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD ./",
+  "buildCommand": "echo 'No build needed - static HTML'",
+  "outputDirectory": ".",
+  "github": {
+    "silent": false
+  }
+}

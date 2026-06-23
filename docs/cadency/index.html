@@ -1,0 +1,2126 @@
+--- Content of index.html ---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadency — Subscription Cadence Flexibility</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Agrandir';
+      src: url('https://www.hellofresh.com/assets/fonts/vds/agrandir-tight-bold/agrandir-tight-bold.woff2') format('woff2');
+      font-weight: 700; font-style: normal; font-display: swap;
+    }
+
+    :root {
+      --cream:       #FAF8F3;
+      --cream-1:     #EFE9DE;
+      --cream-2:     #E0D9CB;
+      --cream-3:     #D3CAB7;
+      --dark:        #1A1A1A;
+      --dark-alt:    #5A5A5A;
+      --green:       #96DC14;
+      --green-dark:  #067A46;
+      --green-light: #DEF5DB;
+      --border:      #E5E2DB;
+      --red:         #B30000;
+      --skipped-bg:  #FFE9E9;
+      --skipped-txt: #C0392B;
+      --white:       #FFFFFF;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    button { border: none; background: none; cursor: pointer; font-family: inherit; }
+    * { -webkit-tap-highlight-color: transparent; }
+
+    /* ── Page shell ── */
+    body {
+      background: #2B2B2B;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 16px;
+      gap: 14px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .proto-hint {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.28);
+      text-transform: uppercase;
+      letter-spacing: 1.4px;
+      text-align: center;
+    }
+
+    /* ── Device frame ── */
+    .device {
+      background: #0D0D0D;
+      border-radius: 56px;
+      padding: 14px;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.10),
+        0 48px 96px rgba(0,0,0,0.75),
+        inset 0 1px 0 rgba(255,255,255,0.07);
+    }
+
+    /* ── Screen ── */
+    .screen {
+      width: 375px;
+      height: 812px;
+      background: var(--white);
+      border-radius: 44px;
+      overflow: hidden;
+      position: relative;
+      color: var(--dark);
+    }
+
+    /* ── View router ── */
+    .view {
+      display: none;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      background: var(--white);
+      position: absolute;
+      inset: 0;
+    }
+    .view.active { display: flex; }
+
+    @keyframes cardReveal {
+      from { opacity: 0; transform: scale(0.96); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .card-reveal { animation: cardReveal 0.25s cubic-bezier(0.4,0,0.2,1) both; }
+
+    /* ── Status bar ── */
+    .sb {
+      height: 50px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 24px 8px;
+      background: var(--white);
+      position: relative;
+      z-index: 10;
+    }
+    .sb.cream { background: var(--cream); }
+    .sb-time {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--dark);
+      letter-spacing: -0.3px;
+      font-variant-numeric: tabular-nums;
+    }
+    .sb-icons { display: flex; align-items: center; gap: 5px; color: var(--dark); }
+
+    /* ── HF app header (logo + title row) ── */
+    .app-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 16px 10px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+    }
+    .app-header.cream { background: var(--cream); border-bottom: 1px solid var(--cream-1); }
+    .hf-logo {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .hf-logo-leaf {
+      width: 26px;
+      height: 26px;
+      background: var(--green);
+      border-radius: 50% 50% 50% 0;
+      transform: rotate(-45deg);
+      flex-shrink: 0;
+    }
+    .hf-logo-text {
+      font-family: 'Agrandir', 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--dark);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1;
+    }
+    .hf-logo-text span { display: block; }
+    .header-actions { display: flex; gap: 8px; }
+    .hdr-btn {
+      width: 32px; height: 32px;
+      border-radius: 999px;
+      background: var(--cream-1);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+    }
+
+    /* ── Green top nav bar (Settings screens) ── */
+    .green-nav {
+      flex-shrink: 0;
+      height: 44px;
+      background: var(--green-dark);
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 16px;
+    }
+    .green-nav-title {
+      flex: 1;
+      font-family: 'Roboto', 'Inter', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      line-height: 32px;
+      text-align: center;
+      color: #fff;
+    }
+    .green-sb {
+      height: 20px;
+      background: var(--green-dark);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+    }
+    .green-sb-time {
+      font-size: 12px; font-weight: 400; color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+    .green-sb-icons { display: flex; align-items: center; gap: 4px; color: #fff; }
+
+    /* ── Scroll area ── */
+    .scroll {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      background: var(--cream);
+    }
+    .scroll::-webkit-scrollbar { display: none; }
+    .scroll-white { background: var(--white); }
+
+    /* content wrapper — matches Figma: padding: 16px 16px 96px, gap: 32px */
+    .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px 16px 96px;
+      gap: 32px;
+      width: 100%;
+    }
+    .content-tight {
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 16px;
+      width: 100%;
+    }
+
+    /* ── Section header ── */
+    .section-head {
+      width: 100%;
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--dark-alt);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      padding-bottom: 0;
+    }
+
+    /* ── Delivery card ── */
+    .del-card {
+      width: 100%;
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .del-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding: 14px 14px 0;
+      gap: 8px;
+    }
+    .del-date {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--dark);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+    }
+    .del-date.skipped-date {
+      text-decoration: line-through;
+      color: var(--dark-alt);
+    }
+    .del-date.cadence-skip {
+      text-decoration: line-through;
+      color: var(--dark-alt);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+    .badge-skipped   { background: var(--skipped-bg); color: var(--skipped-txt); }
+    .badge-upcoming  { background: var(--green-light); color: var(--green-dark); }
+    .badge-extra     { background: #DCF9A8; color: #2E6800; }
+    .badge-scheduled { background: var(--cream-1); color: var(--dark-alt); }
+
+    .del-sub {
+      font-size: 13px;
+      color: var(--dark-alt);
+      padding: 4px 14px 10px;
+      line-height: 1.4;
+    }
+
+    /* unskip CTA banner */
+    .unskip-banner {
+      margin: 0 14px 10px;
+      background: var(--green-light);
+      border-radius: 10px;
+      padding: 9px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .ub-text {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--green-dark);
+      display: flex; align-items: center; gap: 6px;
+    }
+    .ub-arrow { font-size: 16px; color: var(--green-dark); }
+
+    /* recipe image grid */
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      padding: 0 14px 14px;
+    }
+    .recipe-tile {
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 16/10;
+    }
+    .recipe-img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .recipe-label {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 18px 8px 7px;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+
+    /* full-width action button */
+    .card-btn {
+      margin: 0 14px 14px;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      cursor: pointer;
+      transition: opacity 0.15s;
+      width: calc(100% - 28px);
+      display: block;
+    }
+    .card-btn:active { opacity: 0.82; }
+    .btn-dark   { background: var(--dark); color: #fff; }
+    .btn-green  { background: var(--green-dark); color: #fff; }
+    .btn-ghost  { background: var(--cream-1); color: var(--dark); border: none; }
+    .btn-outline { background: transparent; color: var(--dark); border: 1.5px solid var(--border); }
+
+    /* ── Cadence frequency selector ── */
+    .freq-intro {
+      font-size: 14px;
+      color: var(--dark-alt);
+      line-height: 1.5;
+      padding: 14px 16px 0;
+    }
+    .freq-opts {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 14px 16px;
+    }
+    .freq-opt {
+      background: var(--white);
+      border-radius: 14px;
+      border: 1.5px solid var(--border);
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .freq-opt.sel { border-color: var(--green-dark); background: var(--green-light); }
+    .radio-ring {
+      width: 22px; height: 22px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .freq-opt.sel .radio-ring { border-color: var(--green-dark); background: var(--green-dark); }
+    .radio-dot { width: 10px; height: 10px; border-radius: 999px; background: #fff; }
+    .freq-opt:not(.sel) .radio-dot { display: none; }
+    .fo-title { font-size: 15px; font-weight: 700; color: var(--dark); }
+    .fo-desc  { font-size: 13px; color: var(--dark-alt); line-height: 1.4; margin-top: 3px; }
+    .pop-badge {
+      display: inline-flex; align-items: center; gap: 3px;
+      background: var(--green); color: var(--dark);
+      border-radius: 6px; font-size: 11px; font-weight: 700;
+      padding: 2px 7px; margin-top: 6px;
+    }
+
+    .freq-footer {
+      padding: 0 16px 8px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .hint-text {
+      font-size: 12px; color: var(--dark-alt);
+      text-align: center; line-height: 1.5;
+    }
+
+    /* ── Plan settings list ── */
+    .settings-group {
+      margin: 0 16px;
+      background: var(--white);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .si {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      gap: 10px;
+      transition: background 0.12s;
+    }
+    .si:last-child { border-bottom: none; }
+    .si:active { background: var(--cream); }
+    .si.hl { background: var(--green-light); border-left: 3px solid var(--green-dark); }
+    .si-l { display: flex; align-items: center; gap: 11px; }
+    .si-ico {
+      width: 32px; height: 32px;
+      border-radius: 9px;
+      background: var(--cream-1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .si-title { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .si-sub   { font-size: 12px; color: var(--dark-alt); margin-top: 1px; }
+    .si-sub strong { color: var(--green-dark); }
+    .si-chev  { font-size: 16px; color: var(--border); flex-shrink: 0; }
+    .section-lbl {
+      font-size: 11px; font-weight: 800;
+      color: var(--dark-alt);
+      text-transform: uppercase;
+      letter-spacing: 0.09em;
+      padding: 18px 16px 8px;
+    }
+
+    /* ── Monthly ledger ── */
+    .monthly-hero {
+      width: 100%;
+      background: var(--white);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .mh-img {
+      width: 100%; height: 140px;
+      background: linear-gradient(135deg, #A8DFA0 0%, #5EBA6B 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 56px;
+    }
+    .mh-body { padding: 14px; }
+    .mh-eyebrow {
+      font-size: 11px; font-weight: 800;
+      color: var(--green-dark);
+      text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+    .mh-date {
+      font-family: 'Agrandir', 'Inter', sans-serif;
+      font-size: 24px; font-weight: 700;
+      color: var(--dark); line-height: 1.1; margin-bottom: 10px;
+    }
+    .mh-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .chip {
+      display: inline-flex; align-items: center; gap: 4px;
+      background: var(--cream-1);
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px; font-weight: 600; color: var(--dark);
+    }
+    .mh-actions { display: flex; gap: 6px; }
+    .mh-btn {
+      flex: 1; padding: 10px 4px;
+      border-radius: 10px;
+      background: var(--cream-1);
+      font-size: 12px; font-weight: 700; color: var(--dark);
+      text-align: center; cursor: pointer;
+    }
+    .mh-btn:active { background: var(--cream-2); }
+
+    .add-extra {
+      width: 100%;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 2px dashed var(--green-dark);
+      cursor: pointer;
+      background: transparent;
+      transition: background 0.15s;
+    }
+    .add-extra:active { background: var(--green-light); }
+    .ae-label { font-size: 14px; font-weight: 700; color: var(--green-dark); }
+
+    .ledger-row {
+      width: 100%;
+      background: var(--white);
+      border-radius: 12px;
+      padding: 12px 14px;
+      display: flex; align-items: center; justify-content: space-between;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .ledger-row.new {
+      border: 2px solid var(--green-dark);
+      background: var(--green-light);
+    }
+    .lr-date { font-size: 14px; font-weight: 700; color: var(--dark); }
+    .lr-date.g { color: var(--green-dark); }
+    .lr-sub  { font-size: 12px; color: var(--dark-alt); margin-top: 2px; }
+    .lr-chev { font-size: 16px; color: var(--border); flex-shrink: 0; }
+    .lr-chev.g { color: var(--green-dark); }
+
+    .add-extra-sm {
+      width: 100%;
+      display: flex; align-items: center; gap: 7px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1.5px dashed var(--green-dark);
+      cursor: pointer;
+      background: transparent;
+    }
+    .add-extra-sm:active { background: var(--green-light); }
+    .ae-sm-label { font-size: 12px; font-weight: 700; color: var(--green-dark); }
+
+    /* ── Cadence banner ── */
+    .cad-banner {
+      width: 100%;
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 10px;
+      background: var(--green-light);
+      border-radius: 10px;
+      padding: 12px 12px;
+      border: 1px solid rgba(6,122,70,0.20);
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s, padding 0.3s, margin 0.3s;
+      max-height: 120px;
+    }
+    .cad-banner.dismissed {
+      max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin: 0;
+      pointer-events: none;
+    }
+    .cb-body { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+    .cb-dot-row { display: flex; align-items: center; gap: 7px; }
+    .cb-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--green-dark); flex-shrink: 0; }
+    .cb-text { font-size: 13px; font-weight: 700; color: var(--green-dark); }
+    .cb-sub { font-size: 12px; font-weight: 400; color: var(--green-dark); opacity: 0.85; }
+    .cb-sub span { font-weight: 700; text-decoration: underline; cursor: pointer; }
+    .cb-close { flex-shrink: 0; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0.55; margin-top: 1px; }
+    .cb-close:hover { opacity: 1; }
+    .cb-action { font-size: 12px; font-weight: 700; color: var(--dark-alt); text-decoration: underline; cursor: pointer; }
+
+    /* ── Drawer ── */
+    .drawer-overlay {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.42);
+      z-index: 300;
+      display: flex; align-items: flex-end;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.22s;
+    }
+    .drawer-overlay.open { opacity: 1; pointer-events: all; }
+    .drawer {
+      background: var(--white);
+      border-radius: 24px 24px 0 0;
+      width: 100%;
+      padding: 12px 16px 40px;
+      display: flex; flex-direction: column; gap: 12px;
+      max-height: 88%;
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.28s cubic-bezier(0.4,0,0.2,1);
+    }
+    .drawer::-webkit-scrollbar { display: none; }
+    .drawer-overlay.open .drawer { transform: translateY(0); }
+    .d-handle {
+      width: 36px; height: 4px; border-radius: 999px;
+      background: rgba(0,0,0,0.13);
+      align-self: center; margin-bottom: 2px;
+    }
+    .d-title {
+      font-family: 'Agrandir', 'Inter', sans-serif;
+      font-size: 22px; font-weight: 700; color: var(--dark); line-height: 1.2;
+    }
+    .d-sub { font-size: 13px; color: var(--dark-alt); line-height: 1.5; margin-top: -4px; }
+    .d-step-lbl {
+      font-size: 11px; font-weight: 800;
+      color: var(--dark-alt); text-transform: uppercase;
+      letter-spacing: 0.08em; margin-top: 2px;
+    }
+    .week-opt {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 13px 14px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      cursor: pointer;
+    }
+    .week-opt.sel { border-color: var(--green-dark); background: var(--green-light); }
+    .wo-date { font-size: 15px; font-weight: 700; color: var(--dark); }
+    .wo-cutoff { font-size: 12px; color: var(--dark-alt); margin-top: 2px; }
+    .wo-check {
+      width: 22px; height: 22px; border-radius: 6px;
+      border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .week-opt.sel .wo-check { background: var(--green-dark); border-color: var(--green-dark); color: #fff; }
+    .day-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+    .day-pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      font-size: 13px; font-weight: 700; color: var(--dark);
+      cursor: pointer;
+    }
+    .day-pill.sel { background: var(--dark); border-color: var(--dark); color: #fff; }
+
+    .btn-full {
+      width: 100%; padding: 14px;
+      border-radius: 12px;
+      font-size: 15px; font-weight: 700;
+      text-align: center; cursor: pointer;
+      transition: opacity 0.15s;
+      display: block;
+    }
+    .btn-full:active { opacity: 0.82; }
+    .btn-full:disabled { opacity: 0.32; pointer-events: none; }
+
+    /* ── Footer text ── */
+    .footer-note {
+      font-size: 12px;
+      color: var(--dark-alt);
+      text-align: center;
+      line-height: 1.5;
+      padding: 0 24px;
+    }
+    .footer-note a { color: var(--green-dark); text-decoration: underline; }
+
+    /* ── Bottom navigation bar ── */
+    .bottom-nav {
+      flex-shrink: 0;
+      background: var(--cream-2);
+      display: flex;
+      flex-direction: column;
+    }
+    .bottom-nav-divider {
+      height: 1px;
+      background: rgba(0,0,0,0.08);
+    }
+    .bottom-nav-bar {
+      height: 48px;
+      display: flex;
+      align-items: center;
+    }
+    .bn-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      gap: 0;
+      cursor: pointer;
+      height: 48px;
+    }
+    .bn-icon-wrap {
+      width: 48px; height: 24px;
+      border-radius: 999px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .bn-item.active .bn-icon-wrap { background: #BBF06A; }
+    .bn-label {
+      font-family: 'Roboto', 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: #656565;
+      text-align: center;
+      line-height: 16px;
+    }
+    .bn-item.active .bn-label { color: #232323; }
+    .home-indicator {
+      height: 34px;
+      background: var(--cream-2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .home-pill {
+      width: 134px; height: 5px;
+      background: #000;
+      border-radius: 10px;
+      margin-bottom: 8px;
+    }
+
+    /* ── Profile card ── */
+    .profile-card {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 16px;
+      gap: 24px;
+      background: var(--cream-1);
+      border-radius: 8px;
+      margin: 0 16px;
+    }
+    .profile-photo {
+      width: 82px; height: 82px;
+      border-radius: 999px;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .profile-initials {
+      font-family: 'Agrandir', 'Inter', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #232323;
+    }
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .profile-name {
+      font-family: 'Agrandir', 'Inter', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #232323;
+      line-height: 24px;
+    }
+    .profile-stats {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 28px;
+    }
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+    .stat-val {
+      font-family: 'Roboto', 'Inter', sans-serif;
+      font-size: 16px; font-weight: 700;
+      color: #232323; line-height: 24px;
+    }
+    .stat-lbl {
+      font-family: 'Roboto', 'Inter', sans-serif;
+      font-size: 12px; font-weight: 400;
+      color: #656565; line-height: 16px;
+      text-align: center;
+    }
+
+    /* ── Real settings rows (EFE9DE bg, Roboto, chevron) ── */
+    .srow-group {
+      margin: 0 16px;
+      display: flex;
+      flex-direction: column;
+    }
+    .srow {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 12px 8px;
+      gap: 8px;
+      background: var(--cream-1);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      cursor: pointer;
+      transition: opacity 0.12s;
+    }
+    .srow:active { opacity: 0.75; }
+    .srow:first-child { border-radius: 8px 8px 0 0; }
+    .srow:last-child  { border-radius: 0 0 8px 8px; border-bottom: none; }
+    .srow:only-child  { border-radius: 8px; }
+    .srow-ico {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px; flex-shrink: 0;
+    }
+    .srow-text {
+      flex: 1;
+      font-family: 'Roboto', 'Inter', sans-serif;
+      font-size: 16px; font-weight: 400;
+      color: #242424; line-height: 24px;
+    }
+    .srow-right {
+      font-family: 'Roboto', 'Inter', sans-serif;
+      font-size: 14px; font-weight: 400;
+      color: #232323;
+    }
+    .srow-chev {
+      width: 24px; height: 24px;
+      display: flex; align-items: center; justify-content: center;
+      color: #999; flex-shrink: 0;
+    }
+    .srow.hl { background: var(--green-light); }
+    .srow-action-btn {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 24px;
+      gap: 8px;
+      min-width: 88px;
+      height: 40px;
+      background: #232323;
+      border-radius: 8px;
+      font-family: 'Roboto', 'Inter', sans-serif;
+      font-size: 16px; font-weight: 700;
+      color: #fff; cursor: pointer;
+      white-space: nowrap;
+    }
+
+    /* mobile-plan banner */
+    .plan-banner {
+      margin: 0 16px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 12px 8px;
+      gap: 8px;
+      background: var(--cream-1);
+      border-radius: 8px;
+    }
+    .plan-banner-ico {
+      width: 24px; height: 24px;
+      font-size: 16px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .plan-banner-text {
+      flex: 1;
+      font-family: 'Roboto', 'Inter', sans-serif;
+      font-size: 16px; font-weight: 400;
+      color: #242424; line-height: 24px;
+    }
+
+    /* ── nav SVG icons ── */
+    .ni { width:22px;height:22px;display:block;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;fill:none; }
+    .bn-item .ni { stroke:#656565; }
+    .bn-item.active .ni { stroke:#232323; }
+  </style>
+</head>
+<body>
+
+<div class="proto-hint" id="hint">Tap the Profile tab to access Plan Settings</div>
+
+<div class="device">
+  <div class="screen" id="screen">
+
+    <!-- ════════════════════════════
+         VIEW 1 — PLAN SETTINGS
+         ════════════════════════════ -->
+    <div class="view active" id="v-settings">
+      <!-- Green status bar + nav -->
+      <div class="green-sb">
+        <span class="green-sb-time">9:41 AM</span>
+        <div class="green-sb-icons">
+          <svg width="15" height="10" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="4.5" y="4.5" width="3" height="6.5" rx="0.5"/><rect x="9" y="2" width="3" height="9" rx="0.5"/><rect x="13.5" y="0" width="3" height="11" rx="0.5"/></svg>
+          <svg width="14" height="10" viewBox="0 0 16 12" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M0.5 4C3.5 1.2 12.5 1.2 15.5 4" stroke-width="1.5"/><path d="M3 6.5c1.9-1.7 9.1-1.7 11 0" stroke-width="1.5"/><path d="M5.5 9c1.4-1 3.6-1 4.9 0" stroke-width="1.5"/><circle cx="8" cy="11" r="0.8" fill="currentColor"/></svg>
+          <div style="display:flex;align-items:center;gap:1px"><div style="width:22px;height:10px;border-radius:2px;border:0.8px solid rgba(255,255,255,0.5);padding:1.5px"><div style="width:100%;height:100%;background:#fff;border-radius:1px"></div></div></div>
+        </div>
+      </div>
+      <div class="green-nav">
+        <div style="width:24px"></div>
+        <div class="green-nav-title">Settings</div>
+        <div style="width:24px"></div>
+      </div>
+
+      <div class="scroll">
+        <div style="display:flex;flex-direction:column;padding:32px 16px;gap:32px;">
+
+          <!-- Profile card -->
+          <div class="profile-card">
+            <div class="profile-photo">
+              <span class="profile-initials">MW</span>
+            </div>
+            <div class="profile-info">
+              <div class="profile-name">Meghan Williams</div>
+              <div class="profile-stats">
+                <div class="stat-item">
+                  <div class="stat-val">0</div>
+                  <div class="stat-lbl">Boxes</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-val">$0</div>
+                  <div class="stat-lbl">Box Streak</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-val">$0</div>
+                  <div class="stat-lbl">Credit</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Settings rows -->
+          <div class="srow-group">
+            <div class="srow hl" onclick="navigate('v-plan')">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg></div>
+              <div class="srow-text" style="color:var(--green-dark);font-weight:600;">Plan settings</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="var(--green-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+              <div class="srow-text">Personal info</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+              <div class="srow-text">Benefits</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+              <div class="srow-text">Redeem promo code</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+              <div class="srow-text">Past orders</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><path d="M1 10h22"/></svg></div>
+              <div class="srow-text">Payment</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+              <div class="srow-text">Payment history</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+          </div>
+
+          <!-- Log out -->
+          <div class="srow-group">
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></div>
+              <div class="srow-text" style="color:var(--red);font-weight:700;text-decoration:underline;">Log out</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="bottom-nav">
+        <div class="bottom-nav-divider"></div>
+        <div class="bottom-nav-bar">
+          <div class="bn-item" onclick="switchTab('orders')">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <div class="bn-label">Home</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M3 2h18v4H3z"/><path d="M3 10h18v4H3z"/><path d="M3 18h18v4H3z"/><circle cx="7" cy="4" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="20" r="1.5" fill="currentColor"/></svg></div>
+            <div class="bn-label">MyMenu</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="bn-label">HelloFriends</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
+            <div class="bn-label">CookBook</div>
+          </div>
+          <div class="bn-item active">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="bn-label">Profile</div>
+          </div>
+        </div>
+        <div class="home-indicator"><div class="home-pill"></div></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════
+         VIEW 1b — PLAN SETTINGS
+         ════════════════════════════ -->
+    <div class="view" id="v-plan">
+      <!-- Green status bar -->
+      <div class="green-sb">
+        <span class="green-sb-time">9:41 AM</span>
+        <div class="green-sb-icons">
+          <svg width="15" height="10" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="4.5" y="4.5" width="3" height="6.5" rx="0.5"/><rect x="9" y="2" width="3" height="9" rx="0.5"/><rect x="13.5" y="0" width="3" height="11" rx="0.5"/></svg>
+          <div style="display:flex;align-items:center;gap:1px"><div style="width:22px;height:10px;border-radius:2px;border:0.8px solid rgba(255,255,255,0.5);padding:1.5px"><div style="width:100%;height:100%;background:#fff;border-radius:1px"></div></div></div>
+        </div>
+      </div>
+      <!-- Green nav bar -->
+      <div class="green-nav">
+        <button class="green-back" onclick="goBack()">
+          <svg width="10" height="17" viewBox="0 0 10 17" fill="none"><path d="M9 1L1.5 8.5 9 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="green-title">Plan settings</span>
+      </div>
+
+      <!-- Scrollable content -->
+      <div class="scroll">
+      <div class="content">
+
+        <!-- Meal preferences section -->
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--dark-alt);text-transform:uppercase;letter-spacing:0.8px;padding:0 2px;">Meal preferences</span>
+          <div class="srow-group">
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20A10 10 0 0012 2z"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg></div>
+              <div class="srow-text">Cuisine types</div>
+              <div class="srow-right" style="font-size:13px;color:var(--dark-alt);">All cuisines</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Box size section -->
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--dark-alt);text-transform:uppercase;letter-spacing:0.8px;padding:0 2px;">Box size</span>
+          <div class="srow-group">
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+              <div class="srow-text">Number of people</div>
+              <div class="srow-right" style="font-size:13px;color:var(--dark-alt);">2 people</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></div>
+              <div class="srow-text">Number of meals</div>
+              <div class="srow-right" style="font-size:13px;color:var(--dark-alt);">3 meals</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Delivery section -->
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <span style="font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--dark-alt);text-transform:uppercase;letter-spacing:0.8px;padding:0 2px;">Delivery</span>
+          <div class="srow-group">
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+              <div class="srow-text">Delivery window</div>
+              <div class="srow-right" style="font-size:13px;color:var(--dark-alt);">Wednesday</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <div class="srow">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#242424" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div class="srow-text">Delivery address</div>
+              <div class="srow-right" style="font-size:13px;color:var(--dark-alt);">123 Main St</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="#999" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <div class="srow hl" onclick="navigate('v-freq')">
+              <div class="srow-ico"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 014-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg></div>
+              <div class="srow-text" style="color:var(--green-dark);font-weight:600;">Frequency</div>
+              <div class="srow-right" style="color:var(--green-dark);font-weight:700;font-size:14px;margin-right:4px;">Weekly</div>
+              <div class="srow-chev"><svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M1 1l6 5.5L1 12" stroke="var(--green-dark)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /content -->
+      </div><!-- /scroll -->
+    </div><!-- /v-plan -->
+
+    <!-- ════════════════════════════
+         VIEW 2 — FREQUENCY SELECTOR
+         ════════════════════════════ -->
+    <div class="view" id="v-freq">
+      <div class="green-sb">
+        <span class="green-sb-time">9:41 AM</span>
+        <div class="green-sb-icons">
+          <svg width="15" height="10" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="4.5" y="4.5" width="3" height="6.5" rx="0.5"/><rect x="9" y="2" width="3" height="9" rx="0.5"/><rect x="13.5" y="0" width="3" height="11" rx="0.5"/></svg>
+          <div style="display:flex;align-items:center;gap:1px"><div style="width:22px;height:10px;border-radius:2px;border:0.8px solid rgba(255,255,255,0.5);padding:1.5px"><div style="width:100%;height:100%;background:#fff;border-radius:1px"></div></div></div>
+        </div>
+      </div>
+      <div class="green-nav">
+        <div style="cursor:pointer;color:#fff;display:flex;align-items:center;" onclick="goBack()">
+          <svg width="8" height="13" viewBox="0 0 8 13" fill="none"><path d="M7 1L1 6.5L7 12" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="green-nav-title">Delivery Frequency</div>
+        <div style="width:24px"></div>
+      </div>
+
+      <div class="scroll scroll-white">
+        <p class="freq-intro">Choose how often you'd like your HelloFresh box. Changes apply from your next unlocked delivery.</p>
+        <div class="freq-opts">
+          <div class="freq-opt sel" id="opt-weekly" onclick="selectFreq('weekly')">
+            <div class="radio-ring"><div class="radio-dot"></div></div>
+            <div><div class="fo-title">Weekly</div><div class="fo-desc">A box every week. Skip individual deliveries any time.</div></div>
+          </div>
+          <div class="freq-opt" id="opt-biweekly" onclick="selectFreq('biweekly')">
+            <div class="radio-ring"><div class="radio-dot"></div></div>
+            <div>
+              <div class="fo-title">Every 2 weeks</div>
+              <div class="fo-desc">Alternating weeks are automatically skipped. Unskip any week directly from your orders.</div>
+              <div class="pop-badge">✦ Popular</div>
+            </div>
+          </div>
+          <div class="freq-opt" id="opt-monthly" onclick="selectFreq('monthly')">
+            <div class="radio-ring"><div class="radio-dot"></div></div>
+            <div><div class="fo-title">Monthly</div><div class="fo-desc">One box every 4 weeks. Add extra boxes whenever you need them.</div></div>
+          </div>
+        </div>
+        <div class="freq-footer">
+          <button class="btn-full btn-dark" id="save-btn" onclick="saveFreq()">Save — every 2 weeks</button>
+          <button class="btn-full btn-outline" onclick="goBack()">Cancel</button>
+          <p class="hint-text">Changes apply from <strong>Wed 2 Jul</strong> · Your delivery day (Wed) is kept</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════
+         VIEW 3 — BI-WEEKLY ORDERS
+         ════════════════════════════ -->
+    <div class="view" id="v-biweekly">
+      <div class="sb">
+        <span class="sb-time">9:41</span>
+        <div class="sb-icons">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="4.5" y="4.5" width="3" height="6.5" rx="0.5"/><rect x="9" y="2" width="3" height="9" rx="0.5"/><rect x="13.5" y="0" width="3" height="11" rx="0.5"/></svg>
+          <div style="display:flex;align-items:center;gap:1px"><div style="width:24px;height:11px;border-radius:3px;border:1px solid rgba(26,26,26,0.35);padding:1.5px"><div style="width:100%;height:100%;background:var(--dark);border-radius:1.5px"></div></div><div style="width:2px;height:5px;background:rgba(26,26,26,0.3);border-radius:999px"></div></div>
+        </div>
+      </div>
+      <div class="app-header">
+        <div class="hf-logo">
+          <div class="hf-logo-leaf"></div>
+          <div class="hf-logo-text"><span>HELLO</span><span>FRESH</span></div>
+        </div>
+        <div class="header-actions">
+          <div class="hdr-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <div class="content">
+          <div class="cad-banner" id="cad-banner-biweekly">
+            <div class="cb-body">
+              <div class="cb-dot-row"><div class="cb-dot"></div><span class="cb-text">You're all set for every 2 weeks!</span></div>
+              <div class="cb-sub">Update your frequency at any time in <span onclick="switchTab('settings')">Plan Settings</span>.</div>
+            </div>
+            <div class="cb-close" onclick="dismissBanner('cad-banner-biweekly')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="var(--green-dark)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          </div>
+
+          <!-- UPCOMING — active delivery -->
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head">Upcoming orders</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Tue, Jun 25</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Jun 22 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal1.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Creamy Tuscan Chicken</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal2.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Pesto Pasta Salad</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- NEXT WEEK — auto-skipped -->
+          <div id="skipped-week-section" style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head" id="skipped-week-head" style="opacity:0.5">Next week · 30 Jun – 6 Jul</div>
+            <div style="height:10px"></div>
+            <div class="del-card" id="skipped-week-card">
+              <div class="del-card-head">
+                <div class="del-date cadence-skip">Tue, Jul 2</div>
+                <span class="badge badge-skipped">Skipped</span>
+              </div>
+              <p class="del-sub">Automatically skipped — bi-weekly cadence</p>
+              <div class="unskip-banner" onclick="unskipWeek()">
+                <span class="ub-text">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                  Get a box this week
+                </span>
+                <span class="ub-arrow">›</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7–13 Jul — active -->
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head" style="opacity:0.5">7–13 Jul</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Tue, Jul 9</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Jul 6 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal3.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Lemon Butter Pasta</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal4.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Herb-Crusted Salmon</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 14–20 Jul — auto-skipped -->
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head" style="opacity:0.5">14–20 Jul</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date cadence-skip">Tue, Jul 16</div>
+                <span class="badge badge-skipped">Skipped</span>
+              </div>
+              <p class="del-sub">Automatically skipped — bi-weekly cadence</p>
+              <div class="unskip-banner">
+                <span class="ub-text">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                  Get a box this week
+                </span>
+                <span class="ub-arrow">›</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 21–27 Jul — scheduled -->
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head" style="opacity:0.5">21–27 Jul</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Tue, Jul 23</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Jul 20 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal5.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Smoky Aubergine Curry</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal6.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Courgette Fritters</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 28 Jul – 3 Aug — auto-skipped -->
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head" style="opacity:0.5">28 Jul – 3 Aug</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date cadence-skip">Tue, Jul 30</div>
+                <span class="badge badge-skipped">Skipped</span>
+              </div>
+              <p class="del-sub">Automatically skipped — bi-weekly cadence</p>
+              <div class="unskip-banner">
+                <span class="ub-text">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                  Get a box this week
+                </span>
+                <span class="ub-arrow">›</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="bottom-nav-divider"></div>
+        <div class="bottom-nav-bar">
+          <div class="bn-item active" onclick="switchTab('orders')">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <div class="bn-label">Home</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M3 2h18v4H3z"/><path d="M3 10h18v4H3z"/><path d="M3 18h18v4H3z"/><circle cx="7" cy="4" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="20" r="1.5" fill="currentColor"/></svg></div>
+            <div class="bn-label">MyMenu</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="bn-label">HelloFriends</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
+            <div class="bn-label">CookBook</div>
+          </div>
+          <div class="bn-item" onclick="switchTab('settings')">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="bn-label">Profile</div>
+          </div>
+        </div>
+        <div class="home-indicator"><div class="home-pill"></div></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════
+         VIEW 4 — AFTER UNSKIP
+         ════════════════════════════ -->
+    <div class="view" id="v-biweekly-unskipped">
+      <div class="sb">
+        <span class="sb-time">9:41</span>
+        <div class="sb-icons">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="4.5" y="4.5" width="3" height="6.5" rx="0.5"/><rect x="9" y="2" width="3" height="9" rx="0.5"/><rect x="13.5" y="0" width="3" height="11" rx="0.5"/></svg>
+          <div style="display:flex;align-items:center;gap:1px"><div style="width:24px;height:11px;border-radius:3px;border:1px solid rgba(26,26,26,0.35);padding:1.5px"><div style="width:100%;height:100%;background:var(--dark);border-radius:1.5px"></div></div><div style="width:2px;height:5px;background:rgba(26,26,26,0.3);border-radius:999px"></div></div>
+        </div>
+      </div>
+      <div class="app-header">
+        <div class="hf-logo">
+          <div class="hf-logo-leaf"></div>
+          <div class="hf-logo-text"><span>HELLO</span><span>FRESH</span></div>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <div class="content">
+          <div class="cad-banner" id="cad-banner-biweekly-unskipped">
+            <div class="cb-body">
+              <div class="cb-dot-row"><div class="cb-dot"></div><span class="cb-text">You're all set for every 2 weeks!</span></div>
+              <div class="cb-sub">Update your frequency at any time in <span onclick="switchTab('settings')">Plan Settings</span>.</div>
+            </div>
+            <div class="cb-close" onclick="dismissBanner('cad-banner-biweekly-unskipped')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="var(--green-dark)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          </div>
+
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head">Upcoming orders</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Tue, Jun 25</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Jun 22 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal7.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Creamy Tuscan Chicken</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal8.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Pesto Pasta Salad</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Was skipped, now active -->
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head">Next week · 30 Jun – 6 Jul</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Tue, Jul 2</div>
+              </div>
+              <p class="del-sub">Cutoff Mon Jun 30 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal7.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Smoky BBQ Tacos</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal8.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Spring Veggie Stir Fry</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head" style="opacity:0.5">7–13 Jul</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Tue, Jul 9</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Jul 6 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal3.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Lemon Butter Pasta</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal4.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Herb-Crusted Salmon</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 14–20 Jul — auto-skipped (cadence resumes) -->
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head" style="opacity:0.5">14–20 Jul</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date cadence-skip">Tue, Jul 16</div>
+                <span class="badge badge-skipped">Skipped</span>
+              </div>
+              <p class="del-sub">Automatically skipped — bi-weekly cadence</p>
+              <div class="unskip-banner">
+                <span class="ub-text">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                  Get a box this week
+                </span>
+                <span class="ub-arrow">›</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 21–27 Jul — scheduled -->
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head" style="opacity:0.5">21–27 Jul</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Tue, Jul 23</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Jul 20 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal5.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Smoky Aubergine Curry</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal6.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Courgette Fritters</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- 28 Jul – 3 Aug — auto-skipped -->
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head" style="opacity:0.5">28 Jul – 3 Aug</div>
+            <div style="height:10px"></div>
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date cadence-skip">Tue, Jul 30</div>
+                <span class="badge badge-skipped">Skipped</span>
+              </div>
+              <p class="del-sub">Automatically skipped — bi-weekly cadence</p>
+              <div class="unskip-banner">
+                <span class="ub-text">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                  Get a box this week
+                </span>
+                <span class="ub-arrow">›</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="bottom-nav-divider"></div>
+        <div class="bottom-nav-bar">
+          <div class="bn-item active" onclick="switchTab('orders')">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <div class="bn-label">Home</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M3 2h18v4H3z"/><path d="M3 10h18v4H3z"/><path d="M3 18h18v4H3z"/><circle cx="7" cy="4" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="20" r="1.5" fill="currentColor"/></svg></div>
+            <div class="bn-label">MyMenu</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="bn-label">HelloFriends</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
+            <div class="bn-label">CookBook</div>
+          </div>
+          <div class="bn-item" onclick="switchTab('settings')">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="bn-label">Profile</div>
+          </div>
+        </div>
+        <div class="home-indicator"><div class="home-pill"></div></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════
+         VIEW 5 — MONTHLY ORDERS
+         ════════════════════════════ -->
+    <div class="view" id="v-monthly">
+      <div class="sb">
+        <span class="sb-time">9:41</span>
+        <div class="sb-icons">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="4.5" y="4.5" width="3" height="6.5" rx="0.5"/><rect x="9" y="2" width="3" height="9" rx="0.5"/><rect x="13.5" y="0" width="3" height="11" rx="0.5"/></svg>
+          <div style="display:flex;align-items:center;gap:1px"><div style="width:24px;height:11px;border-radius:3px;border:1px solid rgba(26,26,26,0.35);padding:1.5px"><div style="width:100%;height:100%;background:var(--dark);border-radius:1.5px"></div></div><div style="width:2px;height:5px;background:rgba(26,26,26,0.3);border-radius:999px"></div></div>
+        </div>
+      </div>
+      <div class="app-header">
+        <div class="hf-logo">
+          <div class="hf-logo-leaf"></div>
+          <div class="hf-logo-text"><span>HELLO</span><span>FRESH</span></div>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <div class="content">
+          <div class="cad-banner" id="cad-banner-monthly">
+            <div class="cb-body">
+              <div class="cb-dot-row"><div class="cb-dot"></div><span class="cb-text">You're all set for monthly delivery!</span></div>
+              <div class="cb-sub">Update your frequency at any time in <span onclick="switchTab('settings')">Plan Settings</span>.</div>
+            </div>
+            <div class="cb-close" onclick="dismissBanner('cad-banner-monthly')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="var(--green-dark)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          </div>
+
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head">Upcoming orders</div>
+            <div style="height:10px"></div>
+
+            <!-- Next delivery — full card -->
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Wed, Jun 25</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Jun 22 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal1.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Creamy Tuscan Chicken</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal2.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Pesto Pasta Salad</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+
+            <!-- Add extra between Jun 25 – Jul 23 -->
+            <div style="height:8px"></div>
+            <div id="ae-card-slot-1"></div>
+            <div class="add-extra-sm" id="ae-strip-1" onclick="openDrawer(1)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              <span class="ae-sm-label">Add extra box between 25 Jun – 23 Jul</span>
+            </div>
+            <div style="height:8px"></div>
+
+            <!-- Second delivery — full card -->
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Wed, Jul 23</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Jul 20 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal3.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Teriyaki Salmon Bowl</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal4.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Smoky Bean Tacos</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+
+            <!-- Add extra between Jul 23 – Aug 20 -->
+            <div style="height:8px"></div>
+                        <div id="ae-card-slot-2"></div>
+            <div class="add-extra-sm" id="ae-strip-2" onclick="openDrawer(2)">              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              <span class="ae-sm-label">Add extra box between 23 Jul – 20 Aug</span>
+            </div>
+            <div style="height:8px"></div>
+
+            <!-- Third delivery — full card -->
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Wed, Aug 20</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Aug 17 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal5.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Mushroom Risotto</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal6.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Thai Green Curry</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+          </div>
+
+          <p class="footer-note">Monthly boxes are charged on confirmation. Extra boxes are one-off charges.</p>
+        </div>
+      </div>
+
+      <!-- Add Extra Box drawer -->
+      <div class="drawer-overlay" id="drawer-overlay" onclick="if(event.target===this)closeDrawer()">
+        <div class="drawer">
+          <div class="d-handle"></div>
+          <div class="d-title">Add extra boxes</div>
+          <p class="d-sub">Select one or more weeks between your next two deliveries (25 Jun – 23 Jul). Each adds a one-off box.</p>
+
+          <div class="d-step-lbl">Select weeks</div>
+          <div class="week-opt" id="wo1" onclick="selectWeek('wo1')">
+            <div><div class="wo-date">Week of 2 Jul</div><div class="wo-cutoff">Cutoff Sun 29 Jun</div></div>
+            <div class="wo-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5L8.5 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="week-opt" id="wo2" onclick="selectWeek('wo2')">
+            <div><div class="wo-date">Week of 9 Jul</div><div class="wo-cutoff">Cutoff Sun 6 Jul</div></div>
+            <div class="wo-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5L8.5 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+          <div class="week-opt" id="wo3" onclick="selectWeek('wo3')">
+            <div><div class="wo-date">Week of 16 Jul</div><div class="wo-cutoff">Cutoff Sun 13 Jul</div></div>
+            <div class="wo-check"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1.5 5l2.5 2.5L8.5 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+
+          <p class="d-sub" style="font-size:12px;margin-top:-4px;">Extra boxes will deliver on your usual day (Wednesday).</p>
+
+          <button class="btn-full btn-dark" id="confirm-btn" disabled onclick="confirmExtra()">Confirm extra box</button>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="bottom-nav-divider"></div>
+        <div class="bottom-nav-bar">
+          <div class="bn-item active" onclick="switchTab('orders')">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <div class="bn-label">Home</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M3 2h18v4H3z"/><path d="M3 10h18v4H3z"/><path d="M3 18h18v4H3z"/><circle cx="7" cy="4" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="20" r="1.5" fill="currentColor"/></svg></div>
+            <div class="bn-label">MyMenu</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="bn-label">HelloFriends</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
+            <div class="bn-label">CookBook</div>
+          </div>
+          <div class="bn-item" onclick="switchTab('settings')">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="bn-label">Profile</div>
+          </div>
+        </div>
+        <div class="home-indicator"><div class="home-pill"></div></div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════
+         VIEW 6 — MONTHLY CONFIRMED
+         ════════════════════════════ -->
+    <div class="view" id="v-monthly-confirmed">
+      <div class="sb">
+        <span class="sb-time">9:41</span>
+        <div class="sb-icons">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor"><rect x="0" y="7" width="3" height="4" rx="0.5"/><rect x="4.5" y="4.5" width="3" height="6.5" rx="0.5"/><rect x="9" y="2" width="3" height="9" rx="0.5"/><rect x="13.5" y="0" width="3" height="11" rx="0.5"/></svg>
+          <div style="display:flex;align-items:center;gap:1px"><div style="width:24px;height:11px;border-radius:3px;border:1px solid rgba(26,26,26,0.35);padding:1.5px"><div style="width:100%;height:100%;background:var(--dark);border-radius:1.5px"></div></div><div style="width:2px;height:5px;background:rgba(26,26,26,0.3);border-radius:999px"></div></div>
+        </div>
+      </div>
+      <div class="app-header">
+        <div class="hf-logo">
+          <div class="hf-logo-leaf"></div>
+          <div class="hf-logo-text"><span>HELLO</span><span>FRESH</span></div>
+        </div>
+      </div>
+
+      <div class="scroll">
+        <div class="content">
+          <div class="cad-banner" id="cad-banner-monthly-confirmed">
+            <div class="cb-body">
+              <div class="cb-dot-row"><div class="cb-dot"></div><span class="cb-text">You're all set for monthly delivery!</span></div>
+              <div class="cb-sub">Update your frequency at any time in <span onclick="switchTab('settings')">Plan Settings</span>.</div>
+            </div>
+            <div class="cb-close" onclick="dismissBanner('cad-banner-monthly-confirmed')"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 1l12 12M13 1L1 13" stroke="var(--green-dark)" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          </div>
+
+          <div style="width:100%;display:flex;flex-direction:column;gap:0">
+            <div class="section-head">Upcoming orders</div>
+            <div style="height:10px"></div>
+
+            <!-- Next delivery — full card -->
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Wed, Jun 25</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Jun 22 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal1.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Creamy Tuscan Chicken</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal2.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Pesto Pasta Salad</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+
+            <!-- Newly added extra box — full card with badge -->
+            <div style="height:8px"></div>
+            <div class="del-card" style="border:2px solid var(--green-dark);">
+              <div class="del-card-head">
+                <div class="del-date" id="confirmed-date" style="color:var(--green-dark)">Wed, 9 Jul</div>
+                <span class="badge badge-extra">✦ Extra box</span>
+              </div>
+              <p class="del-sub">Extra box · Choose recipes · Cutoff Sun 6 Jul</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile" style="background:var(--green-light);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-size:28px;">🍳</span>
+                </div>
+                <div class="recipe-tile" style="background:var(--green-light);border-radius:10px;display:flex;align-items:center;justify-content:center;">
+                  <span style="font-size:28px;">🥗</span>
+                </div>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-green" style="margin:0;flex:1;">Choose recipes</button>
+                <button class="card-btn btn-dark" style="margin:0;flex:1;">Reschedule</button>
+              </div>
+            </div>
+
+            <!-- Add extra between 9 Jul - 23 Jul -->
+            <div style="height:8px"></div>
+            <div class="add-extra-sm">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              <span class="ae-sm-label">Add extra box between 9 Jul – 23 Jul</span>
+            </div>
+            <div style="height:8px"></div>
+
+            <!-- Third delivery - full card -->
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Wed, Jul 23</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Jul 20 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal3.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Teriyaki Salmon Bowl</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal4.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Smoky Bean Tacos</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+
+            <!-- Add extra between 23 Jul - 20 Aug -->
+            <div style="height:8px"></div>
+            <div class="add-extra-sm">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green-dark)" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg>
+              <span class="ae-sm-label">Add extra box between 23 Jul – 20 Aug</span>
+            </div>
+            <div style="height:8px"></div>
+
+            <!-- Fourth delivery - full card -->
+            <div class="del-card">
+              <div class="del-card-head">
+                <div class="del-date">Wed, Aug 20</div>
+              </div>
+              <p class="del-sub">Cutoff Sun Aug 17 · 2 people</p>
+              <div class="recipe-grid">
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal5.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Mushroom Risotto</div>
+                </div>
+                <div class="recipe-tile">
+                  <div class="recipe-img"><img src="meal6.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div>
+                  <div class="recipe-label">Thai Green Curry</div>
+                </div>
+              </div>
+              <div style="margin:0 14px 6px;">
+                <button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button>
+              </div>
+              <div style="display:flex;gap:8px;margin:0 14px 14px;">
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>
+                <button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>
+              </div>
+            </div>
+          </div>
+
+          <p class="footer-note">Monthly boxes are charged on confirmation. Extra boxes are one-off charges.</p>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="bottom-nav-divider"></div>
+        <div class="bottom-nav-bar">
+          <div class="bn-item active" onclick="switchTab('orders')">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <div class="bn-label">Home</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M3 2h18v4H3z"/><path d="M3 10h18v4H3z"/><path d="M3 18h18v4H3z"/><circle cx="7" cy="4" r="1.5" fill="currentColor"/><circle cx="7" cy="12" r="1.5" fill="currentColor"/><circle cx="7" cy="20" r="1.5" fill="currentColor"/></svg></div>
+            <div class="bn-label">MyMenu</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="bn-label">HelloFriends</div>
+          </div>
+          <div class="bn-item">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></div>
+            <div class="bn-label">CookBook</div>
+          </div>
+          <div class="bn-item" onclick="switchTab('settings')">
+            <div class="bn-icon-wrap"><svg class="ni" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+            <div class="bn-label">Profile</div>
+          </div>
+        </div>
+        <div class="home-indicator"><div class="home-pill"></div></div>
+      </div>
+    </div>
+
+  </div><!-- /screen -->
+</div><!-- /device -->
+
+<script>
+  const hints = {
+    'v-settings':           'Tap Plan Settings to explore your plan',
+    'v-plan':               'Tap "Frequency" to change your delivery cadence',
+    'v-freq':               'Select a cadence and tap Save',
+    'v-biweekly':           'Tap "Get a box this week" on the skipped delivery',
+    'v-biweekly-unskipped': 'Tap "See monthly view" to continue',
+    'v-monthly':            'Tap "+ Add an extra box in between" to open the drawer',
+    'v-monthly-confirmed':  'Flow complete — extra boxes confirmed in the ledger',
+  };
+
+  const navHistory = [];
+  let current = 'v-settings';
+
+  function dismissBanner(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('dismissed');
+  }
+
+  function showView(id) {
+    const target = document.getElementById(id);
+    if (!target) return;
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    target.classList.add('active');
+    current = id;
+    document.getElementById('hint').textContent = hints[id] || '';
+  }
+
+  function navigate(id) {
+    if (id === current) return;
+    navHistory.push(current);
+    showView(id);
+  }
+
+  function goBack() {
+    if (!navHistory.length) return;
+    showView(navHistory.pop());
+  }
+
+  const tabRoots = {
+    settings: 'v-settings',
+    orders:   'v-biweekly',
+  };
+  function switchTab(tab) {
+    const id = tabRoots[tab];
+    if (!id) return;
+    navHistory.length = 0;
+    showView(id);
+  }
+
+  // Frequency selector
+  let selFreq = 'weekly';
+  const freqLabels  = { weekly: 'weekly', biweekly: 'every 2 weeks', monthly: 'monthly' };
+  const freqTargets = { weekly: 'v-biweekly', biweekly: 'v-biweekly', monthly: 'v-monthly' };
+
+  function selectFreq(f) {
+    selFreq = f;
+    ['weekly','biweekly','monthly'].forEach(k =>
+      document.getElementById('opt-' + k).classList.toggle('sel', k === f)
+    );
+    document.getElementById('save-btn').textContent = 'Save — ' + freqLabels[f];
+  }
+
+  function saveFreq() { navigate(freqTargets[selFreq]); }
+
+  // Drawer — multi-select weeks
+  const selWeeks = new Set();
+
+  // Per-slot state: which weeks have already been added
+  const slotAdded = { 1: new Set(), 2: new Set() };
+  let activeSlot = 1;
+
+  // All 3 available week keys per slot (both slots share the same 3 skippable weeks for prototype purposes)
+  const ALL_WEEKS = ['wo1', 'wo2', 'wo3'];
+
+  function stripLabel(slot) {
+    const remaining = ALL_WEEKS.filter(w => !slotAdded[slot].has(w)).length;
+    if (remaining === 2) return 'Add another extra box';
+    if (remaining === 1) return 'Add one more extra box';
+    return '';
+  }
+
+  function updateStrip(slot) {
+    const strip = document.getElementById('ae-strip-' + slot);
+    const remaining = ALL_WEEKS.filter(w => !slotAdded[slot].has(w)).length;
+    if (!strip) return;
+    if (remaining === 0) {
+      // All weeks filled — replace strip with "Switch to weekly" CTA
+      strip.outerHTML =
+        '<div id="ae-strip-' + slot + '" onclick="navigate(\'v-freq\')" style="' +
+        'width:100%;display:flex;align-items:center;justify-content:center;gap:8px;' +
+        'padding:11px 14px;border-radius:10px;border:1.5px solid var(--dark-alt);' +
+        'cursor:pointer;background:transparent;">' +
+        '<span style="font-size:13px;font-weight:700;color:var(--dark-alt);">Switch back to weekly delivery</span>' +
+        '</div>';
+    } else {
+      // Update label
+      strip.querySelector('.ae-sm-label').textContent = stripLabel(slot);
+    }
+  }
+
+  function openDrawer(slot) {
+    activeSlot = slot || 1;
+    selWeeks.clear();
+    // Show only weeks not yet added for this slot; hide already-added ones
+    ALL_WEEKS.forEach(w => {
+      const el = document.getElementById(w);
+      el.classList.remove('sel');
+      el.style.display = slotAdded[activeSlot].has(w) ? 'none' : '';
+    });
+    document.getElementById('confirm-btn').disabled = true;
+    updateConfirmBtn();
+    const o = document.getElementById('drawer-overlay');
+    o.style.display = 'flex';
+    requestAnimationFrame(() => o.classList.add('open'));
+  }
+
+  function closeDrawer() {
+    const o = document.getElementById('drawer-overlay');
+    o.classList.remove('open');
+    setTimeout(() => { o.style.display = 'none'; }, 300);
+  }
+
+  const weekDates = { wo1: 'Wed, 2 Jul', wo2: 'Wed, 9 Jul', wo3: 'Wed, 16 Jul' };
+
+  function selectWeek(id) {
+    if (selWeeks.has(id)) {
+      selWeeks.delete(id);
+      document.getElementById(id).classList.remove('sel');
+    } else {
+      selWeeks.add(id);
+      document.getElementById(id).classList.add('sel');
+    }
+    updateConfirmBtn();
+  }
+
+  function updateConfirmBtn() {
+    const btn = document.getElementById('confirm-btn');
+    const n = selWeeks.size;
+    if (n === 0) {
+      btn.disabled = true;
+      btn.textContent = 'Confirm extra box';
+    } else {
+      btn.disabled = false;
+      btn.textContent = n === 1 ? 'Confirm 1 extra box' : 'Confirm ' + n + ' extra boxes';
+    }
+  }
+
+  function selectDay(el) {
+    document.querySelectorAll('.day-pill').forEach(p => p.classList.remove('sel'));
+    el.classList.add('sel');
+  }
+
+  function unskipWeek() {
+    const card = document.getElementById('skipped-week-card');
+    const head = document.getElementById('skipped-week-head');
+    card.innerHTML =
+      '<div class="del-card-head"><div class="del-date">Tue, Jul 2</div></div>' +
+      '<p class="del-sub">Cutoff Mon Jun 30 · 2 people</p>' +
+      '<div class="recipe-grid">' +
+        '<div class="recipe-tile"><div class="recipe-img"><img src="meal7.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div><div class="recipe-label">Smoky BBQ Tacos</div></div>' +
+        '<div class="recipe-tile"><div class="recipe-img"><img src="meal8.jpg" style="width:100%;height:100%;object-fit:cover;" alt=""></div><div class="recipe-label">Pesto Pasta Salad</div></div>' +
+      '</div>' +
+      '<div style="margin:0 14px 6px;"><button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button></div>' +
+      '<div style="display:flex;gap:8px;margin:0 14px 14px;">' +
+        '<button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>' +
+        '<button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>' +
+      '</div>';
+    head.style.opacity = '1';
+    card.classList.add('card-reveal');
+    card.addEventListener('animationend', () => card.classList.remove('card-reveal'), {once: true});
+  }
+
+  const extraWeekData = {
+    wo1: { date: 'Wed, 2 Jul',  cutoff: 'Fri 27 Jun', meals: [['meal3.jpg','Teriyaki Salmon Bowl'],['meal4.jpg','Smoky Bean Tacos']] },
+    wo2: { date: 'Wed, 9 Jul',  cutoff: 'Fri 4 Jul',  meals: [['meal5.jpg','Mushroom Risotto'],    ['meal6.jpg','Thai Green Curry']] },
+    wo3: { date: 'Wed, 16 Jul', cutoff: 'Fri 11 Jul', meals: [['meal7.jpg','Smoky BBQ Tacos'],     ['meal8.jpg','Classic Beef Burger']] },
+  };
+
+  function buildExtraCard(wk) {
+    const d = extraWeekData[wk];
+    const card = document.createElement('div');
+    card.className = 'del-card card-reveal';
+    card.style.marginBottom = '8px';
+    card.innerHTML =
+      '<div class="del-card-head">' +
+        '<div class="del-date">' + d.date + '</div>' +
+        '<span class="badge badge-extra">&#10022; Extra box</span>' +
+      '</div>' +
+      '<p class="del-sub">Cutoff ' + d.cutoff + ' · 2 people</p>' +
+      '<div class="recipe-grid">' +
+        '<div class="recipe-tile"><img src="' + d.meals[0][0] + '" style="width:100%;height:100%;object-fit:cover;" alt=""><div class="recipe-label">' + d.meals[0][1] + '</div></div>' +
+        '<div class="recipe-tile"><img src="' + d.meals[1][0] + '" style="width:100%;height:100%;object-fit:cover;" alt=""><div class="recipe-label">' + d.meals[1][1] + '</div></div>' +
+      '</div>' +
+      '<div style="margin:0 14px 6px;"><button class="card-btn btn-dark" style="margin:0;width:100%;">Select meals</button></div>' +
+      '<div style="display:flex;gap:8px;margin:0 14px 14px;">' +
+        '<button class="card-btn btn-outline" style="margin:0;flex:1;">Reschedule</button>' +
+        '<button class="card-btn btn-outline" style="margin:0;flex:1;">Skip</button>' +
+      '</div>';
+    return card;
+  }
+
+  function confirmExtra() {
+    const ordered = ALL_WEEKS.filter(w => selWeeks.has(w));
+    closeDrawer();
+    setTimeout(() => {
+      const slot = document.getElementById('ae-card-slot-' + activeSlot);
+      if (!slot) return;
+      ordered.forEach(wk => {
+        slotAdded[activeSlot].add(wk);
+        const card = buildExtraCard(wk);
+        slot.appendChild(card);
+        card.addEventListener('animationend', () => card.classList.remove('card-reveal'), {once: true});
+      });
+      updateStrip(activeSlot);
+    }, 320);
+  }
+</script>
+</body>
+</html>

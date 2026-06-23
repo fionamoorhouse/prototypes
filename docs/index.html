@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fiona's Prototypes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #F5F4F0;
+      min-height: 100vh;
+      padding: 48px 24px 80px;
+      color: #1A1A1A;
+    }
+    .header {
+      max-width: 800px;
+      margin: 0 auto 48px;
+    }
+    .header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 6px;
+    }
+    .header p {
+      font-size: 15px;
+      color: #666;
+    }
+    .grid {
+      max-width: 800px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #E5E2DB;
+      padding: 24px;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: box-shadow 0.15s, transform 0.15s;
+    }
+    .card:hover {
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      transform: translateY(-2px);
+    }
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #067A46;
+      background: #DEF5DB;
+      border-radius: 6px;
+      padding: 3px 8px;
+      width: fit-content;
+    }
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.5;
+    }
+    .card-arrow {
+      margin-top: auto;
+      font-size: 13px;
+      font-weight: 600;
+      color: #067A46;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .tag-pm { color: #1A5276; background: #D6EAF8; }
+    .tag-design { color: #6C3483; background: #E8DAEF; }
+    .divider {
+      max-width: 800px;
+      margin: 32px auto 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Prototypes</h1>
+    <p>Interactive prototypes by Fiona Lucas - HelloFresh Consumer Core</p>
+  </div>
+
+  <div class="divider">Product</div>
+  <div class="grid">
+    <a class="card" href="cadency/index.html">
+      <div class="card-tag tag-pm">Cadency</div>
+      <div class="card-title">Subscription Cadence Flexibility</div>
+      <div class="card-desc">Bi-weekly and monthly delivery settings. Covers the Plan Settings entry point, frequency picker, and order views with add-extra-box flow.</div>
+      <div class="card-arrow">Open prototype &rarr;</div>
+    </a>
+  </div>
+
+  <div class="divider">Design</div>
+  <div class="grid">
+    <a class="card" href="app/">
+      <div class="card-tag tag-design">Claude Design</div>
+      <div class="card-title">Cookbook, RAF &amp; Viral</div>
+      <div class="card-desc">Hellofresh Cookbook, Refer-a-Friend, Dinner Decision Flywheel, and Viral Growth concept prototypes.</div>
+      <div class="card-arrow">Open prototypes &rarr;</div>
+    </a>
+  </div>
+</body>
+</html>
