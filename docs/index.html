@@ -204,14 +204,26 @@
         <div class="nav-dot" style="background:#96DC14;"></div>
         <div class="nav-label">Cadency</div>
       </div>
-    </div>
-
-    <div class="sidebar-section">
-      <div class="sidebar-section-label">Orders</div>
       <div class="nav-item" onclick="load('address')" id="nav-address">
         <div class="nav-dot" style="background:#7B8CDE;"></div>
         <div class="nav-label">Flexible Address Management</div>
       </div>
+      <div class="nav-item" onclick="load('ultimate-unpause')" id="nav-ultimate-unpause">
+        <div class="nav-dot" style="background:#1F8A5B;"></div>
+        <div class="nav-label">Ultimate Unpause</div>
+      </div>
+      <div class="nav-item" onclick="load('flex-dashboard')" id="nav-flex-dashboard">
+        <div class="nav-dot" style="background:#BBF06A;"></div>
+        <div class="nav-label">Flex Dashboard</div>
+      </div>
+      <div class="nav-item" onclick="load('deliveries-mobile')" id="nav-deliveries-mobile">
+        <div class="nav-dot" style="background:#F4A261;"></div>
+        <div class="nav-label">Deliveries Mobile</div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Orders</div>
       <div class="nav-item" onclick="load('giftcard-purchase')" id="nav-giftcard-purchase">
         <div class="nav-dot" style="background:#E8A838;"></div>
         <div class="nav-label">Gift Card - Purchase</div>
@@ -255,7 +267,7 @@
         tagColor: '#067A46',
         tagBg: '#DEF5DB',
         title: 'Cadency - Subscription Cadence Flexibility',
-        summary: 'Allow customers to choose delivery frequency — bi-weekly or monthly — in their account settings. Currently only available in the cancellation funnel. 28% of customers already follow less-frequent patterns by manually pausing, and 22% of pause survey respondents explicitly say they don\'t want weekly delivery. Business case: RTE €35M, HF €26M. This prototype covers the Plan Settings entry point, frequency picker, bi-weekly and monthly order views, and the add-extra-box drawer.',
+        summary: 'Allow customers to choose delivery frequency - bi-weekly or monthly - in their account settings. Currently only available in the cancellation funnel. 28% of customers already follow less-frequent patterns by manually pausing, and 22% of pause survey respondents explicitly say they don\'t want weekly delivery. Business case: RTE €35M, HF €26M. This prototype covers the Plan Settings entry point, frequency picker, bi-weekly and monthly order views, and the add-extra-box drawer.',
         brief: null,
         meta: [
           { label: 'Priority', value: 'Q3 P1' },
@@ -270,7 +282,7 @@
         tagColor: '#1A5276',
         tagBg: '#D6EAF8',
         title: 'One-off Address Change',
-        summary: 'Active subscribers cannot easily redirect a single box to a temporary location — holiday home, family, workplace. The current UX only supports subscription-level address changes, with no cut-off time warnings and no order-level override. This causes delivery errors, unnecessary pauses, and avoidable CS contacts. This prototype introduces a Multi-Address Book with three entry points, letting customers choose between a one-off redirect or a permanent subscription change — with clear cut-off guardrails at every step.',
+        summary: 'Active subscribers cannot easily redirect a single box to a temporary location - holiday home, family, workplace. The current UX only supports subscription-level address changes, with no cut-off time warnings and no order-level override. This causes delivery errors, unnecessary pauses, and avoidable CS contacts. This prototype introduces a Multi-Address Book with three entry points, letting customers choose between a one-off redirect or a permanent subscription change - with clear cut-off guardrails at every step.',
         brief: null,
         meta: [
           { label: 'Priority', value: 'Q3 P0' },
@@ -280,12 +292,48 @@
         ],
         src: 'address-flows/index.html',
       },
+      'ultimate-unpause': {
+        tag: 'Deliveries - Q3',
+        tagColor: '#0A6640',
+        tagBg: '#D4F0E2',
+        title: 'Ultimate Unpause',
+        summary: 'A consolidated unpause experience that gives customers more control when reactivating their subscription. Explores a richer reactivation flow with clear next-box timing, flexible restart options, and reduced friction for customers returning after a pause.',
+        brief: null,
+        meta: [
+          { label: 'Domain', value: 'Subscription Management' },
+        ],
+        src: 'ultimate-unpause/index.html',
+      },
+      'flex-dashboard': {
+        tag: 'Deliveries - Q3',
+        tagColor: '#3A6B00',
+        tagBg: '#EAF5D0',
+        title: 'HelloFresh Flex Dashboard',
+        summary: 'A dashboard concept for the Factor Flex subscription model, giving customers visibility and control over their flexible subscription - upcoming boxes, billing, and pause/skip options in one place.',
+        brief: null,
+        meta: [
+          { label: 'Domain', value: 'Subscription Management' },
+        ],
+        src: 'flex-dashboard/index.html',
+      },
+      'deliveries-mobile': {
+        tag: 'Deliveries - Q3',
+        tagColor: '#B45309',
+        tagBg: '#FEF3C7',
+        title: 'Deliveries Mobile',
+        summary: 'Mobile prototype for the HelloFresh deliveries experience, covering upcoming delivery management, address changes, and order modifications optimised for the mobile app context.',
+        brief: null,
+        meta: [
+          { label: 'Domain', value: 'Delivery Management' },
+        ],
+        src: 'deliveries-mobile/index.html',
+      },
       'giftcard-purchase': {
         tag: 'Orders - Not Q3',
         tagColor: '#9A6B00',
         tagBg: '#FDF3DC',
         title: 'Gift Card - Purchase (Mobile)',
-        summary: 'Extract gift card purchase and generation out of the monolith. Improve the front-end experience for gift card purchasers — cleaner flow, accessible to actives and formers, actively marketable. Enables gift card sales to be grown rather than just maintained. Dependency on the Payments team B2B gift card processor project which could also serve B2C purchase.',
+        summary: 'Extract gift card purchase and generation out of the monolith. Improve the front-end experience for gift card purchasers - cleaner flow, accessible to actives and formers, actively marketable. Enables gift card sales to be grown rather than just maintained. Dependency on the Payments team B2B gift card processor project which could also serve B2C purchase.',
         brief: null,
         meta: [
           { label: 'Priority', value: 'Not Q3' },
@@ -300,7 +348,7 @@
         tagColor: '#9A6B00',
         tagBg: '#FDF3DC',
         title: 'Gift Card - Redeem via OTP',
-        summary: 'Shift gift card redemption out of the monolith and into the OTP checkout flow. Customers apply their gift card voucher to a one-time purchase instead of being forced into a subscription. Current redemption rate is ~60% and declining — OTP redemption should improve this significantly. Depends on "Enable OTP via Voucher" being delivered first.',
+        summary: 'Shift gift card redemption out of the monolith and into the OTP checkout flow. Customers apply their gift card voucher to a one-time purchase instead of being forced into a subscription. Current redemption rate is ~60% and declining - OTP redemption should improve this significantly. Depends on "Enable OTP via Voucher" being delivered first.',
         brief: null,
         meta: [
           { label: 'Priority', value: 'Q3 P2' },
